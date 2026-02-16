@@ -1,206 +1,421 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Die 100-Milliarden-Wette — gedankensplitter</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@400;500;700&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'DM Sans', sans-serif; background: #0f0f1a; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 40px 20px; gap: 20px; color: #fff; }
-  
-  .controls { display: flex; align-items: center; gap: 20px; z-index: 100; }
-  .controls button { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 8px 20px; border-radius: 4px; cursor: pointer; font-size: 14px; transition: all 0.2s; }
-  .controls button:hover { background: rgba(255,255,255,0.2); }
-  .counter { font-size: 13px; color: rgba(255,255,255,0.5); font-family: 'Courier Prime', monospace; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Die 100-Milliarden-Wette — gedankensplitter</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@400;500;700&family=Courier+Prime:wght@400;700&display=swap"
+    rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  .carousel-wrapper { width: 540px; height: 540px; overflow: hidden; border-radius: 4px; position: relative; background: #000; box-shadow: 0 30px 60px rgba(0,0,0,0.5); }
-  .slide { width: 540px; height: 540px; position: absolute; top: 0; left: 0; opacity: 0; transition: opacity 0.4s ease-in-out; display: flex; flex-direction: column; pointer-events: none; }
-  .slide.active { opacity: 1; pointer-events: auto; }
-  
-  .content { padding: 55px; height: 100%; display: flex; flex-direction: column; position: relative; z-index: 2; }
-  
-  /* --- THEMES --- */
-  .dark { background: linear-gradient(135deg, #0f0f1a 0%, #16213e 100%); color: #fff; }
-  .warn { background: linear-gradient(135deg, #1a0f0f 0%, #2e1a1a 100%); color: #fff; }
-  .light { background: #faf9f6; color: #1a1a2e; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #0f0f1a;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      gap: 20px;
+      color: #fff;
+    }
 
-  /* --- TYPOGRAPHY --- */
-  .eyebrow { font-size: 11px; text-transform: uppercase; letter-spacing: 3px; color: #ff6b6b; margin-bottom: 20px; font-weight: 700; }
-  .light .eyebrow { color: #c0392b; }
-  
-  h2 { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 900; line-height: 1.2; margin-bottom: 24px; }
-  .body { font-size: 17px; line-height: 1.6; opacity: 0.9; }
-  .body strong { font-weight: 700; color: #ff6b6b; }
-  .light .body { color: #444; }
-  .light .body strong { color: #1a1a2e; }
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      z-index: 100;
+    }
 
-  .quote-box { margin-top: auto; padding: 20px; background: rgba(255,255,255,0.05); border-left: 3px solid #ff6b6b; font-style: italic; font-size: 15px; }
-  .light .quote-box { background: rgba(0,0,0,0.03); border-left-color: #1a1a2e; color: #1a1a2e; }
+    .controls button {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      padding: 8px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
 
-  /* --- BRANDING & NAV --- */
-  .branding { position: absolute; bottom: 25px; left: 55px; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; opacity: 0.4; }
-  .light .branding { color: #1a1a2e; opacity: 0.3; }
-  
-  .slide-num { position: absolute; bottom: 25px; right: 55px; font-family: 'Courier Prime', monospace; font-size: 12px; opacity: 0.3; }
+    .controls button:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
 
-  .progress-bar { width: 540px; height: 4px; background: rgba(255,255,255,0.1); border-radius: 0 0 4px 4px; overflow: hidden; }
-  .fill { height: 100%; background: #ff6b6b; width: 0%; transition: width 0.3s; }
-</style>
+    .counter {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.5);
+      font-family: 'Courier Prime', monospace;
+    }
+
+    .carousel-wrapper {
+      width: 100%;
+      max-width: 540px;
+      aspect-ratio: 1/1;
+      height: auto;
+      overflow: hidden;
+      border-radius: 4px;
+      position: relative;
+      background: #000;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    .slide {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      transition: opacity 0.4s ease-in-out;
+      display: flex;
+      flex-direction: column;
+      pointer-events: none;
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .content {
+      padding: 55px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* --- THEMES --- */
+    .dark {
+      background: linear-gradient(135deg, #0f0f1a 0%, #16213e 100%);
+      color: #fff;
+    }
+
+    .warn {
+      background: linear-gradient(135deg, #1a0f0f 0%, #2e1a1a 100%);
+      color: #fff;
+    }
+
+    .light {
+      background: #faf9f6;
+      color: #1a1a2e;
+    }
+
+    /* --- TYPOGRAPHY --- */
+    .eyebrow {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: #ff6b6b;
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
+
+    .light .eyebrow {
+      color: #c0392b;
+    }
+
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      font-weight: 900;
+      line-height: 1.2;
+      margin-bottom: 24px;
+    }
+
+    .body {
+      font-size: 17px;
+      line-height: 1.6;
+      opacity: 0.9;
+    }
+
+    .body strong {
+      font-weight: 700;
+      color: #ff6b6b;
+    }
+
+    .light .body {
+      color: #444;
+    }
+
+    .light .body strong {
+      color: #1a1a2e;
+    }
+
+    .quote-box {
+      margin-top: auto;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border-left: 3px solid #ff6b6b;
+      font-style: italic;
+      font-size: 15px;
+    }
+
+    .light .quote-box {
+      background: rgba(0, 0, 0, 0.03);
+      border-left-color: #1a1a2e;
+      color: #1a1a2e;
+    }
+
+    /* --- BRANDING & NAV --- */
+    .branding {
+      position: absolute;
+      bottom: 25px;
+      left: 55px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: 700;
+      opacity: 0.4;
+    }
+
+    .light .branding {
+      color: #1a1a2e;
+      opacity: 0.3;
+    }
+
+    .slide-num {
+      position: absolute;
+      bottom: 25px;
+      right: 55px;
+      font-family: 'Courier Prime', monospace;
+      font-size: 12px;
+      opacity: 0.3;
+    }
+
+    .progress-bar {
+      width: 100%;
+      max-width: 540px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 0 0 4px 4px;
+      overflow: hidden;
+    }
+
+    .fill {
+      height: 100%;
+      background: #ff6b6b;
+      width: 0%;
+      transition: width 0.3s;
+    }
+
+    /* Mobile Optimization */
+    @media (max-width: 580px) {
+      .content {
+        padding: 30px 25px;
+      }
+
+      h2 {
+        font-size: 24px !important;
+        margin-bottom: 15px;
+      }
+
+      .body {
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .quote-box {
+        font-size: 13px;
+        padding: 15px;
+      }
+
+      .branding,
+      .slide-num {
+        bottom: 15px;
+      }
+
+      .branding {
+        left: 25px;
+      }
+
+      .slide-num {
+        right: 25px;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="controls">
-  <button onclick="prev()">←</button>
-  <span class="counter" id="counter">1 / 12</span>
-  <button onclick="next()">→</button>
-</div>
-
-<div class="carousel-wrapper" id="carousel">
-  <div class="slide dark active" data-s="1">
-    <div class="content">
-      <div class="eyebrow">The Big Bet</div>
-      <h2 style="font-size: 42px;">Die 100-Milliarden-Dollar-Wette</h2>
-      <p class="body">Warum die KI-Blase platzen <strong>muss</strong> – oder unsere Arbeitswelt, wie wir sie kennen, endet.</p>
-      <div class="quote-box">Eine Analyse über digitale Kolonien und das Ende der Mittelschicht.</div>
-    </div>
-    <div class="branding">gedankensplitter</div>
-    <div class="slide-num">01/12</div>
+  <div class="controls">
+    <button onclick="prev()">←</button>
+    <span class="counter" id="counter">1 / 12</span>
+    <button onclick="next()">→</button>
   </div>
 
-  <div class="slide warn" data-s="2">
-    <div class="content">
-      <div class="eyebrow">Finanzielles Harakiri</div>
-      <h2>Astronomische Verluste</h2>
-      <p class="body">OpenAI plant bis 2029 mit <strong>115 Milliarden Dollar Verlust</strong>. Das übersteigt die Budgets ganzer Nationalstaaten.<br><br>Das ist kein normales Wachstum – das ist ein All-In auf die totale Veränderung.</p>
+  <div class="carousel-wrapper" id="carousel">
+    <div class="slide dark active" data-s="1">
+      <div class="content">
+        <div class="eyebrow">The Big Bet</div>
+        <h2 style="font-size: 42px;">Die 100-Milliarden-Dollar-Wette</h2>
+        <p class="body">Warum die KI-Blase platzen <strong>muss</strong> – oder unsere Arbeitswelt, wie wir sie kennen,
+          endet.</p>
+        <div class="quote-box">Eine Analyse über digitale Kolonien und das Ende der Mittelschicht.</div>
+      </div>
+      <div class="branding">gedankensplitter</div>
+      <div class="slide-num">01/12</div>
     </div>
-    <div class="branding">gedankensplitter</div>
-    <div class="slide-num">02/12</div>
+
+    <div class="slide warn" data-s="2">
+      <div class="content">
+        <div class="eyebrow">Finanzielles Harakiri</div>
+        <h2>Astronomische Verluste</h2>
+        <p class="body">OpenAI plant bis 2029 mit <strong>115 Milliarden Dollar Verlust</strong>. Das übersteigt die
+          Budgets ganzer Nationalstaaten.<br><br>Das ist kein normales Wachstum – das ist ein All-In auf die totale
+          Veränderung.</p>
+      </div>
+      <div class="branding">gedankensplitter</div>
+      <div class="slide-num">02/12</div>
+    </div>
+
+    <div class="slide dark" data-s="3">
+      <div class="content">
+        <div class="eyebrow">Das Geschäftsmodell</div>
+        <h2>Ersetzen statt Ergänzen</h2>
+        <p class="body">Damit diese Wette aufgeht, darf KI nicht nur „helfen“. Sie muss hochbezahlte Jobs komplett
+          <strong>autonom erledigen</strong>.<br><br>Dein Gehalt von heute ist das Cloud-Abo von morgen.</p>
+      </div>
+      <div class="branding">gedankensplitter</div>
+      <div class="slide-num">03/12</div>
+    </div>
+
+    <div class="slide light" data-s="4">
+      <div class="content">
+        <div class="eyebrow">Geopolitik</div>
+        <h2>Die digitale Kolonie</h2>
+        <p class="body">Wir nutzen US-Software auf US-Clouds mit Chips aus Asien. Europa liefert die Daten, das Silicon
+          Valley erntet den Profit.<br><br>Wir schaufeln den Wohlstand weg, während wir <strong>Abhängigkeiten</strong>
+          aufbauen.</p>
+      </div>
+      <div class="branding">gedankensplitter</div>
+      <div class="slide-num">04/12</div>
+    </div>
+
+    <div class="slide warn" data-s="5">
+      <div class="content">
+        <div class="eyebrow">Finanzsystem</div>
+        <h2>Das Märchen von der Aktienrente</h2>
+        <p class="body">„Sorgt privat vor“, heißt es. Aber wer kauft die Produkte der Firmen, wenn die <strong>Kaufkraft
+            der Massen</strong> durch KI-Arbeitslosigkeit wegbricht?<br><br>Ein Markt ohne Konsumenten ist ein
+          Kartenhaus.</p>
+      </div>
+      <div class="branding">gedankensplitter</div>
+      <div class="slide-num">05/12</div>
+    </div>
+
+    <div class="slide dark" data-s="6">
+      <div class="content">
+        <div class="eyebrow">Status-Verlust</div>
+        <h2>Wenn Bildung nicht mehr schützt</h2>
+        <p class="body">Früher traf Automatisierung das Fließband. Heute trifft sie den <strong>hohen
+            Intellekt</strong>.<br><br>Die intellektuelle Mittelschicht steht vor ihrem „Kodak-Moment“.</p>
+      </div>
+      <div class="branding">gedankensplitter</div>
+      <div class="slide-num">06/12</div>
+    </div>
+
+    <div class="slide dark" data-s="7">
+      <div class="content">
+        <div class="eyebrow">Die Vision</div>
+        <h2>Universal High Income</h2>
+        <p class="body">Elon Musk verspricht: Roboter erledigen alles, Waren kosten fast nichts. Ein Zeitalter des
+          Überflusses steht bevor.<br><br>Klingt nach Paradies – bedeutet aber <strong>totale Abhängigkeit</strong> von
+          Tech-Giganten.</p>
+      </div>
+      <div class="branding">gedankensplitter</div>
+      <div class="slide-num">07/12</div>
+    </div>
+
+    <div class="slide warn" data-s="8">
+      <div class="content">
+        <div class="eyebrow">Die Übergangsphase</div>
+        <h2>Das „Trauma“ dazwischen</h2>
+        <p class="body">Sam Altman gibt zu: Der Weg wird traumatisch. Es klafft eine Lücke von 10–20 Jahren zwischen
+          <strong>Jobverlust und Überfluss</strong>.<br><br>Wer überlebt diese Durststrecke?</p>
+      </div>
+      <div class="branding">gedankensplitter</div>
+      <div class="slide-num">08/12</div>
+    </div>
+
+    <div class="slide light" data-s="9">
+      <div class="content">
+        <div class="eyebrow">System-Update</div>
+        <h2>Das BGE ist kein Almosen</h2>
+        <p class="body">Das Grundeinkommen ist keine Sozialhilfe, sondern die <strong>Rückverteilung</strong> der
+          automatisierten Wertschöpfung.<br><br>Wenn Maschinen die Arbeit machen, gehört der Ertrag der Gesellschaft.
+        </p>
+      </div>
+      <div class="branding">gedankensplitter</div>
+      <div class="slide-num">09/12</div>
+    </div>
+
+    <div class="slide dark" data-s="10">
+      <div class="content">
+        <div class="eyebrow">Finanzierung</div>
+        <h2>Maschinen müssen zahlen</h2>
+        <p class="body">Weg von der Einkommenssteuer, hin zur <strong>KI-Abgabe</strong>. Jede Rechenminute muss die
+          Sozialabgaben für den Menschen leisten, den sie ersetzt.</p>
+      </div>
+      <div class="branding">gedankensplitter</div>
+      <div class="slide-num">10/12</div>
+    </div>
+
+    <div class="slide warn" data-s="11">
+      <div class="content">
+        <div class="eyebrow">Fazit</div>
+        <h2>Verantwortung vs. Abhängigkeit</h2>
+        <p class="body">Eigenverantwortung ist eine Illusion, wenn man keine eigene Infrastruktur besitzt.<br><br>Echte
+          Freiheit braucht <strong>digitale Souveränität</strong>.</p>
+      </div>
+      <div class="branding">gedankensplitter</div>
+      <div class="slide-num">11/12</div>
+    </div>
+
+    <div class="slide light" data-s="12">
+      <div class="content" style="text-align: center; justify-content: center;">
+        <h2 style="font-size: 28px;">Größter Crash oder größte Befreiung?</h2>
+        <p class="body">Was ist dein Plan B für eine Welt, in der Intelligenz nichts mehr
+          kostet?<br><br><strong>Diskutier mit uns!</strong></p>
+      </div>
+      <div class="branding">gedankensplitter</div>
+      <div class="slide-num">12/12</div>
+    </div>
   </div>
 
-  <div class="slide dark" data-s="3">
-    <div class="content">
-      <div class="eyebrow">Das Geschäftsmodell</div>
-      <h2>Ersetzen statt Ergänzen</h2>
-      <p class="body">Damit diese Wette aufgeht, darf KI nicht nur „helfen“. Sie muss hochbezahlte Jobs komplett <strong>autonom erledigen</strong>.<br><br>Dein Gehalt von heute ist das Cloud-Abo von morgen.</p>
-    </div>
-    <div class="branding">gedankensplitter</div>
-    <div class="slide-num">03/12</div>
+  <div class="progress-bar">
+    <div class="fill" id="progress"></div>
   </div>
 
-  <div class="slide light" data-s="4">
-    <div class="content">
-      <div class="eyebrow">Geopolitik</div>
-      <h2>Die digitale Kolonie</h2>
-      <p class="body">Wir nutzen US-Software auf US-Clouds mit Chips aus Asien. Europa liefert die Daten, das Silicon Valley erntet den Profit.<br><br>Wir schaufeln den Wohlstand weg, während wir <strong>Abhängigkeiten</strong> aufbauen.</p>
-    </div>
-    <div class="branding">gedankensplitter</div>
-    <div class="slide-num">04/12</div>
-  </div>
+  <script>
+    let current = 1;
+    const total = 12;
 
-  <div class="slide warn" data-s="5">
-    <div class="content">
-      <div class="eyebrow">Finanzsystem</div>
-      <h2>Das Märchen von der Aktienrente</h2>
-      <p class="body">„Sorgt privat vor“, heißt es. Aber wer kauft die Produkte der Firmen, wenn die <strong>Kaufkraft der Massen</strong> durch KI-Arbeitslosigkeit wegbricht?<br><br>Ein Markt ohne Konsumenten ist ein Kartenhaus.</p>
-    </div>
-    <div class="branding">gedankensplitter</div>
-    <div class="slide-num">05/12</div>
-  </div>
+    function show(n) {
+      document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+      document.querySelector(`[data-s="${n}"]`).classList.add('active');
+      document.getElementById('counter').innerText = `${n} / ${total}`;
+      document.getElementById('progress').style.width = `${(n / total) * 100}%`;
+    }
 
-  <div class="slide dark" data-s="6">
-    <div class="content">
-      <div class="eyebrow">Status-Verlust</div>
-      <h2>Wenn Bildung nicht mehr schützt</h2>
-      <p class="body">Früher traf Automatisierung das Fließband. Heute trifft sie den <strong>hohen Intellekt</strong>.<br><br>Die intellektuelle Mittelschicht steht vor ihrem „Kodak-Moment“.</p>
-    </div>
-    <div class="branding">gedankensplitter</div>
-    <div class="slide-num">06/12</div>
-  </div>
+    function next() { if (current < total) { current++; show(current); } }
+    function prev() { if (current > 1) { current--; show(current); } }
 
-  <div class="slide dark" data-s="7">
-    <div class="content">
-      <div class="eyebrow">Die Vision</div>
-      <h2>Universal High Income</h2>
-      <p class="body">Elon Musk verspricht: Roboter erledigen alles, Waren kosten fast nichts. Ein Zeitalter des Überflusses steht bevor.<br><br>Klingt nach Paradies – bedeutet aber <strong>totale Abhängigkeit</strong> von Tech-Giganten.</p>
-    </div>
-    <div class="branding">gedankensplitter</div>
-    <div class="slide-num">07/12</div>
-  </div>
-
-  <div class="slide warn" data-s="8">
-    <div class="content">
-      <div class="eyebrow">Die Übergangsphase</div>
-      <h2>Das „Trauma“ dazwischen</h2>
-      <p class="body">Sam Altman gibt zu: Der Weg wird traumatisch. Es klafft eine Lücke von 10–20 Jahren zwischen <strong>Jobverlust und Überfluss</strong>.<br><br>Wer überlebt diese Durststrecke?</p>
-    </div>
-    <div class="branding">gedankensplitter</div>
-    <div class="slide-num">08/12</div>
-  </div>
-
-  <div class="slide light" data-s="9">
-    <div class="content">
-      <div class="eyebrow">System-Update</div>
-      <h2>Das BGE ist kein Almosen</h2>
-      <p class="body">Das Grundeinkommen ist keine Sozialhilfe, sondern die <strong>Rückverteilung</strong> der automatisierten Wertschöpfung.<br><br>Wenn Maschinen die Arbeit machen, gehört der Ertrag der Gesellschaft.</p>
-    </div>
-    <div class="branding">gedankensplitter</div>
-    <div class="slide-num">09/12</div>
-  </div>
-
-  <div class="slide dark" data-s="10">
-    <div class="content">
-      <div class="eyebrow">Finanzierung</div>
-      <h2>Maschinen müssen zahlen</h2>
-      <p class="body">Weg von der Einkommenssteuer, hin zur <strong>KI-Abgabe</strong>. Jede Rechenminute muss die Sozialabgaben für den Menschen leisten, den sie ersetzt.</p>
-    </div>
-    <div class="branding">gedankensplitter</div>
-    <div class="slide-num">10/12</div>
-  </div>
-
-  <div class="slide warn" data-s="11">
-    <div class="content">
-      <div class="eyebrow">Fazit</div>
-      <h2>Verantwortung vs. Abhängigkeit</h2>
-      <p class="body">Eigenverantwortung ist eine Illusion, wenn man keine eigene Infrastruktur besitzt.<br><br>Echte Freiheit braucht <strong>digitale Souveränität</strong>.</p>
-    </div>
-    <div class="branding">gedankensplitter</div>
-    <div class="slide-num">11/12</div>
-  </div>
-
-  <div class="slide light" data-s="12">
-    <div class="content" style="text-align: center; justify-content: center;">
-      <h2 style="font-size: 28px;">Größter Crash oder größte Befreiung?</h2>
-      <p class="body">Was ist dein Plan B für eine Welt, in der Intelligenz nichts mehr kostet?<br><br><strong>Diskutier mit uns!</strong></p>
-    </div>
-    <div class="branding">gedankensplitter</div>
-    <div class="slide-num">12/12</div>
-  </div>
-</div>
-
-<div class="progress-bar">
-  <div class="fill" id="progress"></div>
-</div>
-
-<script>
-  let current = 1;
-  const total = 12;
-
-  function show(n) {
-    document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
-    document.querySelector(`[data-s="${n}"]`).classList.add('active');
-    document.getElementById('counter').innerText = `${n} / ${total}`;
-    document.getElementById('progress').style.width = `${(n/total)*100}%`;
-  }
-
-  function next() { if (current < total) { current++; show(current); } }
-  function prev() { if (current > 1) { current--; show(current); } }
-
-  document.addEventListener('keydown', e => {
-    if (e.key === 'ArrowRight') next();
-    if (e.key === 'ArrowLeft') prev();
-  });
-</script>
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight') next();
+      if (e.key === 'ArrowLeft') prev();
+    });
+  </script>
 
 </body>
+
 </html>
