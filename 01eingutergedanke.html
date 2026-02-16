@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkedIn Carousel - Ideenverlust</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: #1a1a2e;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            gap: 30px;
+        }
+
+        h1 {
+            color: #fff;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 500;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            opacity: 0.6;
+        }
+
+        .carousel-container {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 1400px;
+        }
+
+        .slide {
+            width: 540px;
+            height: 540px;
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+            border-radius: 4px;
+        }
+
+        /* Slide 1 - Hook */
+        .slide-1 {
+            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #16213e 100%);
+        }
+
+        .slide-1::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,107,107,0.15) 0%, transparent 60%);
+        }
+
+        .slide-1 .content {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 60px;
+        }
+
+        .slide-1 .time {
+            font-family: 'Playfair Display', serif;
+            font-size: 64px;
+            font-weight: 900;
+            color: #ff6b6b;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .slide-1 .time-label {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 35px;
+        }
+
+        .slide-1 h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 38px;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.2;
+            max-width: 380px;
+        }
+
+        .slide-1 h2 span {
+            color: #ff6b6b;
+            font-style: italic;
+        }
+
+        .slide-1 .bottom-text {
+            margin-top: auto;
+            font-size: 15px;
+            color: rgba(255,255,255,0.5);
+            line-height: 1.6;
+            padding-bottom: 10px;
+        }
+
+        /* Slide 2 - Problem */
+        .slide-2 {
+            background: #faf9f6;
+        }
+
+        .slide-2 .content {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 60px;
+        }
+
+        .slide-2 .eyebrow {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #ff6b6b;
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        .slide-2 h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: #1a1a2e;
+            line-height: 1.3;
+            margin-bottom: 30px;
+        }
+
+        .slide-2 .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: auto;
+            padding-bottom: 10px;
+        }
+
+        .stat-box {
+            background: #fff;
+            padding: 20px;
+            border-radius: 3px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.04);
+            border-left: 3px solid #ff6b6b;
+        }
+
+        .stat-box .number {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 900;
+            color: #1a1a2e;
+        }
+
+        .stat-box .label {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+            line-height: 1.4;
+        }
+
+        /* Slide 3 - The Math */
+        .slide-3 {
+            background: #1a1a2e;
+        }
+
+        .slide-3 .content {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 60px;
+        }
+
+        .slide-3 .eyebrow {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #ff6b6b;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .slide-3 h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 25px;
+        }
+
+        .calculation {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 14px;
+        }
+
+        .calc-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .calc-row .icon {
+            width: 42px;
+            height: 42px;
+            background: rgba(255,107,107,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .calc-row .text {
+            color: rgba(255,255,255,0.8);
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .calc-row .text strong {
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .calc-result {
+            margin-top: 15px;
+            padding: 25px;
+            background: linear-gradient(135deg, rgba(255,107,107,0.2) 0%, rgba(255,107,107,0.05) 100%);
+            border-radius: 4px;
+            border: 1px solid rgba(255,107,107,0.3);
+        }
+
+        .calc-result .number {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            font-weight: 900;
+            color: #ff6b6b;
+        }
+
+        .calc-result .label {
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        /* Slide 4 - Why */
+        .slide-4 {
+            background: #16213e;
+            position: relative;
+        }
+
+        .slide-4::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60%;
+            background: linear-gradient(to top, rgba(255,107,107,0.08) 0%, transparent 100%);
+        }
+
+        .slide-4 .content {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 60px;
+        }
+
+        .slide-4 .eyebrow {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #ff6b6b;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .slide-4 h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 30px;
+        }
+
+        .reason-list {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .reason-item {
+            display: flex;
+            gap: 18px;
+            align-items: flex-start;
+        }
+
+        .reason-item .num {
+            width: 32px;
+            height: 32px;
+            background: rgba(255,107,107,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ff6b6b;
+            font-weight: 700;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+
+        .reason-item .text {
+            color: rgba(255,255,255,0.85);
+            font-size: 15px;
+            line-height: 1.5;
+            padding-top: 5px;
+        }
+
+        /* Slide 5 - Solution */
+        .slide-5 {
+            background: #faf9f6;
+        }
+
+        .slide-5 .content {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 60px;
+        }
+
+        .slide-5 .eyebrow {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #ff6b6b;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .slide-5 h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 25px;
+            line-height: 1.3;
+        }
+
+        .solution-flow {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .flow-item {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            padding: 18px 22px;
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.04);
+        }
+
+        .flow-item .step {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 900;
+            color: #ff6b6b;
+            width: 35px;
+        }
+
+        .flow-item .text {
+            color: #1a1a2e;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .flow-arrow {
+            text-align: center;
+            color: #ccc;
+            font-size: 18px;
+        }
+
+        /* Slide 6 - CTA */
+        .slide-6 {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            position: relative;
+        }
+
+        .slide-6::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ff6b6b' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+
+        .slide-6 .content {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 60px;
+        }
+
+        .slide-6 .question-mark {
+            font-family: 'Playfair Display', serif;
+            font-size: 100px;
+            font-weight: 900;
+            color: #ff6b6b;
+            line-height: 1;
+            margin-bottom: 15px;
+            opacity: 0.3;
+        }
+
+        .slide-6 h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 30px;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.4;
+            max-width: 380px;
+            margin-bottom: 30px;
+        }
+
+        .slide-6 h2 em {
+            color: #ff6b6b;
+            font-style: italic;
+        }
+
+        .slide-6 .cta {
+            font-size: 16px;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.6;
+            max-width: 350px;
+        }
+
+        .slide-6 .divider {
+            width: 50px;
+            height: 3px;
+            background: #ff6b6b;
+            margin: 25px 0;
+        }
+
+        .slide-6 .author {
+            margin-top: auto;
+            padding-top: 20px;
+        }
+
+        .slide-6 .author-name {
+            color: #fff;
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .slide-6 .author-handle {
+            color: rgba(255,255,255,0.5);
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        /* Navigation hint */
+        .nav-hint {
+            color: rgba(255,255,255,0.3);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 20px;
+        }
+
+        /* Print styles for export */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .slide {
+                page-break-after: always;
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>LinkedIn Carousel Preview</h1>
+    
+    <div class="carousel-container">
+        <!-- Slide 1: Hook -->
+        <div class="slide slide-1">
+            <div class="content">
+                <div class="time">6:47</div>
+                <div class="time-label">Uhr morgens</div>
+                <h2>Fast hätte ich sie <span>verloren.</span></h2>
+                <p class="bottom-text">
+                    Drei richtig gute Gedanken.<br>
+                    Auf dem Weg ins Büro.<br>
+                    Dann kam das erste Meeting.
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Problem Statement -->
+        <div class="slide slide-2">
+            <div class="content">
+                <div class="eyebrow">Das Problem</div>
+                <h2>Wie viele gute Ideen gehen täglich in unseren Organisationen verloren?</h2>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="number">70%</div>
+                        <div class="label">aller Ideen verschwinden im Tagesgeschäft</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="number">2-3</div>
+                        <div class="label">wertvolle Gedanken pro Person & Woche</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="number">~125</div>
+                        <div class="label">Ideen pro Woche bei 50 Mitarbeitenden</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="number">~100</div>
+                        <div class="label">davon gehen verloren. Jede Woche.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: The Math -->
+        <div class="slide slide-3">
+            <div class="content">
+                <div class="eyebrow">Die Rechnung</div>
+                <h2>Eine einfache Milchmädchenrechnung:</h2>
+                <div class="calculation">
+                    <div class="calc-row">
+                        <div class="icon">👥</div>
+                        <div class="text"><strong>50</strong> Mitarbeitende</div>
+                    </div>
+                    <div class="calc-row">
+                        <div class="icon">💡</div>
+                        <div class="text">× <strong>2-3</strong> wertvolle Gedanken/Woche</div>
+                    </div>
+                    <div class="calc-row">
+                        <div class="icon">📉</div>
+                        <div class="text">× <strong>70%</strong> gehen unter</div>
+                    </div>
+                    <div class="calc-row">
+                        <div class="icon">📅</div>
+                        <div class="text">× <strong>52</strong> Wochen</div>
+                    </div>
+                </div>
+                <div class="calc-result">
+                    <div class="number">~5.000</div>
+                    <div class="label">potenzielle Innovationen pro Jahr, die einfach verpuffen.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Why it happens -->
+        <div class="slide slide-4">
+            <div class="content">
+                <div class="eyebrow">Die Ursachen</div>
+                <h2>Warum passiert das?</h2>
+                <div class="reason-list">
+                    <div class="reason-item">
+                        <div class="num">1</div>
+                        <div class="text">Der brutale Übergang vom „Denk-Modus" in den „Exekutiv-Modus"</div>
+                    </div>
+                    <div class="reason-item">
+                        <div class="num">2</div>
+                        <div class="text">Keine Strukturen zum „Ideen-Andocken" in Organisationen</div>
+                    </div>
+                    <div class="reason-item">
+                        <div class="num">3</div>
+                        <div class="text">Operative Hektik wird kulturell über strategisches Denken gestellt</div>
+                    </div>
+                    <div class="reason-item">
+                        <div class="num">4</div>
+                        <div class="text">Unsere Tools sind auf Aufgaben ausgerichtet – nicht auf Gedanken</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Solution -->
+        <div class="slide slide-5">
+            <div class="content">
+                <div class="eyebrow">Der Ausblick</div>
+                <h2>KI als Gedächtnis-Prothese – nicht als Ersatz fürs Denken</h2>
+                <div class="solution-flow">
+                    <div class="flow-item">
+                        <div class="step">1</div>
+                        <div class="text"><strong>Erfassen:</strong> Voice-to-Text im Auto, Zug, beim Spazieren</div>
+                    </div>
+                    <div class="flow-arrow">↓</div>
+                    <div class="flow-item">
+                        <div class="step">2</div>
+                        <div class="text"><strong>Sortieren:</strong> KI clustert, verknüpft, erinnert zur richtigen Zeit</div>
+                    </div>
+                    <div class="flow-arrow">↓</div>
+                    <div class="flow-item">
+                        <div class="step">3</div>
+                        <div class="text"><strong>Reifen:</strong> Aus Montags-Fragmenten werden Freitags-Konzepte</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: CTA -->
+        <div class="slide slide-6">
+            <div class="content">
+                <div class="question-mark">?</div>
+                <h2>Was wäre, wenn Organisationen <em>Ideen</em> genauso ernst nehmen wie <em>Deadlines?</em></h2>
+                <div class="divider"></div>
+                <p class="cta">
+                    Wie fangt ihr eure besten Gedanken ein?<br>
+                    Oder gehen die auch regelmäßig verloren?
+                </p>
+                <div class="author">
+                    <div class="author-name">→ Teile deine Erfahrung in den Kommentaren</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <p class="nav-hint">Swipe → für nächste Slide</p>
+</body>
+</html>
