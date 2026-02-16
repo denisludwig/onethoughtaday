@@ -1,665 +1,848 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LinkedIn Carousel - Ideenverlust</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LinkedIn Carousel - Ideenverlust</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap"
+    rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: #1a1a2e;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 40px 20px;
-    gap: 24px;
-  }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #1a1a2e;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      gap: 24px;
+    }
 
-  h1 {
-    color: #fff;
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 500;
-    font-size: 14px;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    opacity: 0.6;
-  }
+    h1 {
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      opacity: 0.6;
+    }
 
-  .controls {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-  }
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
 
-  .controls button {
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.15);
-    color: rgba(255,255,255,0.7);
-    padding: 10px 24px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    font-family: 'DM Sans', sans-serif;
-    transition: all 0.2s;
-  }
+    .controls button {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: rgba(255, 255, 255, 0.7);
+      padding: 10px 24px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.2s;
+    }
 
-  .controls button:hover {
-    background: rgba(255,255,255,0.15);
-    color: #fff;
-  }
+    .controls button:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+    }
 
-  .controls .counter {
-    font-size: 13px;
-    color: rgba(255,255,255,0.4);
-    font-variant-numeric: tabular-nums;
-    min-width: 55px;
-    text-align: center;
-    letter-spacing: 1px;
-  }
+    .controls .counter {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.4);
+      font-variant-numeric: tabular-nums;
+      min-width: 55px;
+      text-align: center;
+      letter-spacing: 1px;
+    }
 
-  .carousel-wrapper {
-    width: 540px;
-    height: 540px;
-    overflow: hidden;
-    border-radius: 4px;
-    position: relative;
-  }
+    .carousel-wrapper {
+      width: 100%;
+      max-width: 540px;
+      aspect-ratio: 1 / 1;
+      height: auto;
+      overflow: hidden;
+      border-radius: 4px;
+      position: relative;
+    }
 
-  .slide {
-    width: 540px;
-    height: 540px;
-    position: absolute;
-    top: 0; left: 0;
-    overflow: hidden;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-  }
+    .slide {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      overflow: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
 
-  .slide.active { opacity: 1; pointer-events: auto; }
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
 
-  .slide .content {
-    position: relative;
-    z-index: 2;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    padding: 55px;
-  }
+    .slide .content {
+      position: relative;
+      z-index: 2;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      padding: 55px;
+    }
 
-  .progress-bar {
-    width: 540px;
-    height: 3px;
-    background: rgba(255,255,255,0.08);
-    border-radius: 0 0 4px 4px;
-    overflow: hidden;
-  }
+    .progress-bar {
+      width: 100%;
+      max-width: 540px;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 0 0 4px 4px;
+      overflow: hidden;
+    }
 
-  .progress-bar .fill {
-    height: 100%;
-    background: #ff6b6b;
-    transition: width 0.3s ease;
-  }
+    .progress-bar .fill {
+      height: 100%;
+      background: #ff6b6b;
+      transition: width 0.3s ease;
+    }
 
-  .nav-hint {
-    color: rgba(255,255,255,0.3);
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-top: 10px;
-  }
+    .nav-hint {
+      color: rgba(255, 255, 255, 0.3);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-top: 10px;
+    }
 
-  /* ===== SHARED ===== */
-  .eyebrow {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    color: #ff6b6b;
-    margin-bottom: 20px;
-    font-weight: 700;
-  }
+    /* ===== SHARED ===== */
+    .eyebrow {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: #ff6b6b;
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
 
-  .slide-num {
-    position: absolute;
-    bottom: 22px; right: 28px;
-    font-size: 11px;
-    opacity: 0.25;
-    letter-spacing: 1px;
-  }
+    .slide-num {
+      position: absolute;
+      bottom: 22px;
+      right: 28px;
+      font-size: 11px;
+      opacity: 0.25;
+      letter-spacing: 1px;
+    }
 
-  .branding {
-    position: absolute;
-    bottom: 22px; left: 28px;
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    opacity: 0.35;
-    font-weight: 500;
-  }
+    .branding {
+      position: absolute;
+      bottom: 22px;
+      left: 28px;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      opacity: 0.35;
+      font-weight: 500;
+    }
 
-  .dark .branding { color: #fff; }
-  .light .branding { color: #1a1a2e; }
-  .slide-6 .branding { color: #fff; }
+    .dark .branding {
+      color: #fff;
+    }
 
-  /* ===== DARK SLIDES ===== */
-  .dark {
-    background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #16213e 100%);
-    color: #fff;
-  }
+    .light .branding {
+      color: #1a1a2e;
+    }
 
-  .dark::before {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 50%;
-    background: linear-gradient(to top, rgba(255,107,107,0.06) 0%, transparent 100%);
-    pointer-events: none;
-  }
+    .slide-6 .branding {
+      color: #fff;
+    }
 
-  .dark h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 32px;
-    font-weight: 700;
-    color: #fff;
-    line-height: 1.25;
-    margin-bottom: 18px;
-  }
+    /* ===== DARK SLIDES ===== */
+    .dark {
+      background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #16213e 100%);
+      color: #fff;
+    }
 
-  .dark h2 span {
-    color: #ff6b6b;
-    font-style: italic;
-  }
+    .dark::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 50%;
+      background: linear-gradient(to top, rgba(255, 107, 107, 0.06) 0%, transparent 100%);
+      pointer-events: none;
+    }
 
-  .dark .body {
-    font-size: 15px;
-    line-height: 1.65;
-    color: rgba(255,255,255,0.7);
-  }
+    .dark h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.25;
+      margin-bottom: 18px;
+    }
 
-  .dark .body strong { color: #fff; font-weight: 700; }
-  .dark .body .hl { color: #ff6b6b; font-weight: 600; }
-  .dark .slide-num { color: rgba(255,255,255,0.25); }
+    .dark h2 span {
+      color: #ff6b6b;
+      font-style: italic;
+    }
 
-  /* ===== LIGHT SLIDES ===== */
-  .light {
-    background: #faf9f6;
-    color: #1a1a2e;
-  }
+    .dark .body {
+      font-size: 15px;
+      line-height: 1.65;
+      color: rgba(255, 255, 255, 0.7);
+    }
 
-  .light h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 28px;
-    font-weight: 700;
-    color: #1a1a2e;
-    line-height: 1.3;
-    margin-bottom: 22px;
-  }
+    .dark .body strong {
+      color: #fff;
+      font-weight: 700;
+    }
 
-  .light .body {
-    font-size: 14px;
-    line-height: 1.65;
-    color: #555;
-  }
+    .dark .body .hl {
+      color: #ff6b6b;
+      font-weight: 600;
+    }
 
-  .light .slide-num { color: rgba(0,0,0,0.2); }
+    .dark .slide-num {
+      color: rgba(255, 255, 255, 0.25);
+    }
 
-  /* ===== SLIDE 1: HOOK ===== */
-  .slide-1 .time {
-    font-family: 'Playfair Display', serif;
-    font-size: 64px;
-    font-weight: 900;
-    color: #ff6b6b;
-    line-height: 1;
-    margin-bottom: 8px;
-  }
+    /* ===== LIGHT SLIDES ===== */
+    .light {
+      background: #faf9f6;
+      color: #1a1a2e;
+    }
 
-  .slide-1 .time-label {
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 4px;
-    color: rgba(255,255,255,0.4);
-    margin-bottom: 30px;
-  }
+    .light h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: #1a1a2e;
+      line-height: 1.3;
+      margin-bottom: 22px;
+    }
 
-  .slide-1 .bottom-text {
-    margin-top: auto;
-    font-size: 15px;
-    color: rgba(255,255,255,0.5);
-    line-height: 1.6;
-  }
+    .light .body {
+      font-size: 14px;
+      line-height: 1.65;
+      color: #555;
+    }
 
-  /* ===== SLIDE 2: STATS ===== */
-  .stats-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 18px;
-    margin-top: auto;
-  }
+    .light .slide-num {
+      color: rgba(0, 0, 0, 0.2);
+    }
 
-  .stat-box {
-    background: #fff;
-    padding: 18px;
-    border-radius: 3px;
-    box-shadow: 0 2px 20px rgba(0,0,0,0.04);
-    border-left: 3px solid #ff6b6b;
-  }
+    /* ===== SLIDE 1: HOOK ===== */
+    .slide-1 .time {
+      font-family: 'Playfair Display', serif;
+      font-size: 64px;
+      font-weight: 900;
+      color: #ff6b6b;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
 
-  .stat-box .number {
-    font-family: 'Playfair Display', serif;
-    font-size: 26px;
-    font-weight: 900;
-    color: #1a1a2e;
-  }
+    .slide-1 .time-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      color: rgba(255, 255, 255, 0.4);
+      margin-bottom: 30px;
+    }
 
-  .stat-box .label {
-    font-size: 11px;
-    color: #666;
-    margin-top: 4px;
-    line-height: 1.4;
-  }
+    .slide-1 .bottom-text {
+      margin-top: auto;
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.5);
+      line-height: 1.6;
+    }
 
-  /* ===== SLIDE 3: CALCULATION ===== */
-  .calculation {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 12px;
-  }
+    /* ===== SLIDE 2: STATS ===== */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: auto;
+    }
 
-  .calc-row {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
+    .stat-box {
+      background: #fff;
+      padding: 18px;
+      border-radius: 3px;
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.04);
+      border-left: 3px solid #ff6b6b;
+    }
 
-  .calc-row .icon {
-    width: 40px;
-    height: 40px;
-    background: rgba(255,107,107,0.1);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    flex-shrink: 0;
-  }
+    .stat-box .number {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 900;
+      color: #1a1a2e;
+    }
 
-  .calc-row .text {
-    color: rgba(255,255,255,0.8);
-    font-size: 14px;
-    line-height: 1.5;
-  }
+    .stat-box .label {
+      font-size: 11px;
+      color: #666;
+      margin-top: 4px;
+      line-height: 1.4;
+    }
 
-  .calc-row .text strong {
-    color: #fff;
-    font-weight: 700;
-  }
+    /* ===== SLIDE 3: CALCULATION ===== */
+    .calculation {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 12px;
+    }
 
-  .calc-result {
-    margin-top: 12px;
-    padding: 22px;
-    background: linear-gradient(135deg, rgba(255,107,107,0.2) 0%, rgba(255,107,107,0.05) 100%);
-    border-radius: 4px;
-    border: 1px solid rgba(255,107,107,0.3);
-  }
+    .calc-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
 
-  .calc-result .number {
-    font-family: 'Playfair Display', serif;
-    font-size: 40px;
-    font-weight: 900;
-    color: #ff6b6b;
-  }
+    .calc-row .icon {
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 107, 107, 0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
 
-  .calc-result .label {
-    color: rgba(255,255,255,0.7);
-    font-size: 13px;
-    margin-top: 4px;
-  }
+    .calc-row .text {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 14px;
+      line-height: 1.5;
+    }
 
-  /* ===== SLIDE 4: REASONS ===== */
-  .reason-list {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    margin-top: 10px;
-  }
+    .calc-row .text strong {
+      color: #fff;
+      font-weight: 700;
+    }
 
-  .reason-item {
-    display: flex;
-    gap: 16px;
-    align-items: flex-start;
-  }
+    .calc-result {
+      margin-top: 12px;
+      padding: 22px;
+      background: linear-gradient(135deg, rgba(255, 107, 107, 0.2) 0%, rgba(255, 107, 107, 0.05) 100%);
+      border-radius: 4px;
+      border: 1px solid rgba(255, 107, 107, 0.3);
+    }
 
-  .reason-item .num {
-    width: 30px;
-    height: 30px;
-    background: rgba(255,107,107,0.2);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #ff6b6b;
-    font-weight: 700;
-    font-size: 12px;
-    flex-shrink: 0;
-  }
+    .calc-result .number {
+      font-family: 'Playfair Display', serif;
+      font-size: 40px;
+      font-weight: 900;
+      color: #ff6b6b;
+    }
 
-  .reason-item .text {
-    color: rgba(255,255,255,0.85);
-    font-size: 14px;
-    line-height: 1.5;
-    padding-top: 4px;
-  }
+    .calc-result .label {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 13px;
+      margin-top: 4px;
+    }
 
-  /* ===== SLIDE 5: SOLUTION ===== */
-  .solution-flow {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 10px;
-  }
+    /* ===== SLIDE 4: REASONS ===== */
+    .reason-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 10px;
+    }
 
-  .flow-item {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 16px 18px;
-    background: #fff;
-    border-radius: 4px;
-    box-shadow: 0 2px 15px rgba(0,0,0,0.04);
-  }
+    .reason-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
 
-  .flow-item .step {
-    font-family: 'Playfair Display', serif;
-    font-size: 22px;
-    font-weight: 900;
-    color: #ff6b6b;
-    width: 30px;
-  }
+    .reason-item .num {
+      width: 30px;
+      height: 30px;
+      background: rgba(255, 107, 107, 0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ff6b6b;
+      font-weight: 700;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
 
-  .flow-item .text {
-    color: #1a1a2e;
-    font-size: 13px;
-    line-height: 1.4;
-  }
+    .reason-item .text {
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 14px;
+      line-height: 1.5;
+      padding-top: 4px;
+    }
 
-  .flow-arrow {
-    text-align: center;
-    color: #ccc;
-    font-size: 16px;
-  }
+    /* ===== SLIDE 5: SOLUTION ===== */
+    .solution-flow {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 10px;
+    }
 
-  /* ===== SLIDE 6: CTA ===== */
-  .slide-6 {
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-  }
+    .flow-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 18px;
+      background: #fff;
+      border-radius: 4px;
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.04);
+    }
 
-  .slide-6::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ff6b6b' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    opacity: 0.5;
-    pointer-events: none;
-  }
+    .flow-item .step {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 900;
+      color: #ff6b6b;
+      width: 30px;
+    }
 
-  .slide-6 .content {
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-  }
+    .flow-item .text {
+      color: #1a1a2e;
+      font-size: 13px;
+      line-height: 1.4;
+    }
 
-  .slide-6 .question-mark {
-    font-family: 'Playfair Display', serif;
-    font-size: 80px;
-    font-weight: 900;
-    color: #ff6b6b;
-    line-height: 1;
-    margin-bottom: 10px;
-    opacity: 0.3;
-  }
+    .flow-arrow {
+      text-align: center;
+      color: #ccc;
+      font-size: 16px;
+    }
 
-  .slide-6 h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 26px;
-    font-weight: 700;
-    color: #fff;
-    line-height: 1.4;
-    max-width: 360px;
-    margin-bottom: 20px;
-  }
+    /* ===== SLIDE 6: CTA ===== */
+    .slide-6 {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    }
 
-  .slide-6 h2 em {
-    color: #ff6b6b;
-    font-style: italic;
-  }
+    .slide-6::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ff6b6b' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      opacity: 0.5;
+      pointer-events: none;
+    }
 
-  .slide-6 .divider {
-    width: 50px;
-    height: 3px;
-    background: #ff6b6b;
-    margin: 20px 0;
-  }
+    .slide-6 .content {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
 
-  .slide-6 .cta {
-    font-size: 15px;
-    color: rgba(255,255,255,0.7);
-    line-height: 1.6;
-    max-width: 340px;
-  }
+    .slide-6 .question-mark {
+      font-family: 'Playfair Display', serif;
+      font-size: 80px;
+      font-weight: 900;
+      color: #ff6b6b;
+      line-height: 1;
+      margin-bottom: 10px;
+      opacity: 0.3;
+    }
 
-  .slide-6 .author {
-    margin-top: 30px;
-  }
+    .slide-6 h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.4;
+      max-width: 360px;
+      margin-bottom: 20px;
+    }
 
-  .slide-6 .author-name {
-    color: #fff;
-    font-weight: 700;
-    font-size: 14px;
-  }
-</style>
+    .slide-6 h2 em {
+      color: #ff6b6b;
+      font-style: italic;
+    }
+
+    .slide-6 .divider {
+      width: 50px;
+      height: 3px;
+      background: #ff6b6b;
+      margin: 20px 0;
+    }
+
+    .slide-6 .cta {
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.6;
+      max-width: 340px;
+    }
+
+    .slide-6 .author {
+      margin-top: 30px;
+    }
+
+    .slide-6 .author-name {
+      color: #fff;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    @media (max-width: 580px) {
+      body {
+        padding: 20px 10px;
+      }
+
+      .slide .content {
+        padding: 30px 25px;
+      }
+
+      .slide-num,
+      .branding {
+        bottom: 15px;
+      }
+
+      .slide-num {
+        right: 15px;
+      }
+
+      .branding {
+        left: 15px;
+      }
+
+      .slide-1 .time {
+        font-size: 42px;
+        margin-bottom: 5px;
+      }
+
+      .slide-1 .time-label {
+        font-size: 10px;
+        margin-bottom: 20px;
+      }
+
+      .slide-1 .bottom-text {
+        font-size: 13px;
+        line-height: 1.4;
+      }
+
+      .dark h2 {
+        font-size: 22px;
+        margin-bottom: 12px;
+      }
+
+      .light h2 {
+        font-size: 20px;
+        margin-bottom: 12px;
+      }
+
+      .dark .body,
+      .light .body {
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .stats-grid {
+        gap: 10px;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .stat-box {
+        padding: 12px;
+      }
+
+      .stat-box .number {
+        font-size: 20px;
+      }
+
+      .stat-box .label {
+        font-size: 10px;
+      }
+
+      .calc-row .icon {
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+      }
+
+      .calc-row .text {
+        font-size: 12px;
+      }
+
+      .calc-result {
+        padding: 15px;
+        margin-top: 10px;
+      }
+
+      .calc-result .number {
+        font-size: 28px;
+      }
+
+      .calc-result .label {
+        font-size: 11px;
+      }
+
+      .reason-list {
+        gap: 10px;
+      }
+
+      .reason-item .num {
+        width: 24px;
+        height: 24px;
+        font-size: 11px;
+      }
+
+      .reason-item .text {
+        font-size: 12px;
+      }
+
+      .flow-item {
+        padding: 12px;
+        gap: 10px;
+      }
+
+      .flow-item .step {
+        font-size: 18px;
+        width: 20px;
+      }
+
+      .flow-item .text {
+        font-size: 11px;
+      }
+
+      .slide-6 .question-mark {
+        font-size: 50px;
+      }
+
+      .slide-6 h2 {
+        font-size: 20px;
+        max-width: 100%;
+        margin-bottom: 15px;
+      }
+
+      .slide-6 .cta {
+        font-size: 13px;
+      }
+
+      .slide-6 .author {
+        margin-top: 20px;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<h1>LinkedIn Carousel Preview</h1>
+  <h1>LinkedIn Carousel Preview</h1>
 
-<div class="controls">
-  <button onclick="prev()">← Zurück</button>
-  <span class="counter" id="counter">1 / 6</span>
-  <button onclick="next()">Weiter →</button>
-</div>
-
-<div class="carousel-wrapper" id="carousel">
-
-  <!-- Slide 1: Hook -->
-  <div class="slide slide-1 dark active" data-s="1">
-    <div class="content">
-      <div class="time">6:47</div>
-      <div class="time-label">Uhr morgens</div>
-      <h2>Fast hätte ich sie <span>verloren.</span></h2>
-      <p class="bottom-text">
-        Drei richtig gute Gedanken.<br>
-        Auf dem Weg ins Büro.<br>
-        Dann kam das erste Meeting.
-      </p>
-    </div>
-    <span class="slide-num">01 / 06</span>
-    <span class="branding">gedankensplitter</span>
+  <div class="controls">
+    <button onclick="prev()">← Zurück</button>
+    <span class="counter" id="counter">1 / 6</span>
+    <button onclick="next()">Weiter →</button>
   </div>
 
-  <!-- Slide 2: Problem Statement -->
-  <div class="slide light" data-s="2">
-    <div class="content">
-      <div class="eyebrow">Das Problem</div>
-      <h2>Wie viele gute Ideen gehen täglich in unseren Organisationen verloren?</h2>
-      <div class="stats-grid">
-        <div class="stat-box">
-          <div class="number">70%</div>
-          <div class="label">aller Ideen verschwinden im Tagesgeschäft</div>
-        </div>
-        <div class="stat-box">
-          <div class="number">2-3</div>
-          <div class="label">wertvolle Gedanken pro Person & Woche</div>
-        </div>
-        <div class="stat-box">
-          <div class="number">~125</div>
-          <div class="label">Ideen pro Woche bei 50 Mitarbeitenden</div>
-        </div>
-        <div class="stat-box">
-          <div class="number">~100</div>
-          <div class="label">davon gehen verloren. Jede Woche.</div>
+  <div class="carousel-wrapper" id="carousel">
+
+    <!-- Slide 1: Hook -->
+    <div class="slide slide-1 dark active" data-s="1">
+      <div class="content">
+        <div class="time">6:47</div>
+        <div class="time-label">Uhr morgens</div>
+        <h2>Fast hätte ich sie <span>verloren.</span></h2>
+        <p class="bottom-text">
+          Drei richtig gute Gedanken.<br>
+          Auf dem Weg ins Büro.<br>
+          Dann kam das erste Meeting.
+        </p>
+      </div>
+      <span class="slide-num">01 / 06</span>
+      <span class="branding">gedankensplitter</span>
+    </div>
+
+    <!-- Slide 2: Problem Statement -->
+    <div class="slide light" data-s="2">
+      <div class="content">
+        <div class="eyebrow">Das Problem</div>
+        <h2>Wie viele gute Ideen gehen täglich in unseren Organisationen verloren?</h2>
+        <div class="stats-grid">
+          <div class="stat-box">
+            <div class="number">70%</div>
+            <div class="label">aller Ideen verschwinden im Tagesgeschäft</div>
+          </div>
+          <div class="stat-box">
+            <div class="number">2-3</div>
+            <div class="label">wertvolle Gedanken pro Person & Woche</div>
+          </div>
+          <div class="stat-box">
+            <div class="number">~125</div>
+            <div class="label">Ideen pro Woche bei 50 Mitarbeitenden</div>
+          </div>
+          <div class="stat-box">
+            <div class="number">~100</div>
+            <div class="label">davon gehen verloren. Jede Woche.</div>
+          </div>
         </div>
       </div>
+      <span class="slide-num">02 / 06</span>
+      <span class="branding">gedankensplitter</span>
     </div>
-    <span class="slide-num">02 / 06</span>
-    <span class="branding">gedankensplitter</span>
+
+    <!-- Slide 3: The Math -->
+    <div class="slide dark" data-s="3">
+      <div class="content">
+        <div class="eyebrow">Die Rechnung</div>
+        <h2>Eine einfache Milchmädchenrechnung:</h2>
+        <div class="calculation">
+          <div class="calc-row">
+            <div class="icon">👥</div>
+            <div class="text"><strong>50</strong> Mitarbeitende</div>
+          </div>
+          <div class="calc-row">
+            <div class="icon">💡</div>
+            <div class="text">× <strong>2-3</strong> wertvolle Gedanken/Woche</div>
+          </div>
+          <div class="calc-row">
+            <div class="icon">📉</div>
+            <div class="text">× <strong>70%</strong> gehen unter</div>
+          </div>
+          <div class="calc-row">
+            <div class="icon">📅</div>
+            <div class="text">× <strong>52</strong> Wochen</div>
+          </div>
+        </div>
+        <div class="calc-result">
+          <div class="number">~5.000</div>
+          <div class="label">potenzielle Innovationen pro Jahr, die einfach verpuffen.</div>
+        </div>
+      </div>
+      <span class="slide-num">03 / 06</span>
+      <span class="branding">gedankensplitter</span>
+    </div>
+
+    <!-- Slide 4: Why it happens -->
+    <div class="slide dark" data-s="4">
+      <div class="content">
+        <div class="eyebrow">Die Ursachen</div>
+        <h2>Warum passiert das?</h2>
+        <div class="reason-list">
+          <div class="reason-item">
+            <div class="num">1</div>
+            <div class="text">Der brutale Übergang vom „Denk-Modus" in den „Exekutiv-Modus"</div>
+          </div>
+          <div class="reason-item">
+            <div class="num">2</div>
+            <div class="text">Keine Strukturen zum „Ideen-Andocken" in Organisationen</div>
+          </div>
+          <div class="reason-item">
+            <div class="num">3</div>
+            <div class="text">Operative Hektik wird kulturell über strategisches Denken gestellt</div>
+          </div>
+          <div class="reason-item">
+            <div class="num">4</div>
+            <div class="text">Unsere Tools sind auf Aufgaben ausgerichtet – nicht auf Gedanken</div>
+          </div>
+        </div>
+      </div>
+      <span class="slide-num">04 / 06</span>
+      <span class="branding">gedankensplitter</span>
+    </div>
+
+    <!-- Slide 5: Solution -->
+    <div class="slide light" data-s="5">
+      <div class="content">
+        <div class="eyebrow">Der Ausblick</div>
+        <h2>KI als Gedächtnis-Prothese – nicht als Ersatz fürs Denken</h2>
+        <div class="solution-flow">
+          <div class="flow-item">
+            <div class="step">1</div>
+            <div class="text"><strong>Erfassen:</strong> Voice-to-Text im Auto, Zug, beim Spazieren</div>
+          </div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-item">
+            <div class="step">2</div>
+            <div class="text"><strong>Sortieren:</strong> KI clustert, verknüpft, erinnert zur richtigen Zeit</div>
+          </div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-item">
+            <div class="step">3</div>
+            <div class="text"><strong>Reifen:</strong> Aus Montags-Fragmenten werden Freitags-Konzepte</div>
+          </div>
+        </div>
+      </div>
+      <span class="slide-num">05 / 06</span>
+      <span class="branding">gedankensplitter</span>
+    </div>
+
+    <!-- Slide 6: CTA -->
+    <div class="slide slide-6" data-s="6">
+      <div class="content">
+        <div class="question-mark">?</div>
+        <h2>Was wäre, wenn Organisationen <em>Ideen</em> genauso ernst nehmen wie <em>Deadlines?</em></h2>
+        <div class="divider"></div>
+        <p class="cta">
+          Wie fangt ihr eure besten Gedanken ein?<br>
+          Oder gehen die auch regelmäßig verloren?
+        </p>
+        <div class="author">
+          <div class="author-name">→ Teile deine Erfahrung in den Kommentaren</div>
+        </div>
+      </div>
+      <span class="slide-num">06 / 06</span>
+      <span class="branding">gedankensplitter</span>
+    </div>
+
   </div>
 
-  <!-- Slide 3: The Math -->
-  <div class="slide dark" data-s="3">
-    <div class="content">
-      <div class="eyebrow">Die Rechnung</div>
-      <h2>Eine einfache Milchmädchenrechnung:</h2>
-      <div class="calculation">
-        <div class="calc-row">
-          <div class="icon">👥</div>
-          <div class="text"><strong>50</strong> Mitarbeitende</div>
-        </div>
-        <div class="calc-row">
-          <div class="icon">💡</div>
-          <div class="text">× <strong>2-3</strong> wertvolle Gedanken/Woche</div>
-        </div>
-        <div class="calc-row">
-          <div class="icon">📉</div>
-          <div class="text">× <strong>70%</strong> gehen unter</div>
-        </div>
-        <div class="calc-row">
-          <div class="icon">📅</div>
-          <div class="text">× <strong>52</strong> Wochen</div>
-        </div>
-      </div>
-      <div class="calc-result">
-        <div class="number">~5.000</div>
-        <div class="label">potenzielle Innovationen pro Jahr, die einfach verpuffen.</div>
-      </div>
-    </div>
-    <span class="slide-num">03 / 06</span>
-    <span class="branding">gedankensplitter</span>
+  <div class="progress-bar">
+    <div class="fill" id="progress" style="width:16.67%"></div>
   </div>
 
-  <!-- Slide 4: Why it happens -->
-  <div class="slide dark" data-s="4">
-    <div class="content">
-      <div class="eyebrow">Die Ursachen</div>
-      <h2>Warum passiert das?</h2>
-      <div class="reason-list">
-        <div class="reason-item">
-          <div class="num">1</div>
-          <div class="text">Der brutale Übergang vom „Denk-Modus" in den „Exekutiv-Modus"</div>
-        </div>
-        <div class="reason-item">
-          <div class="num">2</div>
-          <div class="text">Keine Strukturen zum „Ideen-Andocken" in Organisationen</div>
-        </div>
-        <div class="reason-item">
-          <div class="num">3</div>
-          <div class="text">Operative Hektik wird kulturell über strategisches Denken gestellt</div>
-        </div>
-        <div class="reason-item">
-          <div class="num">4</div>
-          <div class="text">Unsere Tools sind auf Aufgaben ausgerichtet – nicht auf Gedanken</div>
-        </div>
-      </div>
-    </div>
-    <span class="slide-num">04 / 06</span>
-    <span class="branding">gedankensplitter</span>
-  </div>
+  <p class="nav-hint">Pfeiltasten ← → oder Swipe zum Navigieren</p>
 
-  <!-- Slide 5: Solution -->
-  <div class="slide light" data-s="5">
-    <div class="content">
-      <div class="eyebrow">Der Ausblick</div>
-      <h2>KI als Gedächtnis-Prothese – nicht als Ersatz fürs Denken</h2>
-      <div class="solution-flow">
-        <div class="flow-item">
-          <div class="step">1</div>
-          <div class="text"><strong>Erfassen:</strong> Voice-to-Text im Auto, Zug, beim Spazieren</div>
-        </div>
-        <div class="flow-arrow">↓</div>
-        <div class="flow-item">
-          <div class="step">2</div>
-          <div class="text"><strong>Sortieren:</strong> KI clustert, verknüpft, erinnert zur richtigen Zeit</div>
-        </div>
-        <div class="flow-arrow">↓</div>
-        <div class="flow-item">
-          <div class="step">3</div>
-          <div class="text"><strong>Reifen:</strong> Aus Montags-Fragmenten werden Freitags-Konzepte</div>
-        </div>
-      </div>
-    </div>
-    <span class="slide-num">05 / 06</span>
-    <span class="branding">gedankensplitter</span>
-  </div>
+  <script>
+    let current = 1;
+    const total = 6;
 
-  <!-- Slide 6: CTA -->
-  <div class="slide slide-6" data-s="6">
-    <div class="content">
-      <div class="question-mark">?</div>
-      <h2>Was wäre, wenn Organisationen <em>Ideen</em> genauso ernst nehmen wie <em>Deadlines?</em></h2>
-      <div class="divider"></div>
-      <p class="cta">
-        Wie fangt ihr eure besten Gedanken ein?<br>
-        Oder gehen die auch regelmäßig verloren?
-      </p>
-      <div class="author">
-        <div class="author-name">→ Teile deine Erfahrung in den Kommentaren</div>
-      </div>
-    </div>
-    <span class="slide-num">06 / 06</span>
-    <span class="branding">gedankensplitter</span>
-  </div>
+    function show(n) {
+      document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+      document.querySelector(`[data-s="${n}"]`).classList.add('active');
+      document.getElementById('counter').textContent = `${n} / ${total}`;
+      document.getElementById('progress').style.width = `${(n / total) * 100}%`;
+    }
 
-</div>
+    function next() { if (current < total) { current++; show(current); } }
+    function prev() { if (current > 1) { current--; show(current); } }
 
-<div class="progress-bar">
-  <div class="fill" id="progress" style="width:16.67%"></div>
-</div>
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
+      if (e.key === 'ArrowLeft') prev();
+    });
 
-<p class="nav-hint">Pfeiltasten ← → oder Swipe zum Navigieren</p>
-
-<script>
-  let current = 1;
-  const total = 6;
-
-  function show(n) {
-    document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
-    document.querySelector(`[data-s="${n}"]`).classList.add('active');
-    document.getElementById('counter').textContent = `${n} / ${total}`;
-    document.getElementById('progress').style.width = `${(n/total)*100}%`;
-  }
-
-  function next() { if (current < total) { current++; show(current); } }
-  function prev() { if (current > 1) { current--; show(current); } }
-
-  document.addEventListener('keydown', e => {
-    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
-    if (e.key === 'ArrowLeft') prev();
-  });
-
-  let tx = 0;
-  const el = document.getElementById('carousel');
-  el.addEventListener('touchstart', e => { tx = e.touches[0].clientX; });
-  el.addEventListener('touchend', e => {
-    const d = tx - e.changedTouches[0].clientX;
-    if (Math.abs(d) > 50) d > 0 ? next() : prev();
-  });
-</script>
+    let tx = 0;
+    const el = document.getElementById('carousel');
+    el.addEventListener('touchstart', e => { tx = e.touches[0].clientX; });
+    el.addEventListener('touchend', e => {
+      const d = tx - e.changedTouches[0].clientX;
+      if (Math.abs(d) > 50) d > 0 ? next() : prev();
+    });
+  </script>
 
 </body>
+
 </html>
