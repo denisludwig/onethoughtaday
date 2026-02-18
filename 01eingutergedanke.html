@@ -575,14 +575,6 @@
         font-size: 10px;
       }
 
-      .carousel-wrapper,
-      .progress-bar {
-        width: 95vw;
-        height: auto;
-        max-width: 540px;
-        aspect-ratio: 4/5;
-      }
-
       .calc-row .icon {
         width: 30px;
         height: 30px;
@@ -652,14 +644,45 @@
         margin-top: 20px;
       }
     }
-  </style>
+  
+    /* === PAGE HEADER (Kopfzeile) === */
+    .page-header {
+      width: 100%;
+      padding: 10px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.35);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      box-sizing: border-box;
+      position: relative;
+      z-index: 200;
+    }
+    .page-header-back {
+      color: rgba(255, 255, 255, 0.35);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .page-header-back:hover { color: #ff6b6b; }
+    .page-header-label {
+      font-style: italic;
+      font-family: 'Playfair Display', serif;
+      color: #ff6b6b;
+      opacity: 0.8;
+      margin-right: 6px;
+    }
+</style>
 </head>
 
 <body>
 
-  <h1>LinkedIn Carousel Preview</h1>
-
-  <div class="controls">
+<div class="page-header">
+  <a href="index.html" class="page-header-back">← Übersicht</a>
+  <span><span class="page-header-label">Gedanke 01</span>Ein guter Gedanke</span>
+</div>
+<div class="controls">
     <button onclick="prev()">← Zurück</button>
     <span class="counter" id="counter">1 / 6</span>
     <button onclick="next()">Weiter →</button>
