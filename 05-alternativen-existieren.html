@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Es gibt keine Alternative – Der größte Mythos</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --dark: #1a1a2e;
+    --dark-mid: #16213e;
+    --light: #faf9f6;
+    --light-warm: #f0ede6;
+    --coral: #ff6b6b;
+    --coral-dim: rgba(255,107,107,0.15);
+    --white: #ffffff;
+    --text-muted: rgba(255,255,255,0.5);
+    --text-muted-dark: rgba(26,26,46,0.45);
+  }
+
+  body {
+    background: #111;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .carousel-wrapper {
+    position: relative;
+    width: 540px;
+    height: 540px;
+  }
+
+  @media (max-width: 580px) {
+    .carousel-wrapper { width: 95vw; height: 95vw; }
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .slide.active { display: flex; }
+
+  /* PROGRESS BAR */
+  .progress-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: var(--coral);
+    transition: width 0.3s ease;
+    z-index: 10;
+  }
+
+  /* SLIDE NUMBER */
+  .slide-num {
+    position: absolute;
+    bottom: 14px;
+    right: 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    opacity: 0.25;
+    z-index: 5;
+  }
+
+  /* ==================== DARK SLIDES ==================== */
+  .dark {
+    background: var(--dark);
+    color: var(--white);
+  }
+
+  .dark .slide-num { color: var(--white); }
+
+  /* Subtle texture */
+  .dark::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ff6b6b' fill-opacity='0.025'%3E%3Cpath d='M20 20.5V18H0v5h5v5H0v5h20v-9.5zm-2 4.5v-4h-4v4h4zm4-14H4v2h18v-2z'/%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+    opacity: 0.4;
+  }
+
+  /* Coral glow bottom-right */
+  .dark::after {
+    content: '';
+    position: absolute;
+    bottom: -60px;
+    right: -60px;
+    width: 260px;
+    height: 260px;
+    background: radial-gradient(circle, rgba(255,107,107,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* ==================== LIGHT SLIDES ==================== */
+  .light {
+    background: var(--light);
+    color: var(--dark);
+  }
+
+  .light .slide-num { color: var(--dark); }
+
+  .light::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231a1a2e' fill-opacity='0.025'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  /* ==================== SHARED COMPONENTS ==================== */
+  .eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--coral);
+    margin-bottom: 14px;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    padding: 48px 44px;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ==================== SLIDE 1: HOOK ==================== */
+  .slide-1 .content { justify-content: center; }
+
+  .slide-1 .big-myth {
+    font-family: 'Courier Prime', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--coral);
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    opacity: 0.8;
+  }
+
+  .slide-1 h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 900;
+    line-height: 1.15;
+    color: var(--white);
+    margin-bottom: 24px;
+  }
+
+  .slide-1 h2 em {
+    color: var(--coral);
+    font-style: italic;
+  }
+
+  .slide-1 .divider {
+    width: 40px;
+    height: 3px;
+    background: var(--coral);
+    margin-bottom: 22px;
+  }
+
+  .slide-1 .subline {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    max-width: 360px;
+  }
+
+  /* ==================== SLIDE 2: WHY INVISIBLE ==================== */
+  .slide-2 .content { justify-content: center; gap: 0; }
+
+  .slide-2 h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--dark);
+    margin-bottom: 22px;
+  }
+
+  .slide-2 h2 em { color: var(--coral); font-style: italic; }
+
+  .slide-2 .reason-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .slide-2 .reason {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: var(--white);
+    border-left: 3px solid var(--coral);
+    padding: 11px 14px;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .slide-2 .reason-icon {
+    font-size: 16px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .slide-2 .reason-text {
+    font-size: 13px;
+    color: var(--dark);
+    line-height: 1.5;
+  }
+
+  .slide-2 .reason-text strong {
+    font-weight: 700;
+    display: block;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+  }
+
+  /* ==================== SLIDE 3: GWÖ ==================== */
+  .slide-3 .content { justify-content: center; }
+
+  .slide-3 h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--white);
+    margin-bottom: 20px;
+  }
+
+  .slide-3 h2 em { color: var(--coral); font-style: italic; }
+
+  .slide-3 .terminal-box {
+    background: rgba(0,0,0,0.35);
+    border: 1px solid rgba(255,107,107,0.2);
+    border-radius: 4px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.7;
+  }
+
+  .slide-3 .terminal-box .prompt {
+    color: var(--coral);
+    margin-right: 6px;
+  }
+
+  .slide-3 .stat-row {
+    display: flex;
+    gap: 10px;
+  }
+
+  .slide-3 .stat-pill {
+    background: var(--coral-dim);
+    border: 1px solid rgba(255,107,107,0.3);
+    border-radius: 4px;
+    padding: 10px 14px;
+    flex: 1;
+    text-align: center;
+  }
+
+  .slide-3 .stat-pill .num {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--coral);
+    display: block;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .slide-3 .stat-pill .label {
+    font-size: 10px;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+
+  /* ==================== SLIDE 4: MONDRAGÓN ==================== */
+  .slide-4 .content { justify-content: center; padding-top: 40px; }
+
+  .slide-4 h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--dark);
+    margin-bottom: 18px;
+  }
+
+  .slide-4 h2 em { color: var(--coral); font-style: italic; }
+
+  .slide-4 .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .slide-4 .stat-box {
+    background: var(--white);
+    border-left: 3px solid var(--coral);
+    padding: 12px 14px;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .slide-4 .stat-box .num {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--dark);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .slide-4 .stat-box .label {
+    font-size: 11px;
+    color: var(--text-muted-dark);
+    line-height: 1.4;
+  }
+
+  .slide-4 .footnote {
+    font-size: 11px;
+    color: var(--text-muted-dark);
+    font-style: italic;
+    border-top: 1px solid rgba(26,26,46,0.1);
+    padding-top: 10px;
+  }
+
+  /* ==================== SLIDE 5: VOLLGELD ==================== */
+  .slide-5 .content { justify-content: center; }
+
+  .slide-5 h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--white);
+    margin-bottom: 20px;
+  }
+
+  .slide-5 h2 em { color: var(--coral); font-style: italic; }
+
+  .slide-5 .flow-diagram {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 18px;
+  }
+
+  .slide-5 .flow-step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 10px 14px;
+    border-radius: 4px;
+    margin-bottom: 4px;
+  }
+
+  .slide-5 .flow-step:first-child { border-color: rgba(255,107,107,0.3); background: rgba(255,107,107,0.07); }
+
+  .slide-5 .step-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .slide-5 .step-text {
+    font-size: 12px;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.4;
+  }
+
+  .slide-5 .step-text strong { color: var(--white); }
+
+  .slide-5 .arrow {
+    text-align: center;
+    color: var(--coral);
+    opacity: 0.5;
+    font-size: 14px;
+    margin: 1px 0;
+  }
+
+  .slide-5 .verdict {
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    color: var(--coral);
+    border-top: 1px solid rgba(255,107,107,0.2);
+    padding-top: 12px;
+    line-height: 1.6;
+  }
+
+  /* ==================== SLIDE 6: COMMONS / UBI ==================== */
+  .slide-6 .content { justify-content: center; padding-top: 38px; }
+
+  .slide-6 h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--dark);
+    margin-bottom: 16px;
+  }
+
+  .slide-6 h2 em { color: var(--coral); font-style: italic; }
+
+  .slide-6 .example-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .slide-6 .example {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: var(--white);
+    border-left: 3px solid var(--coral);
+    padding: 10px 14px;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .slide-6 .ex-icon { font-size: 18px; flex-shrink: 0; }
+
+  .slide-6 .ex-text { font-size: 12px; color: var(--dark); line-height: 1.5; }
+  .slide-6 .ex-text strong { display: block; font-size: 12px; font-weight: 700; margin-bottom: 2px; }
+
+  .slide-6 .kicker {
+    font-size: 12px;
+    color: var(--text-muted-dark);
+    font-style: italic;
+    border-top: 1px solid rgba(26,26,46,0.1);
+    padding-top: 10px;
+    line-height: 1.6;
+  }
+
+  /* ==================== SLIDE 7: DEGROWTH ==================== */
+  .slide-7 .content { justify-content: center; }
+
+  .slide-7 h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.3;
+    margin-bottom: 10px;
+  }
+
+  .slide-7 h2 em { color: var(--coral); font-style: italic; }
+
+  .slide-7 .subtext {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin-bottom: 20px;
+    max-width: 380px;
+  }
+
+  .slide-7 .quotes-row {
+    display: flex;
+    gap: 10px;
+  }
+
+  .slide-7 .quote-box {
+    flex: 1;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 4px;
+    padding: 12px 14px;
+  }
+
+  .slide-7 .quote-box .q-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--coral);
+    margin-bottom: 6px;
+  }
+
+  .slide-7 .quote-box .q-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    font-style: italic;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.5;
+  }
+
+  .slide-7 .quote-box .q-author {
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: 6px;
+  }
+
+  /* ==================== SLIDE 8: UBI ==================== */
+  .slide-8 .content { justify-content: center; padding-top: 36px; }
+
+  .slide-8 h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--dark);
+    line-height: 1.3;
+    margin-bottom: 16px;
+  }
+
+  .slide-8 h2 em { color: var(--coral); font-style: italic; }
+
+  .slide-8 .pilot-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 7px;
+    margin-bottom: 14px;
+  }
+
+  .slide-8 .pilot-card {
+    background: var(--white);
+    border-radius: 4px;
+    padding: 11px 10px;
+    border-top: 3px solid var(--coral);
+    text-align: center;
+  }
+
+  .slide-8 .pilot-card .flag { font-size: 20px; margin-bottom: 4px; display: block; }
+  .slide-8 .pilot-card .country { font-size: 10px; font-weight: 700; color: var(--dark); letter-spacing: 0.5px; }
+  .slide-8 .pilot-card .result { font-size: 10px; color: var(--text-muted-dark); line-height: 1.4; margin-top: 4px; }
+
+  .slide-8 .punchline {
+    font-size: 12px;
+    color: var(--text-muted-dark);
+    font-style: italic;
+    border-top: 1px solid rgba(26,26,46,0.1);
+    padding-top: 10px;
+    line-height: 1.6;
+  }
+
+  /* ==================== SLIDE 9: FINAL SPLIT ==================== */
+  .slide-9 {
+    display: none;
+    flex-direction: row;
+  }
+  .slide-9.active { display: flex; }
+
+  .slide-9 .left-half {
+    width: 50%;
+    background: var(--dark);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 36px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slide-9 .left-half::after {
+    content: '';
+    position: absolute;
+    bottom: -40px;
+    right: -40px;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, rgba(255,107,107,0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .slide-9 .right-half {
+    width: 50%;
+    background: var(--light);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 36px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slide-9 .half-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--coral);
+    margin-bottom: 12px;
+  }
+
+  .slide-9 .left-half h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 21px;
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1.3;
+    margin-bottom: 14px;
+  }
+
+  .slide-9 .left-half h3 em { color: var(--coral); font-style: italic; }
+
+  .slide-9 .left-half p {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.65;
+  }
+
+  .slide-9 .left-half .author-line {
+    margin-top: 20px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 10px;
+    color: rgba(255,107,107,0.7);
+    letter-spacing: 1px;
+  }
+
+  .slide-9 .right-half h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--dark);
+    line-height: 1.35;
+    margin-bottom: 14px;
+  }
+
+  .slide-9 .right-half .action-list {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .slide-9 .right-half .action-item {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    font-size: 11px;
+    color: var(--dark);
+    line-height: 1.5;
+  }
+
+  .slide-9 .right-half .action-item .check {
+    color: var(--coral);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .slide-9 .slide-num { color: var(--text-muted); }
+
+  /* ==================== CONTROLS ==================== */
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 18px;
+  }
+
+  .btn {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: var(--white);
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    transition: all 0.2s;
+  }
+
+  .btn:hover { background: rgba(255,107,107,0.15); border-color: rgba(255,107,107,0.4); color: var(--coral); }
+  .btn:disabled { opacity: 0.3; cursor: default; }
+
+  .counter {
+    font-family: 'Courier Prime', monospace;
+    font-size: 13px;
+    color: rgba(255,255,255,0.4);
+    min-width: 52px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+
+  /* GEDANKENSPLITTER BRANDING */
+  .brand {
+    position: absolute;
+    bottom: 14px;
+    left: 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.35;
+    z-index: 5;
+    pointer-events: none;
+  }
+  .dark .brand { color: #ffffff; }
+  .light .brand { color: #1a1a2e; }
+  /* Split slide: left half dark, right half light */
+  .slide-9 .left-half .brand { color: #ffffff; }
+  .slide-9 .right-half .brand { color: #1a1a2e; }
+
+    /* === PAGE HEADER (Kopfzeile) === */
+    .page-header {
+      width: 100%;
+      padding: 10px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.35);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      box-sizing: border-box;
+      position: relative;
+      z-index: 200;
+    }
+    .page-header-back {
+      color: rgba(255, 255, 255, 0.35);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .page-header-back:hover { color: #ff6b6b; }
+    .page-header-label {
+      font-style: italic;
+      font-family: 'Playfair Display', serif;
+      color: #ff6b6b;
+      opacity: 0.8;
+      margin-right: 6px;
+    }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <a href="index.html" class="page-header-back">← Übersicht</a>
+  <span><span class="page-header-label">Gedanke 05</span>Es gibt keine Alternative – Der größte Mythos</span>
+</div>
+
+<div class="carousel-wrapper" id="carousel">
+
+  <!-- SLIDE 1: HOOK -->
+  <div class="slide slide-1 dark active" data-s="1">
+    <div class="progress-bar" id="pb"></div>
+    <div class="content">
+      <div class="big-myth">// Mythos des 21. Jahrhunderts</div>
+      <h2>„Es gibt <em>keine</em> Alternative."</h2>
+      <div class="divider"></div>
+      <p class="subline">Margaret Thatcher hat diesen Satz 1980 geprägt. Und er wirkt bis heute wie eine mentale Blockade. Aber stimmt er überhaupt?</p>
+    </div>
+    <span class="brand">gedankensplitter</span>
+    <span class="slide-num">01 / 09</span>
+  </div>
+
+  <!-- SLIDE 2: WARUM UNSICHTBAR -->
+  <div class="slide slide-2 light" data-s="2">
+    <div class="progress-bar" id="pb2"></div>
+    <div class="content">
+      <div class="eyebrow">Warum man es uns nicht erzählt</div>
+      <h2>Alternativen <em>existieren.</em><br>Sie werden nur unsichtbar gemacht.</h2>
+      <div class="reason-list">
+        <div class="reason">
+          <div class="reason-icon">💰</div>
+          <div class="reason-text"><strong>Profitströme in Gefahr</strong>Jedes Alternativmodell bedroht das Geschäftsmodell von jemandem mit Einfluss.</div>
+        </div>
+        <div class="reason">
+          <div class="reason-icon">🔊</div>
+          <div class="reason-text"><strong>Medienkontrolle</strong>Wer die Narrative kontrolliert, entscheidet, was als „realistisch" gilt.</div>
+        </div>
+        <div class="reason">
+          <div class="reason-icon">🧩</div>
+          <div class="reason-text"><strong>Komplexität als Waffe</strong>Komplizierte Ideen sind leicht als „utopisch" abzustempeln. Einfache Lügen gewinnen.</div>
+        </div>
+      </div>
+    </div>
+    <span class="brand">gedankensplitter</span>
+    <span class="slide-num">02 / 09</span>
+  </div>
+
+  <!-- SLIDE 3: GEMEINWOHLÖKONOMIE -->
+  <div class="slide slide-3 dark" data-s="3">
+    <div class="progress-bar"></div>
+    <div class="content">
+      <div class="eyebrow">Modell 01 — Gemeinwohlökonomie</div>
+      <h2>Was wäre, wenn Unternehmen<br>nach <em>Würde</em> bilanzieren statt nach Gewinn?</h2>
+      <div class="terminal-box">
+        <span class="prompt">$</span> Kernidee: Unternehmen erstellen eine<br>
+        <span class="prompt"> </span> Gemeinwohlbilanz — bewertet nach<br>
+        <span class="prompt"> </span> Menschenwürde, Ökologie, Solidarität.<br>
+        <span class="prompt">$</span> Ethisches Wirtschaften wird steuerlich<br>
+        <span class="prompt"> </span> bevorzugt. Nicht verboten — belohnt.
+      </div>
+      <div class="stat-row">
+        <div class="stat-pill">
+          <span class="num">2.300+</span>
+          <span class="label">Unternehmen wenden das Modell an</span>
+        </div>
+        <div class="stat-pill">
+          <span class="num">33</span>
+          <span class="label">Länder, in denen die Bewegung aktiv ist</span>
+        </div>
+      </div>
+    </div>
+    <span class="brand">gedankensplitter</span>
+    <span class="slide-num">03 / 09</span>
+  </div>
+
+  <!-- SLIDE 4: MONDRAGÓN / GENOSSENSCHAFTEN -->
+  <div class="slide slide-4 light" data-s="4">
+    <div class="progress-bar"></div>
+    <div class="content">
+      <div class="eyebrow">Modell 02 — Genossenschaft</div>
+      <h2>Ein Unternehmen, <em>81.000 Mitarbeitende,</em><br>kein externer Aktionär.</h2>
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="num">11,2 Mrd.</div>
+          <div class="label">Umsatz 2024 (Mondragón, Spanien)</div>
+        </div>
+        <div class="stat-box">
+          <div class="num">1 : 6</div>
+          <div class="label">Max. Lohnverhältnis CEO zu Geringverdiener</div>
+        </div>
+        <div class="stat-box">
+          <div class="num">70 Jahre</div>
+          <div class="label">Seit Gründung — kein Börsengang</div>
+        </div>
+        <div class="stat-box">
+          <div class="num">Weltbank</div>
+          <div class="label">Attestiert höchste Produktivität Spaniens</div>
+        </div>
+      </div>
+      <div class="footnote">Gegründet von einem Priester im Franco-Spanien. Das Erfolgsgeheimnis: Demokratie im Betrieb.</div>
+    </div>
+    <span class="brand">gedankensplitter</span>
+    <span class="slide-num">04 / 09</span>
+  </div>
+
+  <!-- SLIDE 5: VOLLGELD -->
+  <div class="slide slide-5 dark" data-s="5">
+    <div class="progress-bar"></div>
+    <div class="content">
+      <div class="eyebrow">Modell 03 — Vollgeld</div>
+      <h2>Wer darf eigentlich <em>Geld erschaffen?</em><br>Die Antwort überrascht.</h2>
+      <div class="flow-diagram">
+        <div class="flow-step">
+          <div class="step-icon">🏦</div>
+          <div class="step-text"><strong>Heute:</strong> Privatbanken erschaffen ~90% allen Geldes — als verzinste Schuld, durch Kreditvergabe.</div>
+        </div>
+        <div class="arrow">↓</div>
+        <div class="flow-step">
+          <div class="step-icon">🏛️</div>
+          <div class="step-text"><strong>Vollgeld-Idee:</strong> Nur die Zentralbank darf Geld schöpfen — schuldenfrei, direkt an Bürger und Staat.</div>
+        </div>
+        <div class="arrow">↓</div>
+        <div class="flow-step">
+          <div class="step-icon">📉</div>
+          <div class="step-text"><strong>Ergebnis:</strong> Strukturell weniger Finanzkrisen. 2018 in der Schweiz zur Volksabstimmung gebracht.</div>
+        </div>
+      </div>
+      <div class="verdict">// Abgelehnt mit 75,7% — nach massiver Kampagne der Bankenlobby.</div>
+    </div>
+    <span class="brand">gedankensplitter</span>
+    <span class="slide-num">05 / 09</span>
+  </div>
+
+  <!-- SLIDE 6: COMMONS -->
+  <div class="slide slide-6 light" data-s="6">
+    <div class="progress-bar"></div>
+    <div class="content">
+      <div class="eyebrow">Modell 04 — Commons & Gemeingüter</div>
+      <h2>Was Wikipedia mit der<br><em>Wasserversorgung</em> gemeinsam hat.</h2>
+      <div class="example-list">
+        <div class="example">
+          <div class="ex-icon">📖</div>
+          <div class="ex-text"><strong>Wikipedia</strong>Grösste Enzyklopädie der Welt. Ohne Werbung. Ohne Profit. Getragen von einer Gemeinschaft.</div>
+        </div>
+        <div class="example">
+          <div class="ex-icon">🖥️</div>
+          <div class="ex-text"><strong>Linux / Open Source</strong>Betreibt ~96% aller Server weltweit. Entwickelt durch kollektive Commons-Logik.</div>
+        </div>
+        <div class="example">
+          <div class="ex-icon">⚡</div>
+          <div class="ex-text"><strong>Energiegenossenschaften</strong>Zehntausende Deutsche beziehen erneuerbare Energie zu günstigeren Preisen als bei Konzernen.</div>
+        </div>
+      </div>
+      <div class="kicker">Elinor Ostrom bekam 2009 den Wirtschafts-Nobelpreis dafür, dass Gemeingüter oft besser funktionieren als Märkte.</div>
+    </div>
+    <span class="brand">gedankensplitter</span>
+    <span class="slide-num">06 / 09</span>
+  </div>
+
+  <!-- SLIDE 7: DEGROWTH -->
+  <div class="slide slide-7 dark" data-s="7">
+    <div class="progress-bar"></div>
+    <div class="content">
+      <div class="eyebrow">Modell 05 — Degrowth / Postwachstum</div>
+      <h2>Wachstum als <em>Religion.</em><br>Und ihre Apostel.</h2>
+      <p class="subtext">Ewiges Wachstum auf einem endlichen Planeten ist physikalisch unmöglich. Trotzdem ist es die Antwort auf jede politische Frage. Warum?</p>
+      <div class="quotes-row">
+        <div class="quote-box">
+          <div class="q-label">Das Problem</div>
+          <div class="q-text">„Wachstum" legitimiert politische Versprechen — Rente, Klima, Soziales. Wer es hinterfragt, zieht die Legitimation der politischen Klasse in Zweifel.</div>
+          <div class="q-author">— Systemdiagnose</div>
+        </div>
+        <div class="quote-box">
+          <div class="q-label">Die Alternative</div>
+          <div class="q-text">Wirtschaft, die auf Wohlbefinden statt BIP optimiert. Weniger Arbeit. Mehr Zeit. Stärkere Gemeinschaften.</div>
+          <div class="q-author">— Tim Jackson, Kate Raworth</div>
+        </div>
+      </div>
+    </div>
+    <span class="brand">gedankensplitter</span>
+    <span class="slide-num">07 / 09</span>
+  </div>
+
+  <!-- SLIDE 8: UBI -->
+  <div class="slide slide-8 light" data-s="8">
+    <div class="progress-bar"></div>
+    <div class="content">
+      <div class="eyebrow">Modell 06 — Universelles Grundeinkommen</div>
+      <h2>„Dann arbeitet doch<br>niemand mehr." <em>Falsch.</em></h2>
+      <div class="pilot-grid">
+        <div class="pilot-card">
+          <span class="flag">🇫🇮</span>
+          <div class="country">Finnland</div>
+          <div class="result">Mehr Arbeit, mehr Wohlbefinden, mehr Vertrauen</div>
+        </div>
+        <div class="pilot-card">
+          <span class="flag">🇰🇪</span>
+          <div class="country">Kenia</div>
+          <div class="result">Nachhaltige Wirtschafts­entwicklung über Jahre</div>
+        </div>
+        <div class="pilot-card">
+          <span class="flag">🇩🇪</span>
+          <div class="country">Deutschland</div>
+          <div class="result">Mein Grundeinkommen: Erhöhte Kreativität & Risikobereitschaft</div>
+        </div>
+      </div>
+      <div class="punchline">Das eigentliche Gegenargument? Wer ein Grundeinkommen hat, muss keinen miserablen Job mehr akzeptieren. Das ist für Arbeitgeber in Niedriglohnbranchen strukturell unbequem.</div>
+    </div>
+    <span class="brand">gedankensplitter</span>
+    <span class="slide-num">08 / 09</span>
+  </div>
+
+  <!-- SLIDE 9: FINAL SPLIT -->
+  <div class="slide slide-9" data-s="9">
+    <div class="progress-bar"></div>
+    <div class="left-half">
+      <div class="half-eyebrow">Das Fazit</div>
+      <h3>Diese Ideen <em>existieren.</em> Seit Jahrzehnten.</h3>
+      <p>Mondragón läuft seit 70 Jahren. Wikipedia seit 25. UBI-Piloten laufen auf drei Kontinenten. Die Frage ist nicht ob — sondern warum wir so wenig davon hören.</p>
+      <div class="author-line">// Informierte Bürger sind unbequem.</div>
+    </div>
+    <div class="right-half">
+      <div class="half-eyebrow">Was du tun kannst</div>
+      <h3>Informiert bleiben. Weitergeben.</h3>
+      <div class="action-list">
+        <div class="action-item"><span class="check">→</span>Gemeinwohlökonomie: christian-felber.at</div>
+        <div class="action-item"><span class="check">→</span>Mondragón: mondragon-corporation.com</div>
+        <div class="action-item"><span class="check">→</span>Buch: „Wohlstand ohne Wachstum" – Tim Jackson</div>
+        <div class="action-item"><span class="check">→</span>Buch: „Weniger ist mehr" – Jason Hickel</div>
+        <div class="action-item"><span class="check">→</span>Diesen Post teilen. Ernsthaft.</div>
+      </div>
+    </div>
+    <span class="brand" style="color: rgba(255,255,255,0.35);">gedankensplitter</span>
+    <span class="slide-num" style="color: rgba(26,26,46,0.25); z-index:10;">09 / 09</span>
+  </div>
+
+</div><!-- end carousel-wrapper -->
+
+<div class="controls">
+  <button class="btn" id="prevBtn" onclick="prev()" disabled>← Zurück</button>
+  <span class="counter" id="counter">01 / 09</span>
+  <button class="btn" id="nextBtn" onclick="next()">Weiter →</button>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let current = 0;
+
+  function updateUI() {
+    slides.forEach((s, i) => s.classList.toggle('active', i === current));
+    document.getElementById('counter').textContent =
+      String(current + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+    document.getElementById('prevBtn').disabled = current === 0;
+    document.getElementById('nextBtn').disabled = current === total - 1;
+
+    // update all progress bars
+    const pct = ((current + 1) / total) * 100 + '%';
+    document.querySelectorAll('.progress-bar').forEach(pb => pb.style.width = pct);
+  }
+
+  function next() { if (current < total - 1) { current++; updateUI(); } }
+  function prev() { if (current > 0) { current--; updateUI(); } }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') next();
+    if (e.key === 'ArrowLeft') prev();
+  });
+
+  // Touch/swipe
+  let startX = 0;
+  const cw = document.getElementById('carousel');
+  cw.addEventListener('touchstart', e => { startX = e.touches[0].clientX; });
+  cw.addEventListener('touchend', e => {
+    const diff = startX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) { diff > 0 ? next() : prev(); }
+  });
+
+  updateUI();
+</script>
+</body>
+</html>
