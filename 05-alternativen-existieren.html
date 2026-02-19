@@ -754,6 +754,12 @@
   <span><span class="page-header-label">Gedanke 05</span>Es gibt keine Alternative – Der größte Mythos</span>
 </div>
 
+<div class="controls">
+  <button class="btn" id="prevBtn" onclick="prev()" disabled>← Zurück</button>
+  <span class="counter" id="counter">01 / 09</span>
+  <button class="btn" id="nextBtn" onclick="next()">Weiter →</button>
+</div>
+
 <div class="carousel-wrapper" id="carousel">
 
   <!-- SLIDE 1: HOOK -->
@@ -765,7 +771,7 @@
       <div class="divider"></div>
       <p class="subline">Margaret Thatcher hat diesen Satz 1980 geprägt. Und er wirkt bis heute wie eine mentale Blockade. Aber stimmt er überhaupt?</p>
     </div>
-    <span class="brand">gedankensplitter</span>
+    <span class="brand">gedankensplitter 005</span>
     <span class="slide-num">01 / 09</span>
   </div>
 
@@ -790,7 +796,7 @@
         </div>
       </div>
     </div>
-    <span class="brand">gedankensplitter</span>
+    <span class="brand">gedankensplitter 005</span>
     <span class="slide-num">02 / 09</span>
   </div>
 
@@ -818,7 +824,7 @@
         </div>
       </div>
     </div>
-    <span class="brand">gedankensplitter</span>
+    <span class="brand">gedankensplitter 005</span>
     <span class="slide-num">03 / 09</span>
   </div>
 
@@ -848,7 +854,7 @@
       </div>
       <div class="footnote">Gegründet von einem Priester im Franco-Spanien. Das Erfolgsgeheimnis: Demokratie im Betrieb.</div>
     </div>
-    <span class="brand">gedankensplitter</span>
+    <span class="brand">gedankensplitter 005</span>
     <span class="slide-num">04 / 09</span>
   </div>
 
@@ -876,7 +882,7 @@
       </div>
       <div class="verdict">// Abgelehnt mit 75,7% — nach massiver Kampagne der Bankenlobby.</div>
     </div>
-    <span class="brand">gedankensplitter</span>
+    <span class="brand">gedankensplitter 005</span>
     <span class="slide-num">05 / 09</span>
   </div>
 
@@ -902,7 +908,7 @@
       </div>
       <div class="kicker">Elinor Ostrom bekam 2009 den Wirtschafts-Nobelpreis dafür, dass Gemeingüter oft besser funktionieren als Märkte.</div>
     </div>
-    <span class="brand">gedankensplitter</span>
+    <span class="brand">gedankensplitter 005</span>
     <span class="slide-num">06 / 09</span>
   </div>
 
@@ -926,7 +932,7 @@
         </div>
       </div>
     </div>
-    <span class="brand">gedankensplitter</span>
+    <span class="brand">gedankensplitter 005</span>
     <span class="slide-num">07 / 09</span>
   </div>
 
@@ -955,7 +961,7 @@
       </div>
       <div class="punchline">Das eigentliche Gegenargument? Wer ein Grundeinkommen hat, muss keinen miserablen Job mehr akzeptieren. Das ist für Arbeitgeber in Niedriglohnbranchen strukturell unbequem.</div>
     </div>
-    <span class="brand">gedankensplitter</span>
+    <span class="brand">gedankensplitter 005</span>
     <span class="slide-num">08 / 09</span>
   </div>
 
@@ -979,17 +985,12 @@
         <div class="action-item"><span class="check">→</span>Diesen Post teilen. Ernsthaft.</div>
       </div>
     </div>
-    <span class="brand" style="color: rgba(255,255,255,0.35);">gedankensplitter</span>
+    <span class="brand" style="color: rgba(255,255,255,0.35);">gedankensplitter 005</span>
     <span class="slide-num" style="color: rgba(26,26,46,0.25); z-index:10;">09 / 09</span>
   </div>
 
 </div><!-- end carousel-wrapper -->
 
-<div class="controls">
-  <button class="btn" id="prevBtn" onclick="prev()" disabled>← Zurück</button>
-  <span class="counter" id="counter">01 / 09</span>
-  <button class="btn" id="nextBtn" onclick="next()">Weiter →</button>
-</div>
 
 <script>
   const slides = document.querySelectorAll('.slide');
@@ -1027,5 +1028,316 @@
 
   updateUI();
 </script>
+
+<!-- ===================== ARTIKEL ===================== -->
+<style>
+  .article-wrapper {
+    width: 540px;
+    margin-top: 48px;
+    padding-bottom: 80px;
+    font-family: 'DM Sans', sans-serif;
+    color: rgba(255,255,255,0.85);
+  }
+
+  @media (max-width: 580px) { .article-wrapper { width: 95vw; } }
+
+  /* META */
+  .article-meta {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 32px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .article-meta .tag {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    color: var(--coral);
+    background: rgba(255,107,107,0.1);
+    border: 1px solid rgba(255,107,107,0.2);
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+
+  .article-meta .meta-divider {
+    width: 1px;
+    height: 14px;
+    background: rgba(255,255,255,0.12);
+  }
+
+  .article-meta .date {
+    font-size: 12px;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.5px;
+  }
+
+  /* HEADLINE */
+  .article-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 900;
+    line-height: 1.2;
+    color: #fff;
+    margin-bottom: 18px;
+  }
+
+  .article-headline em {
+    color: var(--coral);
+    font-style: italic;
+  }
+
+  /* INTRO */
+  .article-intro {
+    font-size: 17px;
+    line-height: 1.75;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 36px;
+    font-weight: 400;
+    border-left: 3px solid var(--coral);
+    padding-left: 18px;
+  }
+
+  /* BODY TEXT */
+  .article-body p {
+    font-size: 15px;
+    line-height: 1.8;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 22px;
+  }
+
+  .article-body p strong {
+    color: rgba(255,255,255,0.9);
+    font-weight: 600;
+  }
+
+  /* SECTION HEADING */
+  .article-section-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    margin: 38px 0 14px;
+    padding-top: 10px;
+  }
+
+  .article-section-heading em { color: var(--coral); font-style: italic; }
+
+  /* PULL QUOTE */
+  .pull-quote {
+    background: rgba(255,107,107,0.06);
+    border-left: 3px solid var(--coral);
+    border-radius: 0 4px 4px 0;
+    padding: 20px 24px;
+    margin: 30px 0;
+  }
+
+  .pull-quote .pq-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-style: italic;
+    font-weight: 700;
+    color: rgba(255,255,255,0.9);
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+
+  .pull-quote .pq-source {
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    color: var(--coral);
+    letter-spacing: 1px;
+    opacity: 0.8;
+  }
+
+  /* STAT ROW */
+  .article-stats {
+    display: flex;
+    gap: 10px;
+    margin: 28px 0;
+  }
+
+  .article-stats .a-stat {
+    flex: 1;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-top: 2px solid var(--coral);
+    border-radius: 0 0 4px 4px;
+    padding: 16px 14px;
+    text-align: center;
+  }
+
+  .article-stats .a-stat .a-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--coral);
+    display: block;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .article-stats .a-stat .a-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    line-height: 1.4;
+  }
+
+  /* DIVIDER */
+  .article-divider {
+    width: 40px;
+    height: 3px;
+    background: var(--coral);
+    margin: 36px 0;
+    opacity: 0.5;
+  }
+
+  /* FOOTER */
+  .article-footer {
+    margin-top: 44px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .article-footer .brand-sig {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.2);
+  }
+
+  .article-footer .edition {
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    color: rgba(255,107,107,0.4);
+  }
+</style>
+
+<div class="article-wrapper">
+
+  <div class="article-meta">
+    <span class="tag">Wirtschaft & Gesellschaft</span>
+    <div class="meta-divider"></div>
+    <span class="date">gedankensplitter 005</span>
+  </div>
+
+  <h1 class="article-headline">„Es gibt keine Alternative." —<br><em>Der größte Mythos unserer Zeit.</em></h1>
+
+  <p class="article-intro">Margaret Thatcher hat diesen Satz 1980 geprägt. Vier Buchstaben: TINA — There Is No Alternative. Er wirkt bis heute wie eine mentale Blockade. Aber er ist falsch. Sechs Wirtschaftsmodelle existieren bereits, funktionieren, und werden trotzdem kaum diskutiert. Warum eigentlich?</p>
+
+  <div class="article-body">
+
+    <p>Wer in Deutschland über Wirtschaftsalternativen spricht, riskiert eines: sofort in eine Schublade gesteckt zu werden. Naiv. Sozialistisch. Weltfremd. Das ist kein Zufall — es ist Methode. Denn <strong>ein System, das keine ernstzunehmenden Alternativen kennt, muss sich nicht rechtfertigen.</strong></p>
+
+    <p>Der Kabarettist in dem Video, das diesen Gedankensplitter ausgelöst hat, stellt die richtige Frage: Was haben CDU, SPD, FDP und Grüne in Jahrzehnten tatsächlich verändert? Rente, Gesundheit, Steuergerechtigkeit, soziale Ungleichheit — die Probleme sind dieselben, die Versprechen auch. Der Zug fährt auf denselben Gleisen, egal wer vorne sitzt.</p>
+
+    <div class="pull-quote">
+      <div class="pq-text">„Wir wechseln alle vier Jahre den Lokführer. Die Strecke bleibt dieselbe."</div>
+      <div class="pq-source">// Systemdiagnose aus dem Kabarett</div>
+    </div>
+
+    <p>Das Problem ist kein personelles — es ist ein strukturelles. Die Logik des gegenwärtigen Kapitalismus ist auf Gewinnmaximierung und kontinuierliches Wachstum ausgerichtet. Das produziert Ergebnisse, die niemand wirklich will: Erosion der Mittelschicht, Kurzfristdenken in Unternehmen, politische Systeme, die mehr auf Kapitalinteressen als auf Bürgerwillen reagieren.</p>
+
+    <div class="article-divider"></div>
+
+    <h2 class="article-section-heading">Modell 01 — <em>Gemeinwohlökonomie</em></h2>
+
+    <p>Christian Felbers Idee ist einfach: Wir messen wirtschaftlichen Erfolg mit Geldgrößen, obwohl wir eigentlich wollen, dass Wirtschaft Wohlbefinden, Gerechtigkeit und Nachhaltigkeit produziert. Also tauschen wir Ziel und Mittel aus. Die Lösung: Eine Gemeinwohlbilanz neben der Finanzbilanz. Unternehmen, die gut für Mensch und Umwelt wirtschaften, bekommen steuerliche Vorteile, günstigere Kredite, Vorrang bei öffentlichen Ausschreibungen.</p>
+
+    <div class="article-stats">
+      <div class="a-stat">
+        <span class="a-num">2.300+</span>
+        <span class="a-label">Unternehmen weltweit</span>
+      </div>
+      <div class="a-stat">
+        <span class="a-num">33</span>
+        <span class="a-label">aktive Länder</span>
+      </div>
+      <div class="a-stat">
+        <span class="a-num">2010</span>
+        <span class="a-label">Gründungsjahr</span>
+      </div>
+    </div>
+
+    <p>Das Modell ist nicht Sozialismus — private Unternehmen bleiben bestehen. Es ist eine <strong>ethische Marktwirtschaft</strong>: Wettbewerb ja, aber mit dem Ziel des Gemeinwohls statt des maximalen Profits. VAUDE, der deutsche Outdoorhersteller, macht es vor.</p>
+
+    <div class="article-divider"></div>
+
+    <h2 class="article-section-heading">Modell 02 — <em>Genossenschaft</em></h2>
+
+    <p>Das faszinierendste Praxisbeispiel weltweit heißt Mondragón. Gegründet nach dem Spanischen Bürgerkrieg von einem Jesuitenpater, der eine massenarbeitslose Stadt aus der Armut führen wollte — mit demokratischen Unternehmensstrukturen. Heute: 95 Genossenschaften, 81.000 Mitarbeitende, 11,2 Milliarden Euro Umsatz im Jahr 2024. Eigene Bank, eigene Universität, eigene Sozialversicherung.</p>
+
+    <div class="pull-quote">
+      <div class="pq-text">Das Lohnverhältnis zwischen Geringverdiener und CEO ist auf maximal 1:6 begrenzt. Zum Vergleich: Im DAX liegt es oft bei 1:200 oder mehr.</div>
+      <div class="pq-source">// Mondragón-Struktur</div>
+    </div>
+
+    <p>Die Weltbank attestiert den Mondragón-Genossenschaften die höchste Produktivität Spaniens. Sie haben Krisen besser gemeistert als konventionelle Unternehmen — weil das Interesse aller Mitarbeitenden und das Unternehmensinteresse dasselbe sind. <strong>In Deutschland gibt es eine starke Genossenschaftstradition</strong> (Volksbanken, Raiffeisen, Wohnungsbau) — aber kaum im Produktionsbereich. Das ist keine Notwendigkeit, sondern eine Entscheidung.</p>
+
+    <div class="article-divider"></div>
+
+    <h2 class="article-section-heading">Modell 03 — <em>Vollgeld</em></h2>
+
+    <p>Wer erschafft eigentlich Geld? Die meisten Menschen gehen davon aus: die Zentralbank. Die Antwort überrascht: Rund 90% allen zirkulierenden Geldes entsteht durch Kreditvergabe privater Geschäftsbanken — buchstäblich aus dem Nichts, als verzinste Schuld in ihrer Bilanz.</p>
+
+    <p>Das Vollgeldsystem will das ändern: Nur noch die Zentralbank darf Geld schöpfen, schuldenfrei, direkt an Bürger, Gemeinden oder den Staat. Finanzkrisen, die aus unkontrollierter privater Geldschöpfung entstehen, würden strukturell unwahrscheinlicher. 2018 stimmten die Schweizer über genau diese Idee ab — die Vollgeld-Initiative. Sie scheiterte mit 75,7% Nein-Stimmen, nach massiver Kampagne von Behörden und Bankenlobby, bei einer Beteiligung von gerade mal 34%.</p>
+
+    <div class="article-divider"></div>
+
+    <h2 class="article-section-heading">Modell 04 — <em>Commons & Gemeingüter</em></h2>
+
+    <p>Elinor Ostrom bekam 2009 den Wirtschaftsnobelpreis dafür, dass sie zeigte: Gemeinsam genutzte Ressourcen werden von Gemeinschaften oft effizienter und nachhaltiger verwaltet als durch Märkte oder Staatsapparate. Wikipedia funktioniert ohne Werbung, ohne Profit — und schlägt Britannica seit Jahren. Linux betreibt rund 96% aller Webserver weltweit. Entwickelt durch kollektive Commons-Logik, kostenlos für alle.</p>
+
+    <p>„Platform Cooperativism" ist die moderne Erweiterung: Fahrdienste wie Uber oder Vermietungsplattformen wie Airbnb könnten als Genossenschaften betrieben werden — die Gewinne blieben bei Fahrern und Vermietern statt in Silicon Valley.</p>
+
+    <div class="article-divider"></div>
+
+    <h2 class="article-section-heading">Modell 05 — <em>Degrowth / Postwachstum</em></h2>
+
+    <p>Das kontroverseste Modell, und gleichzeitig das physikalisch zwingendste: Ewiges Wachstum auf einem endlichen Planeten ist unmöglich. Trotzdem ist „Wachstum" die Antwort auf jede politische Frage — wie bezahlen wir die Rente? Wachstum. Wie lösen wir die Ungleichheit? Wachstum. Wie finanzieren wir den Klimawandel? Wachstum.</p>
+
+    <div class="pull-quote">
+      <div class="pq-text">Wer das Wachstumsparadigma hinterfragt, zieht die Legitimationsgrundlage der gesamten politischen Klasse in Zweifel. Kein Wunder, dass es so aggressiv abgewehrt wird.</div>
+      <div class="pq-source">// Systemdiagnose</div>
+    </div>
+
+    <p>Tim Jackson, Kate Raworth und Jason Hickel haben robuste Modelle entwickelt, die zeigen: <strong>Wohlbefinden ist kein Nebenprodukt von Wachstum</strong>. Gesellschaften mit hohem BIP-Wachstum sind nicht zwangsläufig glücklicher, gesünder oder gerechter. Eine Wirtschaft, die auf diese Ziele direkt ausgerichtet ist, braucht kein endloses Wachstum als Umweg.</p>
+
+    <div class="article-divider"></div>
+
+    <h2 class="article-section-heading">Modell 06 — <em>Universelles Grundeinkommen</em></h2>
+
+    <p>„Dann arbeitet doch niemand mehr." Das ist der Reflex. Die Forschung zeigt das Gegenteil. In Finnland arbeiteten die Teilnehmer eines UBI-Pilotprojekts mehr, waren gesünder, vertrauten der Gesellschaft stärker. In Kenia zeigt GiveDirectly seit Jahren nachhaltige wirtschaftliche Entwicklung. In Deutschland ermittelt „Mein Grundeinkommen" erhöhte Kreativität und Risikobereitschaft bei Empfängern.</p>
+
+    <p>Das eigentliche Gegenargument ist kein ökonomisches — es ist ein Machtargument: <strong>Wer ein Grundeinkommen hat, muss keinen miserablen Job mehr akzeptieren.</strong> Das ist für Arbeitgeber in Niedriglohnbranchen strukturell unbequem. Und für ein politisches System, das auf Angst und Abhängigkeit aufgebaut ist, noch unbequemer.</p>
+
+    <div class="article-divider"></div>
+
+    <h2 class="article-section-heading">Das gemeinsame <em>Muster</em></h2>
+
+    <p>Alle sechs Modelle haben drei Dinge gemeinsam, die erklären, warum man kaum von ihnen hört: Sie bedrohen Profitströme. Sie sind zu komplex für Schlagzeilen. Und sie existieren bereits.</p>
+
+    <p>Mondragón läuft seit 70 Jahren. Wikipedia seit 25. UBI-Piloten laufen auf drei Kontinenten. GWÖ-Bilanzen werden in 33 Ländern erstellt. Die Frage ist nicht „Funktioniert das?" — die Frage ist: <strong>Warum skaliert es nicht?</strong></p>
+
+    <p>Und die Antwort darauf ist politisch, nicht ökonomisch. Informierte Bürger sind unbequem. Deswegen werden diese Ideen nicht totgeschwiegen, weil sie nicht funktionieren — sondern weil sie zu gut funktionieren.</p>
+
+  </div><!-- /article-body -->
+
+  <div class="article-footer">
+    <span class="brand-sig">gedankensplitter</span>
+    <span class="edition">005 — Wirtschaft & Gesellschaft</span>
+  </div>
+
+</div><!-- /article-wrapper -->
+
 </body>
 </html>
