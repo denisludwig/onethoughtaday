@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deine Stimme ist ein Asset</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Courier+Prime:wght@400;700&display=swap"
+    rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #111122;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      gap: 24px;
+    }
+
+    h1 {
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      opacity: 0.5;
+    }
+
+    /* CONTROLS */
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .controls button {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: rgba(255, 255, 255, 0.7);
+      padding: 10px 24px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.2s;
+    }
+
+    .controls button:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+    }
+
+    .controls .counter {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.4);
+      min-width: 55px;
+      text-align: center;
+      letter-spacing: 1px;
+    }
+
+    /* CAROUSEL */
+    .carousel-wrapper {
+      width: 540px;
+      height: 540px;
+      overflow: hidden;
+      border-radius: 4px;
+      position: relative;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    @media(max-width:580px) {
+      .carousel-wrapper {
+        width: 95vw;
+        height: 95vw;
+      }
+    }
+
+    /* PROGRESS BAR */
+    .progress-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 3px;
+      background: #ff6b6b;
+      transition: width 0.3s ease;
+      z-index: 20;
+    }
+
+    /* ALL SLIDES */
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 540px;
+      height: 540px;
+      overflow: hidden;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    @media(max-width:580px) {
+      .slide {
+        width: 95vw !important;
+        height: 95vw !important;
+      }
+    }
+
+    /* Branding & slide number */
+    .slide-num {
+      position: absolute;
+      bottom: 14px;
+      right: 16px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      opacity: 0.25;
+      z-index: 10;
+    }
+
+    .branding {
+      position: absolute;
+      bottom: 14px;
+      left: 16px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      opacity: 0.35;
+      z-index: 10;
+    }
+
+    .branding-light {
+      color: #1a1a2e;
+    }
+
+    /* Eyebrow */
+    .eyebrow {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: #ff6b6b;
+      margin-bottom: 16px;
+    }
+
+    /* SLIDE INNER */
+    .slide-inner {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 52px 48px;
+      position: relative;
+    }
+
+    /* DARK */
+    .dark-bg {
+      background: #1a1a2e;
+      color: #fff;
+    }
+
+    .dark-bg .slide-num {
+      color: rgba(255, 255, 255, 0.25);
+    }
+
+    .dark-bg .branding {
+      color: #fff;
+    }
+
+    .dark-bg h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 30px;
+      font-weight: 700;
+      line-height: 1.2;
+      color: #fff;
+      margin-bottom: 18px;
+    }
+
+    .dark-bg h2 em {
+      font-style: italic;
+      color: #ff6b6b;
+    }
+
+    .dark-bg p {
+      font-size: 15px;
+      line-height: 1.65;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    /* LIGHT */
+    .light-bg {
+      background: #faf9f6;
+      color: #1a1a2e;
+    }
+
+    .light-bg .slide-num {
+      color: rgba(26, 26, 46, 0.25);
+    }
+
+    .light-bg .branding {
+      color: #1a1a2e;
+    }
+
+    .light-bg h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.25;
+      color: #1a1a2e;
+      margin-bottom: 18px;
+    }
+
+    .light-bg h2 em {
+      font-style: italic;
+      color: #ff6b6b;
+    }
+
+    .light-bg p {
+      font-size: 14px;
+      line-height: 1.7;
+      color: rgba(26, 26, 46, 0.75);
+    }
+
+    /* Terminal */
+    .terminal {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      padding: 18px 20px;
+      margin-top: 18px;
+      font-family: 'Courier Prime', monospace;
+      font-size: 12px;
+      line-height: 1.85;
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    .terminal .prompt {
+      color: #ff6b6b;
+      margin-right: 8px;
+    }
+
+    .terminal .val {
+      color: #7ec8e3;
+    }
+
+    .terminal .comment {
+      color: rgba(255, 255, 255, 0.3);
+      font-style: italic;
+    }
+
+    .terminal .t-div {
+      color: rgba(255, 255, 255, 0.15);
+      margin: 6px 0;
+      display: block;
+    }
+
+    .terminal .highlight {
+      color: #ff6b6b;
+    }
+
+    /* Form box */
+    .form-box {
+      background: #fff;
+      border: 1px solid rgba(26, 26, 46, 0.1);
+      border-left: 3px solid #ff6b6b;
+      border-radius: 2px;
+      padding: 16px 18px;
+      margin-top: 18px;
+      font-family: 'Courier Prime', monospace;
+      font-size: 12px;
+      line-height: 1.8;
+    }
+
+    .form-box .fw {
+      margin-bottom: 10px;
+    }
+
+    .form-box .fw:last-child {
+      margin-bottom: 0;
+    }
+
+    .form-box .fl {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: rgba(26, 26, 46, 0.4);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .form-box .fv {
+      color: #1a1a2e;
+      font-weight: 700;
+    }
+
+    /* Big number */
+    .big-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 100px;
+      font-weight: 900;
+      line-height: 1;
+      color: #ff6b6b;
+      margin-bottom: 6px;
+    }
+
+    .big-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: rgba(255, 255, 255, 0.35);
+      margin-bottom: 22px;
+    }
+
+    /* ── ARTIKEL SEKTION ───────────────────────── */
+    .article-section {
+      width: 540px;
+      padding: 64px 0 80px;
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    @media(max-width:580px) {
+      .article-section {
+        width: 95vw;
+      }
+    }
+
+    .article-section .article-eyebrow {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: #ff6b6b;
+      margin-bottom: 20px;
+    }
+
+    .article-section h2.article-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 34px;
+      font-weight: 900;
+      line-height: 1.15;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .article-section h2.article-title em {
+      font-style: italic;
+      color: #ff6b6b;
+    }
+
+    .article-section .article-subtitle {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.65;
+      color: rgba(255, 255, 255, 0.45);
+      margin-bottom: 44px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .article-section h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      font-style: italic;
+      color: #fff;
+      margin: 40px 0 14px;
+      line-height: 1.25;
+    }
+
+    .article-section p {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.8;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 18px;
+    }
+
+    .article-section p strong {
+      color: rgba(255, 255, 255, 0.95);
+      font-weight: 600;
+    }
+
+    .article-section .pull-quote {
+      border-left: 2px solid #ff6b6b;
+      margin: 32px 0;
+      padding: 18px 24px;
+      background: rgba(255, 107, 107, 0.04);
+    }
+
+    .article-section .pull-quote p {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-style: italic;
+      color: rgba(255, 255, 255, 0.85);
+      line-height: 1.55;
+      margin-bottom: 0;
+    }
+
+    .article-section .article-divider {
+      width: 40px;
+      height: 2px;
+      background: #ff6b6b;
+      margin: 48px 0;
+    }
+
+    .article-section .article-closing {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: rgba(255, 255, 255, 0.25);
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    /* Two-column pill compare */
+    .compare-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .compare-col {
+      flex: 1;
+      padding: 16px 14px;
+      border-radius: 4px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .compare-col .col-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+
+    .compare-col.bad {
+      background: rgba(255, 107, 107, 0.08);
+      border: 1px solid rgba(255, 107, 107, 0.2);
+    }
+
+    .compare-col.bad .col-label {
+      color: #ff6b6b;
+    }
+
+    .compare-col.bad p {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .compare-col.good {
+      background: rgba(126, 200, 227, 0.08);
+      border: 1px solid rgba(126, 200, 227, 0.2);
+    }
+
+    .compare-col.good .col-label {
+      color: #7ec8e3;
+    }
+
+    .compare-col.good p {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    /* === PAGE HEADER (Kopfzeile) === */
+    .page-header {
+      width: 100%;
+      padding: 10px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.35);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      box-sizing: border-box;
+      position: relative;
+      z-index: 200;
+    }
+
+    .page-header-back {
+      color: rgba(255, 255, 255, 0.35);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .page-header-back:hover {
+      color: #ff6b6b;
+    }
+
+    .page-header-label {
+      font-style: italic;
+      font-family: 'Playfair Display', serif;
+      color: #ff6b6b;
+      opacity: 0.8;
+      margin-right: 6px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="page-header">
+    <a href="index.html" class="page-header-back">← Übersicht</a>
+    <span><span class="page-header-label">Gedanke 08</span>Deine Stimme ist ein Asset</span>
+  </div>
+
+  <div class="controls">
+    <button onclick="prev()">← Zurück</button>
+    <span class="counter" id="counter">1 / 9</span>
+    <button onclick="next()">Weiter →</button>
+  </div>
+
+  <div class="carousel-wrapper" id="carousel">
+    <div class="progress-bar" id="progressBar" style="width:11.1%"></div>
+
+    <!-- SLIDE 1: COVER -->
+    <div class="slide dark-bg active" id="slide-1">
+      <div
+        style="position:absolute;top:-80px;right:-80px;width:380px;height:380px;border-radius:50%;border:1px solid rgba(255,107,107,0.1);">
+      </div>
+      <div
+        style="position:absolute;top:-30px;right:-30px;width:240px;height:240px;border-radius:50%;border:1px solid rgba(255,107,107,0.07);">
+      </div>
+      <div
+        style="position:absolute;top:30px;right:30px;width:110px;height:110px;border-radius:50%;border:1px solid rgba(255,107,107,0.15);">
+      </div>
+      <div class="slide-inner" style="justify-content:flex-end;">
+        <div class="eyebrow" style="position:relative;z-index:2;">Arbeit / KI / Zukunft</div>
+        <h2
+          style="position:relative;z-index:2;font-family:'Playfair Display',serif;font-size:40px;font-weight:900;line-height:1.1;color:#fff;margin-bottom:14px;">
+          Deine Stimme<br>ist ein <em style="font-style:italic;color:#ff6b6b;">Asset.</em><br><span
+            style="font-size:28px;font-weight:400;color:rgba(255,255,255,0.5);">Du verkaufst sie<br>nur noch nicht
+            richtig.</span></h2>
+        <p style="position:relative;z-index:2;font-size:13px;max-width:360px;color:rgba(255,255,255,0.45);">Was der
+          Netflix-Boykott der Synchronsprecher über das Arbeitsmodell von morgen verrät.</p>
+      </div>
+      <div class="slide-num">01</div>
+      <div class="branding">gedankensplitter 008</div>
+    </div>
+
+    <!-- SLIDE 2: Der Konflikt -->
+    <div class="slide dark-bg" id="slide-2">
+      <div class="slide-inner">
+        <div class="eyebrow">Januar 2026</div>
+        <h2>Synchronsprecher boykottieren Netflix. <em>Warum?</em></h2>
+        <div class="terminal">
+          <div><span class="prompt">!</span> Netflix führt <span class="val">"DeepSpeak"</span> ein <span
+              class="comment">// Stimmen klonen</span></div>
+          <div><span class="prompt">!</span> Neue Vertragsklausel: <span class="highlight">KI-Training ohne
+              Vergütung</span></div>
+          <div><span class="prompt">!</span> VDS fordert: <span class="val">Zustimmung + faire Bezahlung</span></div>
+          <span class="t-div">────────────────────────────────</span>
+          <div><span class="prompt">→</span> 200+ Künstler unterzeichnen Brandbrief <span class="comment">// Eilish,
+              Wonder, Perry</span></div>
+          <div><span class="prompt">→</span> SAG-AFTRA 2023: <span class="val">Monatelanger Streik</span></div>
+          <div><span class="prompt">→</span> Frankreich, Polen, Deutschland: <span class="highlight">Widerstand
+              wächst</span></div>
+        </div>
+        <p style="margin-top:14px;font-size:13px;color:rgba(255,255,255,0.35);">Die Technologie ist da. Der Streit ist
+          über die Bedingungen – nicht über die Richtung.</p>
+      </div>
+      <div class="slide-num">02</div>
+      <div class="branding">gedankensplitter 008</div>
+    </div>
+
+    <!-- SLIDE 3: Der Fall Lehmann -->
+    <div class="slide light-bg" id="slide-3">
+      <div class="slide-inner">
+        <div class="eyebrow">Berlin, August 2025</div>
+        <h2>Ein Gericht entscheidet: Die Stimme <em>gehört dem Menschen.</em></h2>
+        <p>Ein YouTuber klonte die KI-Stimme von Manfred Lehmann – der deutschen Synchronstimme von Bruce Willis – und
+          nutzte sie in Werbevideos. Das Landgericht Berlin II verurteilte ihn zu Schadensersatz.</p>
+        <div class="form-box">
+          <div class="fw"><span class="fl">Fall</span><span class="fv">LG Berlin II · Az. 2 O 202/24 · 20. August
+              2025</span></div>
+          <div class="fw"><span class="fl">Urteil</span><span class="fv">Persönlichkeitsrecht verletzt → 4.000 €
+              Lizenzgebühr</span></div>
+          <div class="fw"><span class="fl">Grundlage</span><span class="fv">Art. 2 & 1 GG · Recht an der eigenen
+              Stimme</span></div>
+          <div class="fw"><span class="fl">Fazit</span><span class="fv" style="color:#ff6b6b;">Wer nutzt, muss fragen,
+              bezahlen und kennzeichnen.</span></div>
+        </div>
+      </div>
+      <div class="slide-num">03</div>
+      <div class="branding">gedankensplitter 008</div>
+    </div>
+
+    <!-- SLIDE 4: Die falsche Antwort -->
+    <div class="slide dark-bg" id="slide-4">
+      <div class="slide-inner">
+        <div class="eyebrow">Das eigentliche Problem</div>
+        <h2>Der Protest ist <em>verständlich.</em><br>Und trotzdem die falsche Antwort.</h2>
+        <div class="compare-row">
+          <div class="compare-col bad">
+            <div class="col-label">✗ Defensiv</div>
+            <p>Verweigern, klagen, protestieren. Schützt kurzfristig. Setzt Präzedenzfälle. Ändert nichts an der
+              Richtung des Marktes.</p>
+          </div>
+          <div class="compare-col good">
+            <div class="col-label">✓ Offensiv</div>
+            <p>Die eigene Stimme als Asset begreifen. Aktiv lizenzieren. Bedingungen setzen. Partizipieren – statt
+              verdrängt werden.</p>
+          </div>
+        </div>
+        <p style="margin-top:18px;font-size:13px;color:rgba(255,255,255,0.4);">Die Frage ist nicht: Darf KI meine Stimme
+          klonen?<br>Die Frage ist: Unter welchen Bedingungen – und wer verdient daran?</p>
+      </div>
+      <div class="slide-num">04</div>
+      <div class="branding">gedankensplitter 008</div>
+    </div>
+
+    <!-- SLIDE 5: Beispiele die funktionieren (Split) -->
+    <div class="slide" id="slide-5" style="display:flex;">
+      <div
+        style="width:50%;height:100%;background:#1a1a2e;color:#fff;padding:36px 26px 28px;display:flex;flex-direction:column;justify-content:center;border-right:1px solid rgba(255,107,107,0.2);position:relative;">
+        <div
+          style="font-family:'DM Sans',sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,0.3);margin-bottom:14px;">
+          Es geht auch anders</div>
+        <div
+          style="font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:#fff;line-height:1.3;margin-bottom:10px;">
+          James Earl Jones</div>
+        <div
+          style="font-family:'DM Sans',sans-serif;font-size:13px;line-height:1.6;color:rgba(255,255,255,0.6);margin-bottom:16px;">
+          Lizenzierte seine Darth-Vader-Stimme proaktiv an Disney – unter definierten Bedingungen und gegen Vergütung.
+          Die Stimme lebt weiter. Seine Familie profitiert.</div>
+        <div
+          style="font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:#fff;line-height:1.3;margin-bottom:10px;">
+          Grimes</div>
+        <div style="font-family:'DM Sans',sans-serif;font-size:13px;line-height:1.6;color:rgba(255,255,255,0.6);">Baute
+          eine Plattform, auf der Künstler Musik mit ihrer KI-Stimme produzieren – und Royalties mit ihr teilen.</div>
+        <!-- Branding im dunklen Panel -->
+        <div
+          style="position:absolute;bottom:14px;left:16px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;opacity:0.35;color:#fff;z-index:10;">
+          gedankensplitter 008</div>
+      </div>
+      <div
+        style="width:50%;height:100%;background:#faf9f6;color:#1a1a2e;padding:36px 26px;display:flex;flex-direction:column;justify-content:center;position:relative;">
+        <div
+          style="font-family:'DM Sans',sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:rgba(26,26,46,0.35);margin-bottom:14px;">
+          Strukturell</div>
+        <div
+          style="font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:#1a1a2e;line-height:1.3;margin-bottom:10px;">
+          SAG-AFTRA × Replica Studios</div>
+        <div
+          style="font-family:'DM Sans',sans-serif;font-size:13px;line-height:1.6;color:rgba(26,26,46,0.65);margin-bottom:16px;">
+          Ein Rahmenvertrag mit Mindestbedingungen, Opt-out-Rechten und fairer Vergütung. Kein Einzelkampf – eine neue
+          Infrastruktur.</div>
+        <div
+          style="font-family:'Courier Prime',monospace;font-size:11px;line-height:1.7;background:#fff;border:1px solid rgba(26,26,46,0.1);border-left:2px solid #ff6b6b;padding:10px 12px;border-radius:2px;color:rgba(26,26,46,0.7);">
+          Consent + Compensation<br>Opt-out jederzeit möglich<br>→ <span style="color:#ff6b6b;">Das ist die
+            Blaupause.</span></div>
+        <!-- Slide-Nummer im hellen Panel -->
+        <div
+          style="position:absolute;bottom:14px;right:16px;font-family:'DM Sans',sans-serif;font-size:11px;opacity:0.25;color:#1a1a2e;">
+          05</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: Das neue Modell -->
+    <div class="slide dark-bg" id="slide-6">
+      <div class="slide-inner">
+        <div class="eyebrow">Das eigentlich Interessante</div>
+        <h2>Das ist kein Sonderfall.<br>Das ist ein <em>Vorläufer.</em></h2>
+        <p>KI bricht das traditionelle Arbeitsmodell nicht, weil sie schlechter wäre als Menschen. Sondern weil sie
+          entkoppelt, was bisher untrennbar war:</p>
+        <div class="terminal" style="margin-top:16px;">
+          <div><span class="comment">// Alt: Zeit gegen Geld</span></div>
+          <div><span class="prompt">$</span> ich_leiste( <span class="val">anwesend=True</span> ) → <span
+              class="val">geld</span></div>
+          <span class="t-div">────────────────────────────────</span>
+          <div><span class="comment">// Neu: Einbringen einmal, Ergebnisse laufend</span></div>
+          <div><span class="prompt">$</span> ich_bringe_ein( <span class="val">stimme | wissen | stil</span> )</div>
+          <div><span class="prompt">→</span> <span class="highlight">partizipiere</span> an Ergebnissen <span
+              class="comment">// pro Nutzung</span></div>
+        </div>
+        <p style="margin-top:14px;font-size:13px;color:rgba(255,255,255,0.4);">Meine Stimme kann gleichzeitig in hundert
+          Produktionen sein. Mein Wissen kann in einem Modell kodiert sein, das rund um die Uhr antwortet.</p>
+      </div>
+      <div class="slide-num">06</div>
+      <div class="branding">gedankensplitter 008</div>
+    </div>
+
+    <!-- SLIDE 7: Big number -->
+    <div class="slide dark-bg" id="slide-7">
+      <div class="slide-inner">
+        <div class="eyebrow">Die Gretchenfrage</div>
+        <div class="big-number" style="font-size:80px;">pro<br>Nutzung</div>
+        <div class="big-label">statt pro Stunde</div>
+        <p>Was wäre der Wert meines Beitrags, wenn ich ihn nicht mehr nach Zeit verkaufe – sondern nach Nutzung? Für
+          manche ist das beängstigend. Für andere ist es eine der größten wirtschaftlichen Chancen der nächsten Dekade.
+        </p>
+      </div>
+      <div class="slide-num">07</div>
+      <div class="branding">gedankensplitter 008</div>
+    </div>
+
+    <!-- SLIDE 8: Offene Fragen -->
+    <div class="slide light-bg" id="slide-8">
+      <div class="slide-inner">
+        <div class="eyebrow">Was noch fehlt</div>
+        <h2>Das Modell funktioniert nur, wenn die <em>Infrastruktur</em> stimmt.</h2>
+        <p>Die eigentlichen Fragen sind noch ungelöst:</p>
+        <div class="form-box">
+          <div class="fw"><span class="fl">Bewertung</span><span class="fv">Wie bildet man einen fairen Preis für eine
+              Stimme?</span></div>
+          <div class="fw"><span class="fl">Zugänglichkeit</span><span class="fv">Wie partizipieren Unbekannte – nicht
+              nur Stars?</span></div>
+          <div class="fw"><span class="fl">Aggregation</span><span class="fv">Wer vertritt Tausende kleine Kreative? (→
+              GEMA 2.0?)</span></div>
+          <div class="fw"><span class="fl">Kontrolle</span><span class="fv" style="color:#ff6b6b;">Wie überprüfe ich, wo
+              und wie mein Modell eingesetzt wird?</span></div>
+        </div>
+        <p style="margin-top:14px;font-size:13px;color:rgba(26,26,46,0.45);">Neue kollektive Strukturen,
+          Vertragsstandards, Verwertungsgesellschaften – designed für das KI-Zeitalter.</p>
+      </div>
+      <div class="slide-num">08</div>
+      <div class="branding">gedankensplitter 008</div>
+    </div>
+
+    <!-- SLIDE 9: FINALE -->
+    <div class="slide dark-bg" id="slide-9">
+      <div
+        style="position:absolute;bottom:-100px;left:50%;transform:translateX(-50%);width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(255,107,107,0.07) 0%,transparent 70%);pointer-events:none;z-index:0;">
+      </div>
+      <div class="slide-inner" style="align-items:center;text-align:center;justify-content:center;">
+        <div class="eyebrow" style="position:relative;z-index:2;">Fazit</div>
+        <h2
+          style="position:relative;z-index:2;font-family:'Playfair Display',serif;font-size:26px;font-weight:900;font-style:italic;color:#fff;line-height:1.25;max-width:380px;margin-bottom:0;">
+          Der Boykott schafft Verhandlungsmasse. Er ändert nichts an der Richtung des Marktes.</h2>
+        <div style="position:relative;z-index:2;width:40px;height:2px;background:#ff6b6b;margin:20px auto;"></div>
+        <p style="position:relative;z-index:2;max-width:380px;font-size:14px;line-height:1.65;">Wer nur auf Abwehr
+          spielt, wird von einem Markt überholt, der ohnehin weiterläuft. Das Geld der Zukunft liegt nicht im Widerstand
+          gegen KI – sondern in der Fähigkeit, die eigene Arbeit als Asset zu strukturieren.</p>
+        <div
+          style="position:relative;z-index:2;margin-top:24px;padding:16px 22px;border:1px solid rgba(255,107,107,0.3);border-radius:4px;background:rgba(255,107,107,0.06);max-width:380px;">
+          <div
+            style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#ff6b6b;margin-bottom:8px;">
+            Eure Meinung</div>
+          <div
+            style="font-family:'Playfair Display',serif;font-size:15px;font-style:italic;color:rgba(255,255,255,0.85);line-height:1.55;">
+            Was ist euer kreatives Kapital – Stimme, Wissen, Stil – und habt ihr schon darüber nachgedacht, es zu
+            lizenzieren statt zu verkaufen?</div>
+        </div>
+      </div>
+      <div class="slide-num">09</div>
+      <div class="branding">gedankensplitter 008</div>
+    </div>
+
+  </div><!-- /carousel-wrapper -->
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- ARTIKEL                                    -->
+  <!-- ══════════════════════════════════════════ -->
+  <article class="article-section">
+
+    <div class="article-eyebrow">Arbeit / KI / Zukunft</div>
+    <h2 class="article-title">Deine Stimme ist ein <em>Asset.</em><br>Du verkaufst sie nur noch nicht richtig.</h2>
+    <p class="article-subtitle">Was der Netflix-Boykott der Synchronsprecher über das Arbeitsmodell von morgen verrät –
+      und warum die interessante Frage nicht lautet, ob KI Stimmen klonen darf, sondern wer unter welchen Bedingungen
+      daran verdient.</p>
+
+    <p>Anfang 2026 weigern sich deutsche Synchronsprecher, für Netflix zu arbeiten. Der Auslöser: eine Vertragsklausel,
+      die Netflix das Recht geben würde, ihre Stimmaufnahmen für KI-Training zu nutzen – ohne Zusatzvergütung. Ähnliches
+      haben Billie Eilish, Stevie Wonder und über 200 weitere Künstler in einem offenen Brief beklagt. SAG-AFTRA war
+      2023 monatelang im Streik, unter anderem wegen KI. Das Berliner Landgericht hat im August 2025 entschieden, dass
+      die KI-geklonte Stimme von Synchronsprecher Manfred Lehmann sein Persönlichkeitsrecht verletzt.</p>
+
+    <p>Der Protest ist verständlich. Und er ist trotzdem die falsche Antwort auf die richtige Frage.</p>
+
+    <div class="pull-quote">
+      <p>Die Frage ist nicht: Darf KI meine Stimme klonen? Die Frage ist: Unter welchen Bedingungen – und wer verdient
+        daran?</p>
+    </div>
+
+    <h3>Was gerade passiert</h3>
+
+    <p>Die Technologie ist da und sie wird besser. Netflix hat 2025 „DeepSpeak" ausgerollt, ein System, das
+      Originalstimmen von Schauspielern klont, um lokalisierte Versionen von Filmen und Serien zu erzeugen. Plattformen
+      wie Replica Studios ermöglichen es Unternehmen, lizenzierte Stimmmodelle zu kaufen. Freelancer in den USA
+      berichten, dass sie durch Voice-Licensing monatliche Royalties einstreichen – ohne neue Aufnahmen zu machen.
+      KI-Startup LOVO wurde verklagt, weil es Stimmen <strong>„unter falschem Vorwand gesammelt und gewinnbringend
+        vermarktet"</strong> haben soll.</p>
+
+    <p>Das Muster ist überall dasselbe: Die Technologie bewegt sich schneller als die Verträge. Wer die Klauseln nicht
+      liest oder schlecht verhandelt, verliert die Kontrolle.</p>
+
+    <p>Aber es gibt auch Gegenbeispiele. James Earl Jones, die Stimme von Darth Vader, hat seine Rechte proaktiv an
+      Disney lizenziert – unter klar definierten Bedingungen und gegen Vergütung. Grimes hat eine Plattform aufgebaut,
+      auf der Künstler ihre Musik mit ihrer KI-Stimme produzieren und Royalties mit ihr teilen. SAG-AFTRA hat mit
+      Replica Studios einen Rahmenvertrag ausgehandelt, der Mindestkonditionen, Opt-out-Rechte und faire Vergütung
+      definiert.</p>
+
+    <p>Das sind keine Ausnahmen. Das ist die Blaupause.</p>
+
+    <h3>Das eigentliche Problem</h3>
+
+    <p>Die Synchronsprecher protestieren gegen etwas, das unvermeidbar ist. Was fehlt, ist keine Bremse – sondern eine
+      Infrastruktur.</p>
+
+    <p>Aktuell gibt es zwei Wege für Kreativschaffende. Der erste ist der defensive: Verweigern, klagen, protestieren.
+      Das schützt kurzfristig und setzt wichtige rechtliche Präzedenzfälle – der Fall Lehmann gegen den YouTuber ist
+      einer davon. Aber es ändert nichts an der Richtung des Marktes.</p>
+
+    <p>Der zweite Weg ist der offensive: Die eigene Stimme, das eigene Gesicht, das eigene Wissen als Asset begreifen.
+      Aktiv lizenzieren. Bedingungen setzen. Partizipieren.</p>
+
+    <p>Das klingt einfach. Es ist es nicht, weil die Infrastruktur fehlt. Wer ist mein Verhandlungspartner? Wie berechne
+      ich den Wert meiner Stimme? Wie kontrolliere ich die Verwendung? Wer sitzt auf meiner Seite des Tisches, wenn
+      Netflix kommt?</p>
+
+    <h3>Das Modell der Zukunft</h3>
+
+    <p>Hier liegt der eigentlich interessante Gedanke: Was gerade in der Synchronbranche passiert, ist kein Sonderfall.
+      Es ist ein Vorläufer.</p>
+
+    <p>Das traditionelle Arbeitsmodell funktioniert nach Zeit und Leistung: Ich bin anwesend, ich leiste, ich bekomme
+      Geld. KI bricht dieses Modell nicht, weil sie schlechter wäre als Menschen – sondern weil sie entkoppelt, was
+      bisher untrennbar war: die Leistung von der Person, die sie erbringt.</p>
+
+    <div class="pull-quote">
+      <p>Meine Stimme kann gleichzeitig in hundert Produktionen sein. Mein Wissen kann in einem Modell kodiert sein, das
+        rund um die Uhr antwortet. Meine Art, Probleme zu lösen, kann trainiert und vervielfältigt werden.</p>
+    </div>
+
+    <p>Das verändert das Wirtschaftsmodell grundlegend. Nicht mehr: <strong>Ich gehe zur Arbeit und kriege dafür
+        Geld.</strong> Sondern: <strong>Ich bringe mich einmal ein – und partizipiere dann an allem, was daraus
+        entsteht.</strong></p>
+
+    <p>Das klingt nach Kapitalismus-Utopie. Es funktioniert aber nur, wenn die Organisationsform stimmt. Die Fragen, die
+      wir gerade noch nicht beantworten können: Wie bildet man einen „fairen Preis" für eine Stimme? Wie verhindert man,
+      dass nur Stars lizenzieren können, während unbekannte Sprecher leer ausgehen? Wer aggregiert und schützt die
+      Rechte von Tausenden kleinen Kreativen – ähnlich wie die GEMA das für Musikrechte tut?</p>
+
+    <p>Die Antwort ist wahrscheinlich nicht ein einzelnes Unternehmen. Sie ist eher: neue kollektive Strukturen, neue
+      Vertragsstandards, neue Arten von Genossenschaften oder Verwertungsgesellschaften – designed für das KI-Zeitalter.
+    </p>
+
+    <h3>Was das bedeutet</h3>
+
+    <p>Der Boykott der Synchronsprecher ist wichtig – nicht weil er Netflix aufhalten wird, sondern weil er
+      Verhandlungsmasse schafft. Er erzwingt Gespräche, die ohne Druck nicht stattfinden würden. Und aus diesen
+      Gesprächen entstehen die Vertragsstandards von morgen.</p>
+
+    <p>Aber wer nur auf Abwehr spielt, wird irgendwann von einem Markt überholt, der ohnehin weiterläuft.</p>
+
+    <p>Die interessantere Frage – für Synchronsprecher, aber auch für jeden anderen, der Wissen oder Fähigkeiten besitzt
+      – ist eine andere: Was wäre der Wert meines Beitrags, wenn ich ihn nicht mehr pro Stunde verkaufe, sondern pro
+      Nutzung?</p>
+
+    <p>Für manche ist das beängstigend. Für andere ist es eine der größten wirtschaftlichen Chancen der nächsten Dekade.
+    </p>
+
+    <div class="article-divider"></div>
+
+    <div
+      style="border:1px solid rgba(255,107,107,0.2);border-left:3px solid #ff6b6b;border-radius:2px;padding:24px 28px;background:rgba(255,107,107,0.04);margin-bottom:40px;">
+      <div
+        style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:3px;color:#ff6b6b;margin-bottom:14px;">
+        Zur Diskussion</div>
+      <p
+        style="font-family:'Playfair Display',serif;font-size:18px;font-style:italic;line-height:1.55;color:rgba(255,255,255,0.9);margin-bottom:16px;">
+        Das Modell „Ich lizenziere mein kreatives Kapital statt meine Zeit" – wo seht ihr das in euren Branchen
+        entstehen? Und wo fehlt noch die Infrastruktur dafür?</p>
+      <p
+        style="font-family:'DM Sans',sans-serif;font-size:13px;line-height:1.7;color:rgba(255,255,255,0.45);margin-bottom:0;">
+        Ob Stimme, Code, Designstil, Fachwissen oder eine bestimmte Art zu denken – das Prinzip ist dasselbe. Ich bin
+        gespannt, ob ihr ähnliche Entwicklungen beobachtet, andere Schlüsse zieht, oder ob ihr das Modell grundsätzlich
+        für naiv haltet.</p>
+    </div>
+
+    <p class="article-closing">gedankensplitter &nbsp;·&nbsp; Februar 2026</p>
+
+  </article>
+
+  <script>
+    const total = 9;
+    let current = 1;
+
+    function update() {
+      document.querySelectorAll('#carousel > .slide').forEach((s, i) => {
+        s.classList.toggle('active', i + 1 === current);
+      });
+      document.getElementById('counter').textContent = current + ' / ' + total;
+      document.getElementById('progressBar').style.width = (current / total * 100) + '%';
+    }
+
+    function next() { if (current < total) { current++; update(); } }
+    function prev() { if (current > 1) { current--; update(); } }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight') next();
+      if (e.key === 'ArrowLeft') prev();
+    });
+
+    let startX = 0;
+    const cw = document.getElementById('carousel');
+    cw.addEventListener('touchstart', e => { startX = e.touches[0].clientX; });
+    cw.addEventListener('touchend', e => {
+      const diff = startX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 40) diff > 0 ? next() : prev();
+    });
+
+    update();
+  </script>
+</body>
+
+</html>

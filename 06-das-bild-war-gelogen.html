@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Das Bild war gelogen. Aber die Frage war echt.</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Courier+Prime:wght@400;700&display=swap"
+    rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #111122;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      gap: 24px;
+    }
+
+    h1 {
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      opacity: 0.5;
+    }
+
+    /* CONTROLS */
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .controls button {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: rgba(255, 255, 255, 0.7);
+      padding: 10px 24px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.2s;
+    }
+
+    .controls button:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+    }
+
+    .controls .counter {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.4);
+      min-width: 55px;
+      text-align: center;
+      letter-spacing: 1px;
+    }
+
+    /* CAROUSEL */
+    .carousel-wrapper {
+      width: 540px;
+      height: 540px;
+      overflow: hidden;
+      border-radius: 4px;
+      position: relative;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    @media(max-width:580px) {
+      .carousel-wrapper {
+        width: 95vw;
+        height: 95vw;
+      }
+    }
+
+    /* PROGRESS BAR */
+    .progress-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 3px;
+      background: #ff6b6b;
+      transition: width 0.3s ease;
+      z-index: 20;
+    }
+
+    /* ALL SLIDES */
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 540px;
+      height: 540px;
+      overflow: hidden;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    @media(max-width:580px) {
+      .slide {
+        width: 95vw !important;
+        height: 95vw !important;
+      }
+    }
+
+    /* Branding & slide number */
+    .slide-num {
+      position: absolute;
+      bottom: 14px;
+      right: 16px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      opacity: 0.25;
+      z-index: 10;
+    }
+
+    .branding {
+      position: absolute;
+      bottom: 14px;
+      left: 16px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      opacity: 0.35;
+      z-index: 10;
+    }
+
+    /* Eyebrow */
+    .eyebrow {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: #ff6b6b;
+      margin-bottom: 16px;
+    }
+
+    /* SLIDE INNER */
+    .slide-inner {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 52px 48px;
+      position: relative;
+    }
+
+    /* DARK */
+    .dark-bg {
+      background: #1a1a2e;
+      color: #fff;
+    }
+
+    .dark-bg .slide-num {
+      color: rgba(255, 255, 255, 0.25);
+    }
+
+    .dark-bg .branding {
+      color: #fff;
+    }
+
+    .dark-bg h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 30px;
+      font-weight: 700;
+      line-height: 1.2;
+      color: #fff;
+      margin-bottom: 18px;
+    }
+
+    .dark-bg h2 em {
+      font-style: italic;
+      color: #ff6b6b;
+    }
+
+    .dark-bg p {
+      font-size: 15px;
+      line-height: 1.65;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    /* LIGHT */
+    .light-bg {
+      background: #faf9f6;
+      color: #1a1a2e;
+    }
+
+    .light-bg .slide-num {
+      color: rgba(26, 26, 46, 0.25);
+    }
+
+    .light-bg .branding {
+      color: #1a1a2e;
+    }
+
+    .light-bg h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.25;
+      color: #1a1a2e;
+      margin-bottom: 18px;
+    }
+
+    .light-bg h2 em {
+      font-style: italic;
+      color: #ff6b6b;
+    }
+
+    .light-bg p {
+      font-size: 14px;
+      line-height: 1.7;
+      color: rgba(26, 26, 46, 0.75);
+    }
+
+    /* Terminal */
+    .terminal {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      padding: 18px 20px;
+      margin-top: 18px;
+      font-family: 'Courier Prime', monospace;
+      font-size: 12px;
+      line-height: 1.85;
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    .terminal .prompt {
+      color: #ff6b6b;
+      margin-right: 8px;
+    }
+
+    .terminal .val {
+      color: #7ec8e3;
+    }
+
+    .terminal .comment {
+      color: rgba(255, 255, 255, 0.3);
+      font-style: italic;
+    }
+
+    .terminal .t-div {
+      color: rgba(255, 255, 255, 0.15);
+      margin: 6px 0;
+      display: block;
+    }
+
+    .terminal .highlight {
+      color: #ff6b6b;
+    }
+
+    /* Form box */
+    .form-box {
+      background: #fff;
+      border: 1px solid rgba(26, 26, 46, 0.1);
+      border-left: 3px solid #ff6b6b;
+      border-radius: 2px;
+      padding: 16px 18px;
+      margin-top: 18px;
+      font-family: 'Courier Prime', monospace;
+      font-size: 12px;
+      line-height: 1.8;
+    }
+
+    .form-box .fw {
+      margin-bottom: 10px;
+    }
+
+    .form-box .fw:last-child {
+      margin-bottom: 0;
+    }
+
+    .form-box .fl {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: rgba(26, 26, 46, 0.4);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .form-box .fv {
+      color: #1a1a2e;
+      font-weight: 700;
+    }
+
+    /* Big number */
+    .big-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 110px;
+      font-weight: 900;
+      line-height: 1;
+      color: #ff6b6b;
+      margin-bottom: 6px;
+    }
+
+    .big-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: rgba(255, 255, 255, 0.35);
+      margin-bottom: 22px;
+    }
+
+    /* Pull quote */
+    .pull-quote {
+      border-left: 2px solid #ff6b6b;
+      padding-left: 18px;
+      margin-top: 20px;
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      font-style: italic;
+      line-height: 1.5;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+
+    /* =========================================
+   ARTIKEL SECTION
+   ========================================= */
+    .artikel-wrapper {
+      width: 540px;
+      max-width: 100%;
+      padding: 0 0 80px 0;
+    }
+
+    @media(max-width:580px) {
+      .artikel-wrapper {
+        width: 95vw;
+      }
+    }
+
+    .artikel-header {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 32px;
+      margin-top: 8px;
+      margin-bottom: 36px;
+    }
+
+    .artikel-eyebrow {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: #ff6b6b;
+      margin-bottom: 14px;
+    }
+
+    .artikel-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 900;
+      line-height: 1.2;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+
+    .artikel-title em {
+      font-style: italic;
+      color: #ff6b6b;
+    }
+
+    .artikel-subtitle {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      line-height: 1.65;
+      color: rgba(255, 255, 255, 0.45);
+    }
+
+    .artikel-body {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.8;
+      color: rgba(255, 255, 255, 0.72);
+    }
+
+    .artikel-body p {
+      margin-bottom: 22px;
+    }
+
+    .artikel-body .pull {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-style: italic;
+      line-height: 1.45;
+      color: #fff;
+      border-left: 2px solid #ff6b6b;
+      padding-left: 20px;
+      margin: 32px 0;
+    }
+
+    .artikel-body .data-box {
+      background: rgba(255, 107, 107, 0.06);
+      border: 1px solid rgba(255, 107, 107, 0.2);
+      border-radius: 4px;
+      padding: 20px 22px;
+      margin: 28px 0;
+      font-family: 'Courier Prime', monospace;
+      font-size: 13px;
+      line-height: 1.9;
+      color: rgba(255, 255, 255, 0.65);
+    }
+
+    .artikel-body .data-box .data-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #ff6b6b;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .artikel-body .data-box span.hi {
+      color: #7ec8e3;
+    }
+
+    .artikel-body h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      margin: 32px 0 14px;
+    }
+
+    .artikel-footer {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* === PAGE HEADER (Kopfzeile) === */
+    .page-header {
+      width: 100%;
+      padding: 10px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.35);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      box-sizing: border-box;
+      position: relative;
+      z-index: 200;
+    }
+
+    .page-header-back {
+      color: rgba(255, 255, 255, 0.35);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .page-header-back:hover {
+      color: #ff6b6b;
+    }
+
+    .page-header-label {
+      font-style: italic;
+      font-family: 'Playfair Display', serif;
+      color: #ff6b6b;
+      opacity: 0.8;
+      margin-right: 6px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="page-header">
+    <a href="index.html" class="page-header-back">← Übersicht</a>
+    <span><span class="page-header-label">Gedanke 06</span>Das Bild war gelogen. Aber die Frage war echt.</span>
+  </div>
+
+  <div class="controls">
+    <button onclick="prev()">← Zurück</button>
+    <span class="counter" id="counter">1 / 8</span>
+    <button onclick="next()">Weiter →</button>
+  </div>
+
+  <div class="carousel-wrapper" id="carousel">
+    <div class="progress-bar" id="progressBar" style="width:12.5%"></div>
+
+    <!-- SLIDE 1: COVER -->
+    <div class="slide dark-bg active" id="slide-1">
+      <div
+        style="position:absolute;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse at 80% 20%, rgba(255,107,107,0.1) 0%, transparent 60%);pointer-events:none;z-index:0;">
+      </div>
+      <div class="slide-inner" style="justify-content:flex-end;">
+        <div
+          style="position:absolute;top:32px;right:36px;font-family:'Courier Prime',monospace;font-size:11px;color:rgba(255,255,255,0.15);z-index:2;line-height:1.6;">
+          15.02.2026<br>heute journal<br>ICE / USA
+        </div>
+        <div class="eyebrow" style="position:relative;z-index:2;">KI · Journalismus · Vertrauen</div>
+        <h2
+          style="position:relative;z-index:2;font-family:'Playfair Display',serif;font-size:38px;font-weight:900;line-height:1.1;color:#fff;margin-bottom:16px;">
+          Das Bild war<br><em style="color:#ff6b6b;">gelogen.</em><br>Aber die Frage<br>war echt.</h2>
+        <p style="position:relative;z-index:2;font-size:13px;max-width:340px;color:rgba(255,255,255,0.45);">Warum der
+          ZDF-Fehler die falsche Debatte auslöst — und welche Frage wir eigentlich stellen sollten.</p>
+      </div>
+      <div class="slide-num">01</div>
+      <div class="branding">gedankensplitter 006</div>
+    </div>
+
+    <!-- SLIDE 2: Was passiert ist -->
+    <div class="slide dark-bg" id="slide-2">
+      <div class="slide-inner">
+        <div class="eyebrow">15. Februar 2026</div>
+        <h2>Was wirklich <em>passiert</em> ist</h2>
+        <div class="terminal">
+          <div><span class="prompt">$</span>sendung = <span class="val">"heute journal"</span> <span class="comment">//
+              Flagship-Nachrichtensendung</span></div>
+          <div><span class="prompt">$</span>thema = <span class="val">"ICE-Festnahmen USA"</span></div>
+          <span class="t-div">────────────────────────────────</span>
+          <div><span class="prompt">!</span> Fehler 1: <span class="highlight">KI-Video (Sora) ohne Kennzeichnung</span>
+          </div>
+          <div><span class="prompt">!</span> Fehler 2: <span class="highlight">Echtes Video, falscher Kontext
+              (2022)</span></div>
+          <span class="t-div">────────────────────────────────</span>
+          <div><span class="prompt">+</span> Ironie: <span class="val">Anmoderation warnte vor Fake-Videos</span></div>
+          <div><span class="prompt">+</span> Wasserzeichen: <span class="val">für jeden sichtbar</span></div>
+        </div>
+        <p style="margin-top:14px;font-size:13px;color:rgba(255,255,255,0.35);">ZDF-Erklärung: "technische Gründe bei
+          der Überspielung"</p>
+      </div>
+      <div class="slide-num">02</div>
+      <div class="branding">gedankensplitter 006</div>
+    </div>
+
+    <!-- SLIDE 3: Die Ironie -->
+    <div class="slide light-bg" id="slide-3">
+      <div class="slide-inner">
+        <div class="eyebrow">Das Symptom</div>
+        <h2>Nicht böse Absicht.<br><em>Systemfehler.</em></h2>
+        <p>Die Empörung richtet sich gegen das ZDF, gegen Hayali, gegen den ÖRR. Das ist der einfache Teil der Debatte.
+        </p>
+        <div class="form-box">
+          <div class="fw"><span class="fl">Redaktionsteam</span><span class="fv">kleiner als vor 10 Jahren</span></div>
+          <div class="fw"><span class="fl">Nachrichten-Tempo</span><span class="fv">höher als je zuvor</span></div>
+          <div class="fw"><span class="fl">Qualitätsanspruch</span><span class="fv">unverändert hoch</span></div>
+          <div class="fw"><span class="fl">Ergebnis</span><span class="fv" style="color:#ff6b6b;">Das Wasserzeichen war
+              sichtbar — niemand schaute hin</span></div>
+        </div>
+        <p style="margin-top:16px;font-size:13px;color:rgba(26,26,46,0.5);">Das Sora-Wasserzeichen war für jeden
+          erkennbar. Das sagt alles.</p>
+      </div>
+      <div class="slide-num">03</div>
+      <div class="branding">gedankensplitter 006</div>
+    </div>
+
+    <!-- SLIDE 4: Big Number -->
+    <div class="slide dark-bg" id="slide-4">
+      <div class="slide-inner">
+        <div class="eyebrow">Reuters Institute · Deutschland 2025</div>
+        <div class="big-number">71%</div>
+        <div class="big-label">vermeiden Nachrichten aktiv — Allzeithoch</div>
+        <p>Das ist kein Zufall. Das ist ein Signal. Menschen wenden sich nicht wegen KI-Videos ab — sie wenden sich ab,
+          weil der Wert des Angebots unklar geworden ist.</p>
+        <p style="margin-top:12px;font-size:13px;color:rgba(255,255,255,0.3);">Gleichzeitig: 45% vertrauen Nachrichten
+          noch grundsätzlich. Tagesschau: 65% Vertrauenswert. ZDF heute: 63%.</p>
+      </div>
+      <div class="slide-num">04</div>
+      <div class="branding">gedankensplitter 006</div>
+    </div>
+
+    <!-- SLIDE 5: Split — früher vs. heute -->
+    <div class="slide" id="slide-5" style="display:flex;">
+      <div
+        style="width:50%;height:100%;background:#1a1a2e;color:#fff;padding:40px 28px;display:flex;flex-direction:column;justify-content:center;border-right:1px solid rgba(255,107,107,0.25);">
+        <div
+          style="font-family:'DM Sans',sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,0.3);margin-bottom:14px;">
+          Was ich früher wollte</div>
+        <div
+          style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#fff;line-height:1.2;margin-bottom:14px;">
+          Fakten.<br>Vollständigkeit.<br>Aktualität.</div>
+        <div style="font-family:'DM Sans',sans-serif;font-size:13px;line-height:1.65;color:rgba(255,255,255,0.5);">Die
+          Nachrichtensendung als Monopol auf Information. Wer sie verpasste, wusste nicht, was in der Welt passierte.
+        </div>
+      </div>
+      <div
+        style="width:50%;height:100%;background:#faf9f6;color:#1a1a2e;padding:40px 28px;display:flex;flex-direction:column;justify-content:center;">
+        <div
+          style="font-family:'DM Sans',sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:rgba(26,26,46,0.35);margin-bottom:14px;">
+          Was ich heute will</div>
+        <div
+          style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#1a1a2e;line-height:1.2;margin-bottom:14px;">
+          Einordnung.<br>Haltung.<br><em style="color:#ff6b6b;">Menschlicher Blick.</em></div>
+        <div style="font-family:'DM Sans',sans-serif;font-size:13px;line-height:1.65;color:rgba(26,26,46,0.6);">Fakten
+          bekomme ich überall, sofort, kostenlos. Was ich nicht bekomme: jemanden, dem ich vertraue, der mir sagt, was
+          das bedeutet.</div>
+      </div>
+      <div class="slide-num" style="color:rgba(26,26,46,0.25);z-index:10;">05</div>
+      <div
+        style="position:absolute;bottom:14px;left:16px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;opacity:0.35;color:#fff;z-index:10;">
+        gedankensplitter 006</div>
+    </div>
+
+    <!-- SLIDE 6: Die eigentliche These -->
+    <div class="slide dark-bg" id="slide-6">
+      <div class="slide-inner">
+        <div class="eyebrow">Die eigentliche These</div>
+        <h2>Fakten lese ich bei <em>Wikipedia.</em> Journalismus ist was anderes.</h2>
+        <div class="terminal">
+          <div><span class="prompt">→</span> Fakten wollen? <span class="val">→ Google, Wikipedia, KI</span></div>
+          <div><span class="prompt">→</span> Aktualität? <span class="val">→ X, Telegram, Push-Notif.</span></div>
+          <div><span class="prompt">→</span> Zusammenfassung? <span class="val">→ Briefing-Newsletter, KI</span></div>
+          <span class="t-div">────────────────────────────────</span>
+          <div><span class="prompt">?</span> Was bleibt für Journalismus?</div>
+          <div style="margin-left:16px;color:rgba(255,255,255,0.5);font-style:italic;">→ Einordnung mit Verantwortung
+          </div>
+          <div style="margin-left:16px;color:rgba(255,255,255,0.5);font-style:italic;">→ Haltung, die sich irren kann
+          </div>
+          <div style="margin-left:16px;color:rgba(255,255,255,0.5);font-style:italic;">→ <span
+              class="highlight">Vertrauen, das aufgebaut wurde</span></div>
+        </div>
+      </div>
+      <div class="slide-num">06</div>
+      <div class="branding">gedankensplitter 006</div>
+    </div>
+
+    <!-- SLIDE 7: Das Paradox -->
+    <div class="slide light-bg" id="slide-7">
+      <div class="slide-inner">
+        <div class="eyebrow">Das strukturelle Problem</div>
+        <h2>Redaktionen schrumpfen. Der <em>Anspruch</em> bleibt.</h2>
+        <p>Das ist das eigentliche Problem — nicht KI, nicht ein Wasserzeichen. Sondern dass wir von Journalisten heute
+          Mehr verlangen, während sie Weniger werden.</p>
+        <div class="form-box">
+          <div class="fw"><span class="fl">Alte Aufgabe</span><span class="fv">Fakten beschaffen und senden</span></div>
+          <div class="fw"><span class="fl">Neue Aufgabe</span><span class="fv">Einordnen, kontextualisieren, Vertrauen
+              verdienen</span></div>
+          <div class="fw"><span class="fl">Ressourcen</span><span class="fv" style="color:#ff6b6b;">tendenziell weniger,
+              nicht mehr</span></div>
+          <div class="fw"><span class="fl">Konsequenz</span><span class="fv">Tempo schlägt Sorgfalt — immer
+              häufiger</span></div>
+        </div>
+      </div>
+      <div class="slide-num">07</div>
+      <div class="branding">gedankensplitter 006</div>
+    </div>
+
+    <!-- SLIDE 8: FINALE -->
+    <div class="slide dark-bg" id="slide-8">
+      <div
+        style="position:absolute;bottom:-80px;left:50%;transform:translateX(-50%);width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(255,107,107,0.07) 0%,transparent 70%);pointer-events:none;z-index:0;">
+      </div>
+      <div class="slide-inner" style="align-items:center;text-align:center;justify-content:center;">
+        <div class="eyebrow" style="position:relative;z-index:2;">Fazit</div>
+        <h2
+          style="position:relative;z-index:2;font-family:'Playfair Display',serif;font-size:25px;font-weight:900;font-style:italic;color:#fff;line-height:1.25;max-width:400px;margin-bottom:0;">
+          Das Vertrauen schrumpft nicht wegen KI.</h2>
+        <div style="position:relative;z-index:2;width:40px;height:2px;background:#ff6b6b;margin:18px auto;"></div>
+        <p style="position:relative;z-index:2;max-width:380px;">Es schrumpft, weil wir nicht mehr wissen, was wir von
+          Journalisten eigentlich noch wollen — und weil Journalisten es selbst auch gerade herausfinden.</p>
+        <div
+          style="position:relative;z-index:2;margin-top:28px;font-family:'Playfair Display',serif;font-size:15px;font-style:italic;color:rgba(255,255,255,0.35);max-width:340px;">
+          Was erwartest du von einem Journalisten, das kein Algorithmus dir geben kann?</div>
+      </div>
+      <div class="slide-num">08</div>
+      <div class="branding">gedankensplitter 006</div>
+    </div>
+
+  </div><!-- /carousel-wrapper -->
+
+  <!-- =========================================
+     ARTIKEL
+     ========================================= -->
+  <div class="artikel-wrapper">
+
+    <div class="artikel-header">
+      <div class="artikel-eyebrow">KI · Journalismus · Vertrauen</div>
+      <h2 class="artikel-title">Das Bild war gelogen.<br>Aber die Frage war <em>echt.</em></h2>
+      <p class="artikel-subtitle">Warum der ZDF-Fehler die falsche Debatte auslöst — und was er wirklich über den
+        Zustand des Journalismus verrät.</p>
+    </div>
+
+    <div class="artikel-body">
+
+      <p>Am 15. Februar 2026 zeigte das heute journal einen Beitrag über ICE-Festnahmen in den USA. Darin war eine Frau
+        zu sehen, die von Einsatzkräften abgeführt wird, während ihre Kinder versuchen, sich an sie zu klammern. Das
+        Bild war emotional. Es war präzise. Es war — KI-generiert. Und das Wasserzeichen von OpenAI Sora war für jeden
+        sichtbar.</p>
+
+      <p>Moderatorin Dunja Hayali hatte in der Anmoderation desselben Beitrags noch ausdrücklich davor gewarnt, dass
+        nicht alle Videos zu den ICE-Einsätzen echt seien. Die Ironie hätte kaum größer sein können.</p>
+
+      <div class="pull">"Das Wasserzeichen war sichtbar. Das ist nicht die Geschichte von böser Absicht — es ist die
+        Geschichte von zu wenig Zeit, zu wenig Augen, zu viel Tempo."</div>
+
+      <h3>Der einfache Teil der Debatte</h3>
+
+      <p>Was folgte, war vorhersehbar: Empörung von rechts, die den Vorfall zur Bestätigung einer langen Liste von
+        Vorwürfen nutzte. Forderungen nach Rundfunkreform. Politiker, die von einem "Medienskandal" sprachen. Das ZDF
+        entfernte die Sendung zunächst still aus der Mediathek, veröffentlichte sie überarbeitet, entschuldigte sich.
+      </p>
+
+      <p>Das ist der einfache Teil. Er lenkt ab von der Frage, die mich eigentlich interessiert.</p>
+
+      <div class="data-box">
+        <span class="data-label">Reuters Institute Digital News Report 2025 · Deutschland</span>
+        <span class="hi">71%</span> der Deutschen vermeiden Nachrichten mindestens gelegentlich aktiv — Allzeithoch<br>
+        <span class="hi">54%</span> fühlen sich bei KI-produzierten Nachrichten unwohl<br>
+        <span class="hi">45%</span> vertrauen Nachrichten grundsätzlich — öffentlich-rechtliche Sender führen noch<br>
+        <span class="hi">65%</span> Vertrauenswert: Tagesschau (höchster gemessener Wert in Deutschland)
+      </div>
+
+      <h3>Was wirklich passiert ist</h3>
+
+      <p>Es gab zwei Fehler in diesem Beitrag: ein KI-Video ohne Kennzeichnung, und ein echtes Video aus dem völlig
+        falschen Kontext — eine Schulfestnahme aus Florida, 2022. Beide Fehler zusammen zeigen nicht, dass Redakteure
+        böse Absichten hatten. Sie zeigen, dass Redaktionen unter einem Druck arbeiten, bei dem solche Fehler
+        strukturell wahrscheinlich werden.</p>
+
+      <p>Weniger Menschen. Höheres Tempo. Gleicher Anspruch. Das ist die Gleichung, die nicht aufgeht — und sie gilt
+        nicht nur für das ZDF.</p>
+
+      <h3>Die Frage, die mich wirklich beschäftigt</h3>
+
+      <p>Ich beobachte seit einigen Jahren, wie sich meine eigene Nachrichtennutzung verändert hat. Ich brauche keine
+        Sendung mehr, die mir Fakten vorliest. Fakten bekomme ich überall, sofort, kostenlos — von Google, von
+        Wikipedia, von einem KI-Briefing, das mir morgens fünf Minuten liefert, was ich wissen muss.</p>
+
+      <p>Was ich nicht bekomme: jemanden, dem ich vertraue, der mir sagt, was das bedeutet. Der eine Einordnung liefert,
+        die er mit seinem Namen unterschreibt. Der sich irren kann — und dann dafür einsteht.</p>
+
+      <div class="pull">"Fakten sind kein Wettbewerbsvorteil mehr. Einordnung mit Verantwortung schon."</div>
+
+      <p>Das ist natürlich zu Ende gedacht, weil Einordnung immer auch Verzerrung bedeutet. Weil Haltung polarisiert.
+        Weil "menschlicher Blick" auch bedeutet: blinder Fleck, Agenda, Bias. Aber genau das ist der Punkt: Diese
+        Unvollkommenheit ist keine Schwäche des Journalismus. Sie ist sein eigentliches Wertversprechen — vorausgesetzt,
+        sie wird transparent gemacht.</p>
+
+      <h3>Wohin das führt</h3>
+
+      <p>KI kann Fakten beschaffen, zusammenfassen, Bildmaterial produzieren. Sie kann Beiträge schneller fertigstellen,
+        als es eine Redaktion mit halbem Personalstand kann. Das ist keine Bedrohung — das ist eine Entscheidung.
+        Medien, die ihr Wertversprechen klar definieren, können KI als Werkzeug nutzen. Medien, die ihr Wertversprechen
+        nicht kennen, werden durch KI ersetzt.</p>
+
+      <p>Der ZDF-Fehler ist deshalb kein KI-Problem. Er ist ein Symptom einer Branche, die gerade in Echtzeit
+        herausfindet, was sie noch zu bieten hat, wenn Geschwindigkeit kein Vorteil mehr ist.</p>
+
+      <p>Die Frage, die ich mitnehme: Was erwartest du von einem Journalisten, das kein Algorithmus dir geben kann? Wenn
+        du eine Antwort hast — schreib sie auf. Sie sagt mehr über die Zukunft der Medien als jede Debatte über
+        Rundfunkreform.</p>
+
+    </div>
+
+    <div class="artikel-footer">gedankensplitter · Februar 2026</div>
+
+  </div>
+
+  <script>
+    const total = 8;
+    let current = 1;
+
+    function update() {
+      document.querySelectorAll('#carousel > .slide').forEach((s, i) => {
+        s.classList.toggle('active', i + 1 === current);
+      });
+      document.getElementById('counter').textContent = current + ' / ' + total;
+      document.getElementById('progressBar').style.width = (current / total * 100) + '%';
+    }
+
+    function next() { if (current < total) { current++; update(); } }
+    function prev() { if (current > 1) { current--; update(); } }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight') next();
+      if (e.key === 'ArrowLeft') prev();
+    });
+
+    let startX = 0;
+    const cw = document.getElementById('carousel');
+    cw.addEventListener('touchstart', e => { startX = e.touches[0].clientX; });
+    cw.addEventListener('touchend', e => {
+      const diff = startX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 40) diff > 0 ? next() : prev();
+    });
+
+    update();
+  </script>
+</body>
+
+</html>

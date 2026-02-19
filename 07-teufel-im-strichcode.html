@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Der Teufel im Strichcode</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Courier+Prime:wght@400;700&display=swap"
+    rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #111122;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      gap: 24px;
+    }
+
+    h1 {
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      opacity: 0.5;
+    }
+
+    /* CONTROLS */
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .controls button {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: rgba(255, 255, 255, 0.7);
+      padding: 10px 24px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.2s;
+    }
+
+    .controls button:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+    }
+
+    .controls .counter {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.4);
+      min-width: 55px;
+      text-align: center;
+      letter-spacing: 1px;
+    }
+
+    /* CAROUSEL */
+    .carousel-wrapper {
+      width: 540px;
+      height: 540px;
+      overflow: hidden;
+      border-radius: 4px;
+      position: relative;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    @media(max-width:580px) {
+      .carousel-wrapper {
+        width: 95vw;
+        height: 95vw;
+      }
+    }
+
+    /* PROGRESS BAR */
+    .progress-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 3px;
+      background: #ff6b6b;
+      transition: width 0.3s ease;
+      z-index: 20;
+    }
+
+    /* ALL SLIDES */
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 540px;
+      height: 540px;
+      overflow: hidden;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    @media(max-width:580px) {
+      .slide {
+        width: 95vw !important;
+        height: 95vw !important;
+      }
+    }
+
+    /* Branding & slide number */
+    .slide-num {
+      position: absolute;
+      bottom: 14px;
+      right: 16px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      opacity: 0.25;
+      z-index: 10;
+    }
+
+    .branding {
+      position: absolute;
+      bottom: 14px;
+      left: 16px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      opacity: 0.35;
+      z-index: 10;
+    }
+
+    /* Eyebrow */
+    .eyebrow {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: #ff6b6b;
+      margin-bottom: 16px;
+    }
+
+    /* SLIDE INNER */
+    .slide-inner {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 52px 48px;
+      position: relative;
+    }
+
+    /* DARK */
+    .dark-bg {
+      background: #1a1a2e;
+      color: #fff;
+    }
+
+    .dark-bg .slide-num {
+      color: rgba(255, 255, 255, 0.25);
+    }
+
+    .dark-bg .branding {
+      color: #fff;
+    }
+
+    .dark-bg h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 30px;
+      font-weight: 700;
+      line-height: 1.2;
+      color: #fff;
+      margin-bottom: 18px;
+    }
+
+    .dark-bg h2 em {
+      font-style: italic;
+      color: #ff6b6b;
+    }
+
+    .dark-bg p {
+      font-size: 15px;
+      line-height: 1.65;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    /* LIGHT */
+    .light-bg {
+      background: #faf9f6;
+      color: #1a1a2e;
+    }
+
+    .light-bg .slide-num {
+      color: rgba(26, 26, 46, 0.25);
+    }
+
+    .light-bg .branding {
+      color: #1a1a2e;
+    }
+
+    .light-bg h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.25;
+      color: #1a1a2e;
+      margin-bottom: 18px;
+    }
+
+    .light-bg h2 em {
+      font-style: italic;
+      color: #ff6b6b;
+    }
+
+    .light-bg p {
+      font-size: 14px;
+      line-height: 1.7;
+      color: rgba(26, 26, 46, 0.75);
+    }
+
+    /* Terminal */
+    .terminal {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      padding: 18px 20px;
+      margin-top: 18px;
+      font-family: 'Courier Prime', monospace;
+      font-size: 12px;
+      line-height: 1.85;
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    .terminal .prompt {
+      color: #ff6b6b;
+      margin-right: 8px;
+    }
+
+    .terminal .val {
+      color: #7ec8e3;
+    }
+
+    .terminal .comment {
+      color: rgba(255, 255, 255, 0.3);
+      font-style: italic;
+    }
+
+    .terminal .t-div {
+      color: rgba(255, 255, 255, 0.15);
+      margin: 6px 0;
+      display: block;
+    }
+
+    .terminal .highlight {
+      color: #ff6b6b;
+    }
+
+    /* Form box */
+    .form-box {
+      background: #fff;
+      border: 1px solid rgba(26, 26, 46, 0.1);
+      border-left: 3px solid #ff6b6b;
+      border-radius: 2px;
+      padding: 16px 18px;
+      margin-top: 18px;
+      font-family: 'Courier Prime', monospace;
+      font-size: 12px;
+      line-height: 1.8;
+    }
+
+    .form-box .fw {
+      margin-bottom: 10px;
+    }
+
+    .form-box .fw:last-child {
+      margin-bottom: 0;
+    }
+
+    .form-box .fl {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: rgba(26, 26, 46, 0.4);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .form-box .fv {
+      color: #1a1a2e;
+      font-weight: 700;
+    }
+
+    /* Big number */
+    .big-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 100px;
+      font-weight: 900;
+      line-height: 1;
+      color: #ff6b6b;
+      margin-bottom: 6px;
+    }
+
+    .big-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: rgba(255, 255, 255, 0.35);
+      margin-bottom: 22px;
+    }
+
+    /* ARTIKEL */
+    .artikel {
+      width: 540px;
+      font-family: 'DM Sans', sans-serif;
+      color: rgba(255, 255, 255, 0.8);
+      padding: 48px 0 80px;
+    }
+
+    @media(max-width:580px) {
+      .artikel {
+        width: 95vw;
+      }
+    }
+
+    .artikel .art-eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: #ff6b6b;
+      margin-bottom: 20px;
+    }
+
+    .artikel h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 30px;
+      font-weight: 900;
+      line-height: 1.2;
+      color: #fff;
+      margin-bottom: 28px;
+    }
+
+    .artikel .pull-quote {
+      border-left: 3px solid #ff6b6b;
+      padding: 14px 20px;
+      margin: 28px 0;
+      font-family: 'Playfair Display', serif;
+      font-size: 19px;
+      font-style: italic;
+      line-height: 1.45;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .artikel p {
+      font-size: 15px;
+      line-height: 1.8;
+      color: rgba(255, 255, 255, 0.65);
+      margin-bottom: 20px;
+    }
+
+    .artikel p:last-child {
+      margin-bottom: 0;
+    }
+
+    .artikel .art-divider {
+      width: 40px;
+      height: 2px;
+      background: #ff6b6b;
+      margin: 32px 0;
+    }
+
+    /* === PAGE HEADER (Kopfzeile) === */
+    .page-header {
+      width: 100%;
+      padding: 10px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.35);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      box-sizing: border-box;
+      position: relative;
+      z-index: 200;
+    }
+
+    .page-header-back {
+      color: rgba(255, 255, 255, 0.35);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .page-header-back:hover {
+      color: #ff6b6b;
+    }
+
+    .page-header-label {
+      font-style: italic;
+      font-family: 'Playfair Display', serif;
+      color: #ff6b6b;
+      opacity: 0.8;
+      margin-right: 6px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="page-header">
+    <a href="index.html" class="page-header-back">← Übersicht</a>
+    <span><span class="page-header-label">Gedanke 07</span>Der Teufel im Strichcode</span>
+  </div>
+
+  <div class="controls">
+    <button onclick="prev()">← Zurück</button>
+    <span class="counter" id="counter">1 / 8</span>
+    <button onclick="next()">Weiter →</button>
+  </div>
+
+  <div class="carousel-wrapper" id="carousel">
+    <div class="progress-bar" id="progressBar" style="width:12.5%"></div>
+
+    <!-- SLIDE 1: COVER -->
+    <div class="slide dark-bg active" id="slide-1">
+      <!-- Barcode decoration -->
+      <div
+        style="position:absolute;top:0;right:0;bottom:0;width:90px;display:flex;align-items:stretch;gap:0;opacity:0.06;z-index:0;">
+        <div style="flex:3;background:#ff6b6b;"></div>
+        <div style="flex:1;background:transparent;"></div>
+        <div style="flex:2;background:#ff6b6b;"></div>
+        <div style="flex:2;background:transparent;"></div>
+        <div style="flex:4;background:#ff6b6b;"></div>
+        <div style="flex:1;background:transparent;"></div>
+        <div style="flex:2;background:#ff6b6b;"></div>
+        <div style="flex:3;background:transparent;"></div>
+        <div style="flex:1;background:#ff6b6b;"></div>
+        <div style="flex:2;background:transparent;"></div>
+        <div style="flex:3;background:#ff6b6b;"></div>
+        <div style="flex:1;background:transparent;"></div>
+        <div style="flex:2;background:#ff6b6b;"></div>
+      </div>
+      <div class="slide-inner" style="justify-content:flex-end;">
+        <div class="eyebrow" style="position:relative;z-index:2;">Technologie / Angst</div>
+        <h2
+          style="position:relative;z-index:2;font-family:'Playfair Display',serif;font-size:42px;font-weight:900;line-height:1.1;color:#fff;margin-bottom:14px;">
+          Der <em style="font-style:italic;color:#ff6b6b;">Teufel</em><br>im Strichcode</h2>
+        <p style="position:relative;z-index:2;font-size:14px;max-width:360px;color:rgba(255,255,255,0.55);">Was drei
+          Begrenzungsstriche auf einer Cornflakes-Packung über unsere Angst vor Komplexität verraten.</p>
+      </div>
+      <div class="slide-num">01</div>
+      <div class="branding">gedankensplitter 007</div>
+    </div>
+
+    <!-- SLIDE 2: Das Gerücht -->
+    <div class="slide dark-bg" id="slide-2">
+      <div class="slide-inner">
+        <div class="eyebrow">Die These</div>
+        <h2>Drei Striche. <em>Ein Teufel.</em></h2>
+        <p style="margin-bottom:0;">Jeder EAN-Barcode hat Begrenzungsstriche am Anfang, in der Mitte und am Ende. Sie
+          sind etwas länger. Das reichte für eine Verschwörungstheorie, die seit 40 Jahren kursiert.</p>
+        <div class="terminal">
+          <div><span class="prompt">!</span> Begrenzungsstriche ähneln optisch dem Muster der Ziffer <span
+              class="val">6</span></div>
+          <div><span class="prompt">!</span> Drei davon → <span class="highlight">6-6-6</span> → Zahl des Teufels <span
+              class="comment">// Offenbarung 13,18</span></div>
+          <span class="t-div">────────────────────────────</span>
+          <div><span class="prompt">✗</span> Realität: Begrenzungsstriche sind <span class="val">keine Datenbits</span>
+          </div>
+          <div><span class="prompt">✗</span> Realität: Bitfolge ergibt <span class="val">keine 6</span>, geschweige denn
+            3×6</div>
+          <div><span class="prompt">✗</span> Realität: Solch ein Code wäre <span class="val">nicht lesbar</span></div>
+        </div>
+      </div>
+      <div class="slide-num">02</div>
+      <div class="branding">gedankensplitter 007</div>
+    </div>
+
+    <!-- SLIDE 3: Ursprung -->
+    <div class="slide light-bg" id="slide-3">
+      <div class="slide-inner">
+        <div class="eyebrow">1982 · Der Ursprung</div>
+        <h2>Eine Autorin, ein Buch, <em>eine Prophezeiung</em></h2>
+        <p>Die Theorie hat eine präzise Quelle. Mary Stewart Relfe veröffentlichte 1982 "The New Money System 666" — und
+          verband den gerade aufkommenden Barcode mit der Bibel.</p>
+        <div class="form-box">
+          <div class="fw"><span class="fl">Ihr Argument</span><span class="fv">Das Buch der Offenbarung prophezeit,
+              niemand kann kaufen oder verkaufen ohne das Zeichen des Tieres</span></div>
+          <div class="fw"><span class="fl">Ihr Beweis</span><span class="fv">Heute trägt jedes verkaufte Produkt der
+              Welt einen Barcode</span></div>
+          <div class="fw"><span class="fl">Ihr Fazit</span><span class="fv" style="color:#ff6b6b;">Ergo: Der Barcode ist
+              das Zeichen des Tieres</span></div>
+          <div class="fw"><span class="fl">Nebenbei</span><span class="fv" style="color:rgba(26,26,46,0.5);">Sie
+              behauptete auch, Sadat sei der Antichrist — er wurde im selben Jahr ermordet</span></div>
+        </div>
+      </div>
+      <div class="slide-num">03</div>
+      <div class="branding">gedankensplitter 007</div>
+    </div>
+
+    <!-- SLIDE 4: Strahlung -->
+    <div class="slide dark-bg" id="slide-4">
+      <div class="slide-inner">
+        <div class="eyebrow">Theorie 2 · Esoterik-Variante</div>
+        <h2>Keine 666. Aber <em>negative Energie.</em></h2>
+        <p style="margin-bottom:0;">Wer den Teufel für zu plump hielt, erfand eine zweite Variante: Strichcodes sind
+          Antennen.</p>
+        <div class="terminal">
+          <div><span class="prompt">→</span> Striche wirken wie <span class="val">Antennen</span> <span
+              class="comment">// "messbar mit der Wünschelrute"</span></div>
+          <div><span class="prompt">→</span> Sie laden Lebensmittel mit <span class="highlight">negativer Energie</span>
+            auf</div>
+          <div><span class="prompt">→</span> Einscannen an der Kasse: <span class="highlight">Verstärkungseffekt</span>
+          </div>
+          <span class="t-div">────────────────────────────</span>
+          <div><span class="prompt">✗</span> Bundesinstitut für Strahlenschutz: <span class="val">"wissenschaftlich in
+              keiner</span></div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="val">Weise nachvollziehbar"</span></div>
+          <div><span class="prompt">✗</span> Barcodes bestehen aus <span class="val">Druckerfarbe</span> <span
+              class="comment">// wie Buchstaben auch</span></div>
+        </div>
+      </div>
+      <div class="slide-num">04</div>
+      <div class="branding">gedankensplitter 007</div>
+    </div>
+
+    <!-- SLIDE 5: Big Number -->
+    <div class="slide dark-bg" id="slide-5">
+      <div class="slide-inner">
+        <div class="eyebrow">Das Geschäftsmodell</div>
+        <div class="big-number">1.250€</div>
+        <div class="big-label">Hildegard Orgonakkumulator</div>
+        <p>Ein über zehn Kilo schweres Tablett aus der Esoterik-Industrie. Man legt Lebensmittel nach dem Einkauf drauf
+          — und "entstört" die schädliche Barcode-Energie. Kein Witz.</p>
+        <p style="margin-top:10px;font-size:13px;color:rgba(255,255,255,0.3);">Einsteigerversion: "CodeEx
+          Barcode-Harmonizer" — ein Filzstift mit "energetisch informiertem Chip". ~10–50 €.</p>
+      </div>
+      <div class="slide-num">05</div>
+      <div class="branding">gedankensplitter 007</div>
+    </div>
+
+    <!-- SLIDE 6: Split - Hersteller -->
+    <div class="slide" id="slide-6" style="display:flex;">
+      <div
+        style="width:50%;height:100%;background:#1a1a2e;color:#fff;padding:40px 28px;display:flex;flex-direction:column;justify-content:center;border-right:1px solid rgba(255,107,107,0.25);">
+        <div
+          style="font-family:'DM Sans',sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,0.3);margin-bottom:12px;">
+          Die Angst der Kunden</div>
+        <div
+          style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#fff;line-height:1.2;margin-bottom:14px;">
+          Hersteller <em style="color:#ff6b6b;">spielen mit</em></div>
+        <div
+          style="font-family:'DM Sans',sans-serif;font-size:13px;line-height:1.6;color:rgba(255,255,255,0.6);margin-bottom:14px;">
+          Mehrere Bio-Hersteller drucken einen dünnen Querbalken über ihre Barcodes — der technisch nichts ändert, aber
+          Kunden beruhigt.</div>
+        <div
+          style="font-family:'Courier Prime',monospace;font-size:11px;line-height:1.7;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.08);padding:10px 12px;border-radius:3px;color:rgba(255,255,255,0.5);">
+          $ entstört = true<br><span style="color:#ff6b6b;">// macht: gar nichts</span><br><span
+            style="color:rgba(255,255,255,0.3);">// kostet: Gewissen</span></div>
+      </div>
+      <div
+        style="width:50%;height:100%;background:#faf9f6;color:#1a1a2e;padding:40px 28px;display:flex;flex-direction:column;justify-content:center;">
+        <div
+          style="font-family:'DM Sans',sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:rgba(26,26,46,0.35);margin-bottom:12px;">
+          Bekannte Fälle</div>
+        <div style="font-family:'Courier Prime',monospace;font-size:12px;line-height:2;color:#1a1a2e;">
+          <div><span style="color:#ff6b6b;margin-right:8px;">→</span>Rabenhorst <span
+              style="color:rgba(26,26,46,0.4);font-size:10px;">seit 2011</span></div>
+          <div><span style="color:#ff6b6b;margin-right:8px;">→</span>Sonnentor <span
+              style="color:rgba(26,26,46,0.4);font-size:10px;">zeitweise</span></div>
+          <div><span style="color:#ff6b6b;margin-right:8px;">→</span>Lammsbräu <span
+              style="color:rgba(26,26,46,0.4);font-size:10px;">Shitstorm 2016</span></div>
+        </div>
+        <div
+          style="margin-top:16px;font-family:'DM Sans',sans-serif;font-size:13px;line-height:1.65;color:rgba(26,26,46,0.6);">
+          Lammsbräu-Geschäftsführer: "Wenn wir das Wohlbefinden unserer Kunden mit einem einfachen Strich erhöhen
+          können, tun wir das gerne."</div>
+      </div>
+      <div class="slide-num" style="color:rgba(26,26,46,0.25);">06</div>
+      <div class="branding" style="color:#1a1a2e;">gedankensplitter 007</div>
+    </div>
+
+    <!-- SLIDE 7: Systemfrage -->
+    <div class="slide light-bg" id="slide-7">
+      <div class="slide-inner">
+        <div class="eyebrow">Das eigentliche Thema</div>
+        <h2>Nicht Dummheit. Sondern <em>Kontrollverlust.</em></h2>
+        <p>Barcode-Angst ist kein Randphänomen. Sie ist ein Symptom — für das, was passiert, wenn Technologie
+          undurchschaubar wird.</p>
+        <div class="form-box">
+          <div class="fw"><span class="fl">Das Muster</span><span class="fv">Komplexität erzeugt Kontrollverlust —
+              Kontrollverlust erzeugt Mythen</span></div>
+          <div class="fw"><span class="fl">Die Lösung</span><span class="fv">Einfache Erklärungen, klare Schuldige,
+              handhabbare Rituale</span></div>
+          <div class="fw"><span class="fl">Das Paradoxon</span><span class="fv" style="color:#ff6b6b;">Je mehr Fakten,
+              desto fester der Glaube — Überzeugungen sind immun gegen Widerlegung</span></div>
+          <div class="fw"><span class="fl">Historisch</span><span class="fv" style="color:rgba(26,26,46,0.5);">Gleiches
+              Muster bei Eisenbahn, Elektrizität, Radio, Mobilfunk, 5G</span></div>
+        </div>
+      </div>
+      <div class="slide-num">07</div>
+      <div class="branding">gedankensplitter 007</div>
+    </div>
+
+    <!-- SLIDE 8: FINALE -->
+    <div class="slide dark-bg" id="slide-8">
+      <div
+        style="position:absolute;bottom:-100px;left:50%;transform:translateX(-50%);width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(255,107,107,0.07) 0%,transparent 70%);pointer-events:none;z-index:0;">
+      </div>
+      <div class="slide-inner" style="align-items:center;text-align:center;justify-content:center;">
+        <div class="eyebrow" style="position:relative;z-index:2;">Fazit</div>
+        <h2
+          style="position:relative;z-index:2;font-family:'Playfair Display',serif;font-size:27px;font-weight:900;font-style:italic;color:#fff;line-height:1.2;max-width:380px;margin-bottom:0;">
+          Der Teufel steckt nicht im Strichcode. Er steckt in der Komplexität, die wir nicht aushalten.</h2>
+        <div style="position:relative;z-index:2;width:40px;height:2px;background:#ff6b6b;margin:20px auto;"></div>
+        <p style="position:relative;z-index:2;max-width:380px;">Druckerfarbe ist keine Antenne. Drei Begrenzungsstriche
+          sind keine 666. Aber das Bedürfnis nach Kontrolle — das ist real. Und Mythen sind, historisch betrachtet, eine
+          perfekt funktionierende Antwort darauf.</p>
+        <div
+          style="position:relative;z-index:2;margin-top:28px;font-family:'DM Sans',sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,0.3);">
+          Welche Technologie macht dir heute Angst?</div>
+      </div>
+      <div class="slide-num">08</div>
+      <div class="branding">gedankensplitter 007</div>
+    </div>
+
+  </div><!-- /carousel-wrapper -->
+
+  <!-- ARTIKEL -->
+  <div class="artikel">
+    <div class="art-eyebrow">Technologie / Angst / Esoterik</div>
+    <h2>Der Teufel im Strichcode</h2>
+
+    <p>Die Geschichte beginnt mit drei Strichen. Nicht irgendwelchen — den Begrenzungsstrichen am Anfang, in der Mitte
+      und am Ende jedes EAN-Barcodes. Sie sind etwas länger als der Rest. Und genau das ist ihr Verhängnis.</p>
+
+    <div class="pull-quote">„Barcodes bestehen aus Druckerfarbe. Genauso wie Buchstaben."</div>
+
+    <p>1982 veröffentlichte die amerikanische Autorin Mary Stewart Relfe das Buch "The New Money System 666". Ihre
+      These: Jeder Barcode codiere die Zahl des Teufels. Die Begrenzungsstriche ähnelten optisch dem Muster der Ziffer 6
+      — und da es drei davon gäbe: 666. Das Buch der Offenbarung hatte schließlich prophezeit, dass niemand kaufen oder
+      verkaufen kann ohne das Zeichen des Tieres. Und tatsächlich — trägt heute nicht jedes Produkt der Welt einen
+      Strichcode?</p>
+
+    <p>Das Problem: Die These ist technisch falsch. Die Begrenzungsstriche sind kein Teil des codierten Dateninhalts —
+      sie sind Orientierungsmarker für das Lesegerät. Und selbst wenn man sie wie Datenbits interpretieren würde, ergibt
+      die Bitfolge keine 6, und schon gar nicht dreimal die gleiche Zahl. Ein Barcode, der tatsächlich 666 enthielte,
+      wäre schlicht nicht lesbar.</p>
+
+    <p>Aber Fakten lösen keine Ängste.</p>
+
+    <div class="art-divider"></div>
+
+    <p>Parallel zur 666-Theorie entwickelte sich eine zweite, eher in der Esoterik-Szene verbreitete Variante:
+      Strichcodes seien Antennen. Sie würden Strahlung aus der Umgebung aufnehmen — negative Energie — und diese auf die
+      Lebensmittel übertragen. Besonders schlimm: der Moment des Einscannens an der Kasse, wenn der Laserstrahl den Code
+      trifft. Das Bundesinstitut für Strahlenschutz hat dazu eine klare Position. Es ist wissenschaftlich in keiner
+      Weise nachvollziehbar.</p>
+
+    <p>Nachvollziehbar ist dagegen das Geschäftsmodell, das sich daraus entwickelt hat. Für rund 10 Euro gibt es den
+      "CodeEx Barcode-Harmonizer" — ein gewöhnlicher Filzstift mit "energetisch informiertem Chip", mit dem man Barcodes
+      durchstreichen kann. Für 1.250 Euro den "Hildegard Orgonakkumulator" — ein über zehn Kilo schweres Tablett, auf
+      das man Lebensmittel nach dem Einkauf legt, um sie zu "entstören".</p>
+
+    <div class="pull-quote">„Wenn wir das Wohlbefinden unserer Kunden mit einem einfachen Strich erhöhen können, tun wir
+      das gerne."<br><span style="font-size:13px;font-style:normal;opacity:0.6;">— Lammsbräu-Geschäftsführer,
+        2016</span></div>
+
+    <p>Das Faszinierende ist nicht die Theorie selbst — es ist die Reaktion der Industrie. Safthersteller Rabenhorst
+      zieht seit 2011 einen dünnen Querbalken über seine Barcodes. Sonnentor tat es zeitweise. Lammsbräu geriet 2016 in
+      einen öffentlichen Sturm, als sie es kommunizierten. Der Querbalken macht technisch nichts — aber er beruhigt. Und
+      das reicht.</p>
+
+    <div class="art-divider"></div>
+
+    <p>Was steckt dahinter? Keine Dummheit. Sondern ein tiefes, sehr menschliches Muster: Wenn Technologie
+      undurchschaubar wird, suchen wir Erklärungen, die wir verstehen können. Ein Strich ist keine Ziffer. Druckerfarbe
+      ist keine Antenne. Aber das Gefühl des Kontrollverlusts gegenüber einer Welt voller Codes, Scannern und
+      unsichtbaren Systemen — das ist real.</p>
+
+    <p>Und Mythen sind, historisch betrachtet, eine perfekt funktionierende Antwort darauf. Eisenbahn, Elektrizität,
+      Radio, Mobilfunk, 5G — jede neue Technologie hat ihre eigene Generation von Ängsten und Entstörritualen erzeugt.
+      Der Barcode ist nur ein besonders klares Beispiel, weil das Objekt so banal ist und die Reaktion so präzise
+      beobachtbar.</p>
+
+    <p>Der Teufel steckt nicht im Strichcode. Er steckt in der Komplexität, die wir nicht aushalten.</p>
+  </div>
+
+  <script>
+    const total = 8;
+    let current = 1;
+
+    function update() {
+      document.querySelectorAll('#carousel > .slide').forEach((s, i) => {
+        s.classList.toggle('active', i + 1 === current);
+      });
+      document.getElementById('counter').textContent = current + ' / ' + total;
+      document.getElementById('progressBar').style.width = (current / total * 100) + '%';
+    }
+
+    function next() { if (current < total) { current++; update(); } }
+    function prev() { if (current > 1) { current--; update(); } }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight') next();
+      if (e.key === 'ArrowLeft') prev();
+    });
+
+    let startX = 0;
+    const cw = document.getElementById('carousel');
+    cw.addEventListener('touchstart', e => { startX = e.touches[0].clientX; });
+    cw.addEventListener('touchend', e => {
+      const diff = startX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 40) diff > 0 ? next() : prev();
+    });
+
+    update();
+  </script>
+</body>
+
+</html>
