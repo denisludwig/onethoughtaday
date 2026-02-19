@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Die 100-Milliarden-Wette — gedankensplitter</title>
   <link
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@400;500;700&family=Courier+Prime:wght@400;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Courier+Prime:wght@400;700&display=swap"
     rel="stylesheet">
   <style>
     * {
@@ -56,10 +56,8 @@
     }
 
     .carousel-wrapper {
-      width: 100%;
-      max-width: 540px;
-      aspect-ratio: 1/1;
-      height: auto;
+      width: 540px;
+      height: 540px;
       overflow: hidden;
       border-radius: 4px;
       position: relative;
@@ -68,8 +66,8 @@
     }
 
     .slide {
-      width: 100%;
-      height: 100%;
+      width: 540px;
+      height: 540px;
       position: absolute;
       top: 0;
       left: 0;
@@ -193,8 +191,7 @@
     }
 
     .progress-bar {
-      width: 100%;
-      max-width: 540px;
+      width: 540px;
       height: 4px;
       background: rgba(255, 255, 255, 0.1);
       border-radius: 0 0 4px 4px;
@@ -208,78 +205,72 @@
       transition: width 0.3s;
     }
 
-    /* Mobile Optimization */
-    @media (max-width: 580px) {
-      .content {
-        padding: 30px 25px;
-      }
-
-      h2 {
-        font-size: 24px !important;
-        margin-bottom: 15px;
-      }
-
-      .body {
-        font-size: 14px;
-        line-height: 1.5;
-      }
-
-      .quote-box {
-        font-size: 13px;
-        padding: 15px;
-      }
-
-      .branding,
-      .slide-num {
-        bottom: 15px;
-      }
-
-      .branding {
-        left: 25px;
-      }
-
-      .slide-num {
-        right: 25px;
-      }
+    /* --- BASISARTIKEL STYLE (from 08-...) --- */
+    article {
+      max-width: 540px;
+      background: #fff;
+      color: #333;
+      padding: 60px 40px;
+      margin-top: 40px;
+      border-radius: 4px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     }
-  
-    /* === PAGE HEADER (Kopfzeile) === */
-    .page-header {
-      width: 100%;
-      padding: 10px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+
+    .article-eyebrow {
       font-family: 'DM Sans', sans-serif;
-      font-size: 13px;
-      color: rgba(255, 255, 255, 0.35);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-      box-sizing: border-box;
-      position: relative;
-      z-index: 200;
-    }
-    .page-header-back {
-      color: rgba(255, 255, 255, 0.35);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .page-header-back:hover { color: #ff6b6b; }
-    .page-header-label {
-      font-style: italic;
-      font-family: 'Playfair Display', serif;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
       color: #ff6b6b;
-      opacity: 0.8;
-      margin-right: 6px;
+      font-weight: 700;
+      margin-bottom: 10px;
     }
-</style>
+
+    .article-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      font-weight: 900;
+      line-height: 1.1;
+      color: #1a1a2e;
+      margin-bottom: 30px;
+    }
+
+    .article-intro {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 19px;
+      line-height: 1.6;
+      color: #1a1a2e;
+      font-weight: 500;
+      margin-bottom: 40px;
+      padding-bottom: 30px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .article-body h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      margin: 35px 0 15px 0;
+      color: #1a1a2e;
+    }
+
+    .article-body p {
+      font-size: 16px;
+      line-height: 1.8;
+      margin-bottom: 20px;
+      color: #444;
+    }
+
+    .article-closing {
+      margin-top: 50px;
+      font-size: 12px;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+  </style>
 </head>
 
 <body>
-
-<div class="page-header">
-  <a href="index.html" class="page-header-back">← Übersicht</a>
-  <span><span class="page-header-label">Gedanke 03</span>Die 100-Milliarden-Dollar-Wette</span>
-</div>
 
   <div class="controls">
     <button onclick="prev()">←</button>
@@ -317,7 +308,8 @@
         <div class="eyebrow">Das Geschäftsmodell</div>
         <h2>Ersetzen statt Ergänzen</h2>
         <p class="body">Damit diese Wette aufgeht, darf KI nicht nur „helfen“. Sie muss hochbezahlte Jobs komplett
-          <strong>autonom erledigen</strong>.<br><br>Dein Gehalt von heute ist das Cloud-Abo von morgen.</p>
+          <strong>autonom erledigen</strong>.<br><br>Dein Gehalt von heute ist das Cloud-Abo von morgen.
+        </p>
       </div>
       <div class="branding">gedankensplitter</div>
       <div class="slide-num">03/12</div>
@@ -375,7 +367,8 @@
         <div class="eyebrow">Die Übergangsphase</div>
         <h2>Das „Trauma“ dazwischen</h2>
         <p class="body">Sam Altman gibt zu: Der Weg wird traumatisch. Es klafft eine Lücke von 10–20 Jahren zwischen
-          <strong>Jobverlust und Überfluss</strong>.<br><br>Wer überlebt diese Durststrecke?</p>
+          <strong>Jobverlust und Überfluss</strong>.<br><br>Wer überlebt diese Durststrecke?
+        </p>
       </div>
       <div class="branding">gedankensplitter</div>
       <div class="slide-num">08/12</div>
@@ -419,7 +412,8 @@
       <div class="content" style="text-align: center; justify-content: center;">
         <h2 style="font-size: 28px;">Größter Crash oder größte Befreiung?</h2>
         <p class="body">Was ist dein Plan B für eine Welt, in der Intelligenz nichts mehr
-          kostet?<br><br><strong>Diskutier mit uns!</strong></p>
+          kostet?<br><br><strong>Diskutier
+            mit uns!</strong></p>
       </div>
       <div class="branding">gedankensplitter</div>
       <div class="slide-num">12/12</div>
@@ -429,6 +423,52 @@
   <div class="progress-bar">
     <div class="fill" id="progress"></div>
   </div>
+
+  <article>
+    <div class="article-eyebrow">Analyse & Tiefgang</div>
+    <h1 class="article-title">Das Silicon-Valley-Paradoxon: Warum wir KI neu denken müssen</h1>
+
+    <div class="article-intro">
+      Wir erleben gerade den größten Kapitaltransfer der Geschichte. Während das Silicon Valley hunderte Milliarden in
+      eine Zukunft investiert, in der menschliche Arbeit optional wird, versuchen wir das Problem mit Rezepten aus dem
+      letzten Jahrhundert zu lösen. Es wird Zeit für ein System-Update.
+    </div>
+
+    <div class="article-body">
+      <p>Es ist ein offenes Geheimnis: Damit Firmen wie OpenAI ihre astronomischen Investitionen rechtfertigen können,
+        muss KI mehr als nur ein „Assistent“ sein. Das Geschäftsmodell basiert darauf, menschliche Wertschöpfungsketten
+        in digitale Abonnements zu verwandeln. Was früher ein Team von Anwälten, Programmieren oder Analysten war, wird
+        zu einer API-Schnittstelle. Das Problem dabei ist nicht nur die technologische Disruption, sondern die
+        ökonomische Logik dahinter.</p>
+
+      <h3>Die Falle der digitalen Kolonie</h3>
+      <p>Europa befindet sich in einer gefährlichen Position. Wir nutzen die Tools der USA, lassen sie auf Infrastruktur
+        laufen, die uns nicht gehört, und füttern die Modelle mit unseren Daten. Das Ergebnis ist eine „digitale
+        Kolonialisierung“. Die Produktivität mag zwar steigen, aber der daraus resultierende Wohlstand verlässt den
+        Kontinent in Richtung der großen Tech-Plattformen. Hier bleiben lediglich die sozialen Kosten der Umwälzung
+        hängen.</p>
+
+      <h3>Warum die „Aktienrente“ ins Leere läuft</h3>
+      <p>Oft wird geraten, die Menschen sollten mehr Verantwortung übernehmen und privat in Aktien vorsorgen. Doch diese
+        Logik ignoriert das fundamentale Kaufkraft-Paradoxon: Wenn KI massenhaft hochbezahlte Jobs ersetzt, wer soll
+        dann die Produkte kaufen, die diese hocheffizienten Unternehmen herstellen? Ein Finanzmarkt ohne Konsumenten ist
+        ein Kartenhaus. Wer kein Einkommen hat, kann nicht sparen – und wer nicht konsumiert, entzieht dem Kapitalmarkt
+        seine Basis.</p>
+
+      <h3>BGE als ökonomische Notwendigkeit</h3>
+      <p>Das Bedingungslose Grundeinkommen (BGE) wird in diesem Kontext von einer utopischen Idee zu einer harten
+        wirtschaftlichen Notwendigkeit. Es geht nicht um Almosen, sondern um die Frage, wie ein kapitalistisches System
+        überhaupt noch funktionieren kann, wenn die „Arbeit“ fast vollständig automatisiert ist. Wir brauchen eine
+        Steuerbasis, die nicht mehr bei der menschlichen Arbeitszeit ansetzt, sondern bei der automatisierten
+        Wertschöpfung – eine KI-Abgabe für jede produktive Rechenminute.</p>
+
+      <p>Wir stehen an einer Kreuzung: Entweder wir akzeptieren die totale Abhängigkeit von einer globalisierten
+        Technikwelt, oder wir fangen an, digitale Souveränität und neue Verteilungsmodelle als das zu begreifen, was sie
+        sind – die Überlebensstrategie für unsere Gesellschaft.</p>
+    </div>
+
+    <p class="article-closing">gedankensplitter &nbsp;·&nbsp; Februar 2026</p>
+  </article>
 
   <script>
     let current = 1;
