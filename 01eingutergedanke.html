@@ -644,7 +644,7 @@
         margin-top: 20px;
       }
     }
-  
+
     /* === PAGE HEADER (Kopfzeile) === */
     .page-header {
       width: 100%;
@@ -660,12 +660,17 @@
       position: relative;
       z-index: 200;
     }
+
     .page-header-back {
       color: rgba(255, 255, 255, 0.35);
       text-decoration: none;
       transition: color 0.2s;
     }
-    .page-header-back:hover { color: #ff6b6b; }
+
+    .page-header-back:hover {
+      color: #ff6b6b;
+    }
+
     .page-header-label {
       font-style: italic;
       font-family: 'Playfair Display', serif;
@@ -673,16 +678,123 @@
       opacity: 0.8;
       margin-right: 6px;
     }
-</style>
+
+    /* === ARTIKEL === */
+    .artikel {
+      width: 100%;
+      max-width: 540px;
+      color: rgba(255, 255, 255, 0.75);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.8;
+      padding-bottom: 80px;
+      margin-top: 40px;
+    }
+
+    .artikel-header {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 40px;
+      margin-bottom: 32px;
+    }
+
+    .artikel-eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: #ff6b6b;
+      margin-bottom: 14px;
+    }
+
+    .artikel-titel {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.2;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+
+    .artikel-intro {
+      font-size: 15px;
+      line-height: 1.75;
+      color: rgba(255, 255, 255, 0.45);
+      font-style: italic;
+      border-left: 2px solid rgba(255, 107, 107, 0.35);
+      padding-left: 16px;
+      margin-bottom: 32px;
+    }
+
+    .artikel p {
+      margin-bottom: 20px;
+      color: rgba(255, 255, 255, 0.65);
+    }
+
+    .artikel p strong {
+      color: rgba(255, 255, 255, 0.9);
+      font-weight: 600;
+    }
+
+    .artikel h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      margin: 36px 0 14px;
+      line-height: 1.3;
+    }
+
+    .artikel h3 em {
+      font-style: italic;
+      color: #ff6b6b;
+    }
+
+    .pull-quote {
+      margin: 32px 0;
+      padding: 20px 24px;
+      border-left: 3px solid #ff6b6b;
+      background: rgba(255, 107, 107, 0.05);
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      font-style: italic;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    .artikel-divider {
+      width: 40px;
+      height: 2px;
+      background: rgba(255, 107, 107, 0.4);
+      margin: 36px 0;
+    }
+
+    .artikel-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.35);
+      border-top: 1px solid rgba(255, 255, 255, 0.07);
+      padding-top: 20px;
+      margin-top: 60px;
+    }
+
+    @media(max-width:580px) {
+      .artikel {
+        width: 95vw;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="page-header">
-  <a href="index.html" class="page-header-back">← Übersicht</a>
-  <span><span class="page-header-label">Gedanke 01</span>Ein guter Gedanke</span>
-</div>
-<div class="controls">
+  <div class="page-header">
+    <a href="index.html" class="page-header-back">← Übersicht</a>
+    <span><span class="page-header-label">Gedanke 01</span>Ein guter Gedanke</span>
+  </div>
+  <div class="controls">
     <button onclick="prev()">← Zurück</button>
     <span class="counter" id="counter">1 / 6</span>
     <button onclick="next()">Weiter →</button>
@@ -703,7 +815,7 @@
         </p>
       </div>
       <span class="slide-num">01 / 06</span>
-      <span class="branding">gedankensplitter</span>
+      <span class="branding">gedankensplitter 001</span>
     </div>
 
     <!-- Slide 2: Problem Statement -->
@@ -731,7 +843,7 @@
         </div>
       </div>
       <span class="slide-num">02 / 06</span>
-      <span class="branding">gedankensplitter</span>
+      <span class="branding">gedankensplitter 001</span>
     </div>
 
     <!-- Slide 3: The Math -->
@@ -763,7 +875,7 @@
         </div>
       </div>
       <span class="slide-num">03 / 06</span>
-      <span class="branding">gedankensplitter</span>
+      <span class="branding">gedankensplitter 001</span>
     </div>
 
     <!-- Slide 4: Why it happens -->
@@ -791,7 +903,7 @@
         </div>
       </div>
       <span class="slide-num">04 / 06</span>
-      <span class="branding">gedankensplitter</span>
+      <span class="branding">gedankensplitter 001</span>
     </div>
 
     <!-- Slide 5: Solution -->
@@ -817,7 +929,7 @@
         </div>
       </div>
       <span class="slide-num">05 / 06</span>
-      <span class="branding">gedankensplitter</span>
+      <span class="branding">gedankensplitter 001</span>
     </div>
 
     <!-- Slide 6: CTA -->
@@ -835,7 +947,7 @@
         </div>
       </div>
       <span class="slide-num">06 / 06</span>
-      <span class="branding">gedankensplitter</span>
+      <span class="branding">gedankensplitter 001</span>
     </div>
 
   </div>
@@ -845,6 +957,68 @@
   </div>
 
   <p class="nav-hint">Pfeiltasten ← → oder Swipe zum Navigieren</p>
+
+  <article class="artikel">
+
+    <div class="artikel-header">
+      <div class="artikel-eyebrow">Gedankensplitter 001 · Innovation / Kultur</div>
+      <div class="artikel-titel">Ein guter Gedanke</div>
+    </div>
+
+    <div class="artikel-intro">
+      Montag, 6:47 Uhr. Fast hätte ich sie verloren. Auf dem Weg ins Büro hatte ich drei richtig gute Gedanken. Dann:
+      erster Kaffee, erstes Meeting, erste Mail – und fast wären sie weg gewesen. Nur weil ich sie gerade noch schnell
+      notiert habe, kann ich heute damit arbeiten.
+    </div>
+
+    <h3>Das Phänomen: Die Tyrannei des Tagesgeschäfts</h3>
+
+    <p>Aber jetzt die unangenehme Frage: Wie viele gute Ideen gehen eigentlich täglich in unseren Organisationen
+      verloren?</p>
+
+    <p>Wir reden ständig von Innovation, Agilität, Transformation. Aber wir haben keine Systeme, um die wertvollsten
+      Ressourcen zu bewahren: die Gedanken unserer Menschen in den Momenten, wo sie denken statt abarbeiten.</p>
+
+    <div class="pull-quote">
+      Was wäre, wenn wir Organisationen bauen, die Ideen genauso ernst nehmen wie Deadlines?
+    </div>
+
+    <h3>Eine Milchmädchenrechnung</h3>
+
+    <p>Lass uns das mal konservativ schätzen. Jeder Wissensarbeiter hat durchschnittlich 2-3 wertvolle Gedanken pro
+      Woche (montags nach Reflexionsphasen oft mehr).</p>
+
+    <p>Bei 50 Mitarbeitenden sind das etwa 125 Ideen pro Woche. Davon gehen schätzungsweise 70-80% verloren. Das sind
+      rund 100 verlorene Impulse pro Woche.</p>
+
+    <p><strong>Pro Jahr: ~5.000 potenzielle Innovationsansätze, die im Nichts verpuffen.</strong></p>
+
+    <h3>Warum passiert das?</h3>
+
+    <p>Der Übergang vom "Denk-Modus" (Wochenende, Weg zur Arbeit) zum "Exekutiv-Modus" (Büro) ist brutal. Es gibt keine
+      Strukturen zum "Ideen-Andocken". Operative Hektik wird kulturell über strategisches Denken gestellt. Und unsere
+      Tools sind auf Aufgaben, nicht auf Gedanken ausgerichtet.</p>
+
+    <p>Der Montag-Morgen im Zug. Die Dusche. Der Spaziergang. Genau da entstehen die Ideen, die Organisationen
+      voranbringen. Und genau da verlieren wir sie.</p>
+
+    <div class="artikel-divider"></div>
+
+    <h3>Der Ausblick: KI als "Gedächtnis-Prothese"</h3>
+
+    <p>Hier wird KI tatsächlich zum Game-Changer – nicht als Ersatz fürs Denken, sondern als Katalysator.</p>
+
+    <p>Voice-to-Text im Auto oder Zug erfasst spontane Gedanken. KI sortiert, clustert und erinnert zur richtigen Zeit.
+      Aus fragmentierten Montags-Gedanken werden so durchdachte Freitags-Konzepte.</p>
+
+    <p>Die gute Nachricht: Das ist lösbar. Nicht mit mehr Meetings oder Brainstorming-Sessions. Sondern mit einfachen
+      Strukturen, die Gedanken einfangen, bevor das Tagesgeschäft sie verschluckt.</p>
+
+    <p>Organisationen, die das systematisieren, werden einen enormen Wettbewerbsvorteil haben.</p>
+
+    <div class="artikel-meta">gedankensplitter 001 · Ein guter Gedanke</div>
+
+  </article>
 
   <script>
     let current = 1;
