@@ -702,7 +702,7 @@
         font-size: 20px;
       }
     }
-  
+
     /* === PAGE HEADER (Kopfzeile) === */
     .page-header {
       width: 100%;
@@ -718,12 +718,17 @@
       position: relative;
       z-index: 200;
     }
+
     .page-header-back {
       color: rgba(255, 255, 255, 0.35);
       text-decoration: none;
       transition: color 0.2s;
     }
-    .page-header-back:hover { color: #ff6b6b; }
+
+    .page-header-back:hover {
+      color: #ff6b6b;
+    }
+
     .page-header-label {
       font-style: italic;
       font-family: 'Playfair Display', serif;
@@ -731,16 +736,123 @@
       opacity: 0.8;
       margin-right: 6px;
     }
-</style>
+
+    /* === ARTIKEL === */
+    .artikel {
+      width: 100%;
+      max-width: 540px;
+      color: rgba(255, 255, 255, 0.75);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.8;
+      padding-bottom: 80px;
+      margin-top: 40px;
+    }
+
+    .artikel-header {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 40px;
+      margin-bottom: 32px;
+    }
+
+    .artikel-eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: #ff6b6b;
+      margin-bottom: 14px;
+    }
+
+    .artikel-titel {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.2;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+
+    .artikel-intro {
+      font-size: 15px;
+      line-height: 1.75;
+      color: rgba(255, 255, 255, 0.45);
+      font-style: italic;
+      border-left: 2px solid rgba(255, 107, 107, 0.35);
+      padding-left: 16px;
+      margin-bottom: 32px;
+    }
+
+    .artikel p {
+      margin-bottom: 20px;
+      color: rgba(255, 255, 255, 0.65);
+    }
+
+    .artikel p strong {
+      color: rgba(255, 255, 255, 0.9);
+      font-weight: 600;
+    }
+
+    .artikel h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      margin: 36px 0 14px;
+      line-height: 1.3;
+    }
+
+    .artikel h3 em {
+      font-style: italic;
+      color: #ff6b6b;
+    }
+
+    .pull-quote {
+      margin: 32px 0;
+      padding: 20px 24px;
+      border-left: 3px solid #ff6b6b;
+      background: rgba(255, 107, 107, 0.05);
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      font-style: italic;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    .artikel-divider {
+      width: 40px;
+      height: 2px;
+      background: rgba(255, 107, 107, 0.4);
+      margin: 36px 0;
+    }
+
+    .artikel-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.35);
+      border-top: 1px solid rgba(255, 255, 255, 0.07);
+      padding-top: 20px;
+      margin-top: 60px;
+    }
+
+    @media(max-width:580px) {
+      .artikel {
+        width: 95vw;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="page-header">
-  <a href="index.html" class="page-header-back">← Übersicht</a>
-  <span><span class="page-header-label">Gedanke 02</span>Was wenn Europa KI erfunden hätte?</span>
-</div>
-<div class="controls">
+  <div class="page-header">
+    <a href="index.html" class="page-header-back">← Übersicht</a>
+    <span><span class="page-header-label">Gedanke 02</span>Was wenn Europa KI erfunden hätte?</span>
+  </div>
+  <div class="controls">
     <button onclick="prev()">← Zurück</button>
     <span class="counter" id="counter">1 / 12</span>
     <button onclick="next()">Weiter →</button>
@@ -765,7 +877,7 @@
         </p>
       </div>
       <span class="slide-num">01 / 12</span>
-      <span class="branding">gedankensplitter</span>
+      <span class="branding">gedankensplitter 002</span>
     </div>
 
     <!-- S2: TRAININGSDATEN – REALITÄT -->
@@ -787,7 +899,7 @@
         </div>
       </div>
       <span class="slide-num">02 / 12</span>
-      <span class="branding">gedankensplitter</span>
+      <span class="branding">gedankensplitter 002</span>
     </div>
 
     <!-- S3: TRAININGSDATEN – EUROPA -->
@@ -813,7 +925,7 @@
         </div>
       </div>
       <span class="slide-num">03 / 12</span>
-      <span class="branding">gedankensplitter</span>
+      <span class="branding">gedankensplitter 002</span>
     </div>
 
     <!-- S4: LAUNCH – REALITÄT -->
@@ -835,7 +947,7 @@
         </div>
       </div>
       <span class="slide-num">04 / 12</span>
-      <span class="branding">gedankensplitter</span>
+      <span class="branding">gedankensplitter 002</span>
     </div>
 
     <!-- S5: LAUNCH – EUROPA -->
@@ -854,7 +966,7 @@
         <div class="launch-date">Launch-Datum: Wird noch festgelegt.<br>Voraussichtlich Q3 / 2089.</div>
       </div>
       <span class="slide-num">05 / 12</span>
-      <span class="branding">gedankensplitter</span>
+      <span class="branding">gedankensplitter 002</span>
     </div>
 
     <!-- S6: PRODUKT – REALITÄT -->
@@ -876,7 +988,7 @@
         </div>
       </div>
       <span class="slide-num">06 / 12</span>
-      <span class="branding">gedankensplitter</span>
+      <span class="branding">gedankensplitter 002</span>
     </div>
 
     <!-- S7: PRODUKT – EUROPA (Feudalismus) -->
@@ -901,7 +1013,7 @@
         </div>
       </div>
       <span class="slide-num">07 / 12</span>
-      <span class="branding">gedankensplitter</span>
+      <span class="branding">gedankensplitter 002</span>
     </div>
 
     <!-- S8: FEHLER – REALITÄT -->
@@ -922,7 +1034,7 @@
         </div>
       </div>
       <span class="slide-num">08 / 12</span>
-      <span class="branding">gedankensplitter</span>
+      <span class="branding">gedankensplitter 002</span>
     </div>
 
     <!-- S9: FEHLER – EUROPA -->
@@ -948,7 +1060,7 @@
         </div>
       </div>
       <span class="slide-num">09 / 12</span>
-      <span class="branding">gedankensplitter</span>
+      <span class="branding">gedankensplitter 002</span>
     </div>
 
     <!-- S10: ZEITSTRAHL -->
@@ -978,7 +1090,7 @@
         </div>
       </div>
       <span class="slide-num">10 / 12</span>
-      <span class="branding">gedankensplitter</span>
+      <span class="branding">gedankensplitter 002</span>
     </div>
 
     <!-- S11: POINTE -->
@@ -998,7 +1110,7 @@
         </div>
       </div>
       <span class="slide-num" style="color:rgba(255,255,255,0.2);">11 / 12</span>
-      <span class="branding">gedankensplitter</span>
+      <span class="branding">gedankensplitter 002</span>
     </div>
 
     <!-- S12: SPLIT CTA -->
@@ -1033,7 +1145,7 @@
         </div>
       </div>
       <span class="slide-num" style="color:rgba(255,255,255,0.2);">12 / 12</span>
-      <span class="branding">gedankensplitter</span>
+      <span class="branding">gedankensplitter 002</span>
     </div>
 
   </div>
@@ -1043,6 +1155,72 @@
   </div>
 
   <p class="nav-hint">Pfeiltasten ← → oder Swipe zum Navigieren</p>
+
+  <article class="artikel">
+
+    <div class="artikel-header">
+      <div class="artikel-eyebrow">Gedankensplitter 002 · Technologie / Kultur</div>
+      <div class="artikel-titel">Was wenn Europa KI erfunden hätte?</div>
+    </div>
+
+    <div class="artikel-intro">
+      Die echte Geschichte der Künstlichen Intelligenz ist eine Story des »Erstmal machen, dann fragen« – in einem
+      Ausmaß, das jeden europäischen Compliance-Beauftragten in Ohnmacht fallen lassen würde.
+    </div>
+
+    <h3>Die Piraten vs. Die Bürokraten</h3>
+
+    <p>Die Faktenlage ist eindeutig: OpenAI hat nachweislich massenhaft urheberrechtlich geschütztes Material zum
+      Training genutzt. Ein Mitarbeiter lud 2018 ganze Bibliotheken von der Piratenseite Library Genesis herunter. Als
+      Klagen drohten, wurden die Datensätze gelöscht – offiziell natürlich »aufgrund von Nicht-Nutzung«.</p>
+
+    <p>Hätte Europa KI erfunden, wäre das anders gelaufen. Bevor auch nur ein Wort trainiert worden wäre, hätte jeder
+      einzelne Urheber persönlich angeschrieben werden müssen. Formular 27b/6, dreifach, mit Apostille. Geschätzte
+      Bearbeitungszeit: 847 Jahre.</p>
+
+    <div class="pull-quote">
+      Die europäische KI wäre nicht ChatGPT für alle, sondern ein B2B-Tool für zertifizierte Anwender mit
+      Schulungsnachweis.
+    </div>
+
+    <h3>Governance: Chaos vs. Gremium</h3>
+
+    <p>OpenAI startete als Non-Profit, um »der Menschheit zu dienen«, und wurde dann ein 500-Milliarden-Dollar-Gigant.
+      Der CEO wurde gefeuert, kam per Mitarbeiter-Revolte zurück, das Board wusste nicht mal vom ChatGPT-Launch. In
+      Europa hätte allein das einen dreijährigen Untersuchungsausschuss ausgelöst.</p>
+
+    <p>Unsere Haltung ist eine andere: <strong>Wir regulieren, bevor wir innovieren.</strong> Der AI Act der EU ist der
+      weltweit erste umfassende KI-Rechtsrahmen. Wir verschieben gerade die Umsetzungsfristen, weil unsere
+      Normungsorganisationen die technischen Standards nicht fertigbekommen. Die Ironie: Wir regulieren eine
+      Technologie, die wir selbst kaum mitgestalten.</p>
+
+    <h3>Der »beschränkte Untertanenverstand«</h3>
+
+    <p>Es passt fast zu gut: 1838 sprach der preußische Innenminister Gustav von Rochow vom »beschränkten
+      Untertanenverstand«. Die Bürger sollten nicht alles wissen, nicht alles dürfen.</p>
+
+    <p>Diese Haltung finden wir heute in unserer Technologiepolitik wieder. Europäische KI-Initiativen wie EuroLLM sind
+      primär Forschungsprojekte, keine Consumer-Produkte. Die europäische Logik: Technologie entsteht in Institutionen,
+      wird geprüft und erreicht die Bevölkerung – wenn überhaupt – als kontrollierte Version.</p>
+
+    <p><strong>Das Ergebnis:</strong> Wir sind kein Partner der USA, sondern ein Markt. Wir konsumieren amerikanische
+      Technologie, statt eigene zu produzieren.</p>
+
+    <div class="artikel-divider"></div>
+
+    <h3>Fazit: Der Reflex der Zuständigkeitsprüfung</h3>
+
+    <p>In deutschen Amtsstuben gibt es oft als Erstes den Reflex der Zuständigkeitsprüfung: »Darf ich das überhaupt? Wer
+      hat den Auftrag erteilt?«</p>
+
+    <p>Im Silicon Valley lautet die Frage: »Kann ich das bauen? Und wie schnell?«</p>
+
+    <p>Vielleicht ist das der eigentliche Unterschied. Wir bauen die sichersten Autos der Welt – aber den Motor für die
+      nächste industrielle Revolution, den importieren wir.</p>
+
+    <div class="artikel-meta">gedankensplitter 002 · Was wenn Europa KI erfunden hätte?</div>
+
+  </article>
 
   <script>
     let current = 1;
